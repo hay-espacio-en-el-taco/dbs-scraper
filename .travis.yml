@@ -10,6 +10,9 @@ install:
 script:
   - docker run -it --rm --name scrapper -e OUTPUT_PATH=/home/node/app/output/cards.json -v ${TRAVIS_BUILD_DIR}:/home/node/app/output dbs-scrapper
 
+
+before_deploy:
+      - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
 deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
