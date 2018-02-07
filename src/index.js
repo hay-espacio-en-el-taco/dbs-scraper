@@ -98,6 +98,7 @@ const scrapMultipleUrls = urls => Promise.all( urls.map( scrapUrl ) ).then( resu
 
 scrapMultipleUrls(DBS_DATA_URLS)
     .then( allCards => {
+        const outputPath = process.env.OUTPUT_PATH || `${__dirname}/../cards.json`
         console.log('Wow, such total of cards', allCards.length, allCards[230])
-        fs.writeFileSync( `${__dirname}/../cards.json`, JSON.stringify(allCards) )
+        fs.writeFileSync( outputPath, JSON.stringify(allCards) )
     } )
