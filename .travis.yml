@@ -1,0 +1,19 @@
+services:
+  - docker
+
+before_install:
+  - docker pull node:9
+
+install:
+  - docker build -t dbs-scrapper .
+
+script:
+  - docker run -it --rm --name scrapper -e OUTPUT_PATH=/home/node/app/output/cards.json -v ${TRAVIS_BUILD_DIR}:/home/node/app/output dbs-scrapper
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file: cards.json
+  skip_cleanup: true
+  on:
+    tags: true
