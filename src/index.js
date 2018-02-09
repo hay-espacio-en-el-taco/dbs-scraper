@@ -6,8 +6,13 @@ const
 
 
 const DBS_DATA_URLS = [
-    'http://www.dbs-cardgame.com/cardlist/?search=true&category=428001',
-    'http://www.dbs-cardgame.com/cardlist/?search=true&category=428002'
+    'http://www.dbs-cardgame.com/cardlist/?search=true&category=428001', // BT1 - Galactic Battle
+    'http://www.dbs-cardgame.com/cardlist/?search=true&category=428901', // Promos
+    'http://www.dbs-cardgame.com/cardlist/?search=true&category=428301', // SD1 - The Awakening
+    'http://www.dbs-cardgame.com/cardlist/?search=true&category=428002', // BT2 - Union Force
+    'http://www.dbs-cardgame.com/cardlist/?search=true&category=428401', // EX01 - Expansion Deck Box 01
+    'http://www.dbs-cardgame.com/cardlist/?search=true&category=428402', // EX02 - Expansion Deck Box 02
+    'http://www.dbs-cardgame.com/cardlist/?search=true&category=428003'  // BT3 - Cross Worlds
 ]
 
 const parseSkill = rawHtml => {
@@ -99,6 +104,6 @@ const scrapMultipleUrls = urls => Promise.all( urls.map( scrapUrl ) ).then( resu
 scrapMultipleUrls(DBS_DATA_URLS)
     .then( allCards => {
         const outputPath = process.env.OUTPUT_PATH || `${__dirname}/../cards.json`
-        console.log(`Finished with a total of ${allCards.length} cards.`)
         fs.writeFileSync( outputPath, JSON.stringify(allCards) )
+        console.log(`Finished scraping ${allCards.length} cards. Wrote file to ${outputPath}`)
     } )
