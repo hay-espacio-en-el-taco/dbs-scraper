@@ -28,15 +28,33 @@ const parseSkill = rawHtml => {
         skillKeywords.push(match[1])
     }
     
-    const skillDescription = rawHtml.replace(regexp, '[$1]').replace(/<br\/?>/g, '\n')
+    const skillDescription = replaceSpecialChars(rawHtml.replace(regexp, '[$1]').replace(/<br\/?>/g, '\n'))
+
     return { skillDescription, skillKeywords }
+}
+
+const parseEnergy = rawHtml => {
+    if (!rawHtml) {
+        return null;
+    }
+    const regexp = /<img src="..\/images\/cardlist\/common\/(.).*?_ball.png".*?>/g;
+    let match;
+    while ((match = regexp.exec(rawHtml)) !== null) {
+        // This is necessary to avoid infinite loops with zero-width matches
+        if (match.index === regexp.lastIndex) {
+            regexp.lastIndex++;
+        }
+    }
+    
+    const energyDescription = rawHtml.replace(regexp, ' $1 ').replace(/&#x2010;/g, '-');
+    return energyDescription;
 }
 
 const parseSeries = rawHtml => {
     const series = rawHtml.split(/<br\/?>/g)
     return {
         seriesName: series[0],
-        seriesFullName: series[1] ? series[1].replace(/\&\#xFF5E; ?/g, '') : series[0]
+        seriesFullName: series[1] ? series[1].replace(/\&\#xFF5E; ?/g, '～').replace(/&#x2019;/g, "'") : series[0]
     }
 }
 
@@ -63,6 +81,21 @@ const getBackCard = elem => {
     }
 }
 
+const replaceSpecialChars = rawHtml => {
+    return rawHtml.replace(/&#xFF1C;/g, '＜').replace(/&#xFF1E;/g, '＞')
+    .replace(/&#x300A;/g, '≪').replace(/&#x300B;/g, '≫')
+    .replace(/&#x226A;/g, '≪').replace(/&#x226B;/g, '≫')
+    .replace(/&lt;</g, '≪').replace(/[=\"].+?>&gt;/g, '≫')
+    .replace(/&apos;/g, "'").replace(/&#x2019;/g, "'")
+    .replace(/&#x3010;/g, '【').replace(/&#x3011;/g, '】')
+    .replace(/&#xFF08;/g, '(').replace(/&#xFF09;/g, ')')
+    .replace(/&#x2010;/g, '-')
+    .replace(/&#xFF1A;/g, ":")
+    .replace(/&#xFF11;/g, 'one')
+    .replace(/&quot;/g, '"')
+    .replace(/&#x3000;/g, ' ')
+}
+
 const scrapUrl = url =>  
                     Fetch(url)
                         .then( res => res.text() )
@@ -75,6 +108,7 @@ const scrapUrl = url =>
                                         find = cardFront.find.bind(cardFront),
                                         { seriesName, seriesFullName } = parseSeries( find('dl.seriesCol dd').html() ),
                                         { skillDescription, skillKeywords } = parseSkill( find('dl.skillCol dd').html() ),
+                                        energy = parseEnergy( find('dl.energyCol dd').html() ),
                                         type = find('dl.typeCol dd').text()
 
                                     return {
@@ -83,11 +117,11 @@ const scrapUrl = url =>
                                         seriesFullName,
                                         skillDescription,
                                         skillKeywords,
+                                        energy,
                                         'cardNumber': find('dt.cardNumber').text(),
                                         'cardName': find('dd.cardName').text(),
                                         'rarity': find('dl.rarityCol dd').text(),
                                         'color': find('dl.colorCol dd').text(),
-                                        'energy': find('dl.energyCol dd').text(),
                                         'comboEnergy': find('dl.comboEnergyCol dd').text(),
                                         'power': find('dl.powerCol dd').text(),
                                         'comboPower': find('dl.comboPowerCol dd').text(),
