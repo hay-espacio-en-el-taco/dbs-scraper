@@ -60,24 +60,13 @@ const parseSeries = rawHtml => {
 
 const getBackCard = elem => {
     const find = elem.find.bind(elem),
-          { seriesName, seriesFullName } = parseSeries( find('dl.seriesCol dd').html() ),
           { skillDescription, skillKeywords } = parseSkill( find('dl.skillCol dd').html() )
 
     return {
-        seriesName,
-        seriesFullName,
-        skillDescription,
-        skillKeywords,
-        'cardNumber': find('dt.cardNumber').text(),
         'cardName': find('dd.cardName').text(),
-        'rarity': find('dl.rarityCol dd').text(),
-        'type': find('dl.typeCol dd').text(),
-        'color': find('dl.colorCol dd').text(),
         'power': find('dl.powerCol dd').text(),
-        'character': find('dl.characterCol dd').text(),
-        'specialTrait': find('dl.specialTraitCol dd').text(),
-        'era': find('dl.eraCol dd').text(),
-        'availableDate': find('dl.availableDateCol dd').text(),
+        skillDescription,
+        skillKeywords
     }
 }
 
@@ -113,21 +102,21 @@ const scrapUrl = url =>
 
                                     return {
                                         type,
-                                        seriesName,
-                                        seriesFullName,
-                                        skillDescription,
-                                        skillKeywords,
                                         energy,
-                                        'cardNumber': find('dt.cardNumber').text(),
                                         'cardName': find('dd.cardName').text(),
-                                        'rarity': find('dl.rarityCol dd').text(),
-                                        'color': find('dl.colorCol dd').text(),
-                                        'comboEnergy': find('dl.comboEnergyCol dd').text(),
                                         'power': find('dl.powerCol dd').text(),
                                         'comboPower': find('dl.comboPowerCol dd').text(),
+                                        'comboEnergy': find('dl.comboEnergyCol dd').text(),
+                                        'color': find('dl.colorCol dd').text(),
+                                        skillDescription,
+                                        skillKeywords,
+                                        'cardNumber': find('dt.cardNumber').text(),
+                                        'rarity': find('dl.rarityCol dd').text(),
                                         'character': find('dl.characterCol dd').text(),
                                         'specialTrait': find('dl.specialTraitCol dd').text(),
                                         'era': find('dl.eraCol dd').text(),
+                                        seriesName,
+                                        seriesFullName,
                                         'availableDate': find('dl.availableDateCol dd').text(),
                                         'cardBack': type === 'LEADER' ? getBackCard( elem.find('.cardBack') ) : null
                                     }
