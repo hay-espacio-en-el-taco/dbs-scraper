@@ -34,9 +34,10 @@ const parseSkill = rawHtml => {
 
 const parseSeries = rawHtml => {
     const series = rawHtml.split(/<br\/?>/g)
+    console.log(rawHtml, series)
     return {
         seriesName: series[0],
-        seriesFullName: series[1].replace(/\&\#xFF5E; ?/g, '')
+        seriesFullName: series[1] ? series[1].replace(/\&\#xFF5E; ?/g, '') : series[0]
     }
 }
 
