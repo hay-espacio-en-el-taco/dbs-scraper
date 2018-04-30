@@ -6,8 +6,15 @@ const
 
 
 const DBS_DATA_URLS = [
-    'http://www.dbs-cardgame.com/cardlist/?search=true&category=428001',
-    'http://www.dbs-cardgame.com/cardlist/?search=true&category=428002'
+    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428001',
+    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428002',
+    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428003',
+    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428402',
+    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428401',
+    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428901',
+    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428303',
+    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428302',
+    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428301'
 ]
 
 const parseSkill = rawHtml => {
