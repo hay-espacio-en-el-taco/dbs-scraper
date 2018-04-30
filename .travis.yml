@@ -19,5 +19,7 @@ deploy:
     keep-history: false
     varbose: true
     on:
-      branch: gh-pages
+      branches:
+        only:
+          - gh-pages
       
