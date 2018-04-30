@@ -2,7 +2,7 @@
 
 Visit the Github Page of this project at [xotl.github.io/dbs-scraper](https://xotl.github.io/dbs-scraper/).
 
-![Travis Status](xotl.github.io/dbs-scraper)
+![Travis Status](https://travis-ci.org/Xotl/dbs-scraper.svg?branch=master)
 
 ### Build it
 `docker build -t dbs-scrapper .`
@@ -12,4 +12,4 @@ Visit the Github Page of this project at [xotl.github.io/dbs-scraper](https://xo
 
 
 ### Updating the url list to get the newest cards
-Add the new urls in `DBS_DATA_URLS` array located at [./scraper/src/index.js](scraper/src/index.js) file.
+Add the new urls in `DBS_DATA_URLS` array located at [./scraper/src/index.js](scraper/src/index.js) file.office
