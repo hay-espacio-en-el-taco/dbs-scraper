@@ -12,4 +12,4 @@ Visit the Github Page of this project at [xotl.github.io/dbs-scraper](https://xo
 
 
 ### Updating the url list to get the newest cards
-Add the new urls in `DBS_DATA_URLS` array located at [./scraper/src/index.js](scraper/src/index.js) file.office
+Add the new urls in `DBS_DATA_URLS` array located at [./scraper/src/index.js](scraper/src/index.js) file.
