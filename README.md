@@ -1,8 +1,7 @@
-# DBS Scraper & Deck Builder  (WIP)
+# DBS Scraper & Deck Builder  (WIP) ![Travis Status](https://travis-ci.org/Xotl/dbs-scraper.svg?branch=master)
 
 Visit the Github Page of this project at [xotl.github.io/dbs-scraper](https://xotl.github.io/dbs-scraper/).
 
-![Travis Status](https://travis-ci.org/Xotl/dbs-scraper.svg?branch=master)
 
 ### Build it
 `docker build -t dbs-scrapper .`
