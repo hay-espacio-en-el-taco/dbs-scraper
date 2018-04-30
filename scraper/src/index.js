@@ -5,17 +5,19 @@ const
     fs = require('fs')
 
 
-const DBS_DATA_URLS = [
-    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428001',
-    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428002',
-    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428003',
-    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428402',
-    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428401',
-    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428901',
-    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428303',
-    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428302',
-    'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428301'
-]
+const
+    DEFAULT_OUTPUT = `${__dirname}/../cards.json`,
+    DBS_DATA_URLS = [
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428001',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428002',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428003',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428402',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428401',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428901',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428303',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428302',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428301'
+    ]
 
 const parseSkill = rawHtml => {
 
@@ -38,14 +40,14 @@ const parseSeries = rawHtml => {
     const series = rawHtml.split(/<br\/?>/g)
     return {
         seriesName: series[0],
-        seriesFullName: series[1].replace(/\&\#xFF5E; ?/g, '')
+        seriesFullName: series[1] ? series[1].replace(/\&\#xFF5E; ?/g, '') : '-'
     }
 }
 
 const getBackCard = elem => {
     const find = elem.find.bind(elem),
-          { seriesName, seriesFullName } = parseSeries( find('dl.seriesCol dd').html() ),
-          { skillDescription, skillKeywords } = parseSkill( find('dl.skillCol dd').html() )
+          { seriesName, seriesFullName } = parseSeries( find('dl.seriesCol > dd').html() ),
+          { skillDescription, skillKeywords } = parseSkill( find('dl.skillCol > dd').html() )
 
     return {
         seriesName,
@@ -68,6 +70,7 @@ const getBackCard = elem => {
 const scrapUrl = url =>  
                     Fetch(url)
                         .then( res => res.text() )
+
                         .then( body =>  Cheerio.load(body) )
                         .then(
                             $ => 
@@ -105,7 +108,8 @@ const scrapMultipleUrls = urls => Promise.all( urls.map( scrapUrl ) ).then( resu
 
 scrapMultipleUrls(DBS_DATA_URLS)
     .then( allCards => {
-        const outputPath = process.env.OUTPUT_PATH || `${__dirname}/../cards.json`
+        const outputPath = process.env.CARDS_DATA_OUTPUT || DEFAULT_OUTPUT
         console.log(`Finished with a total of ${allCards.length} cards.`)
         fs.writeFileSync( outputPath, JSON.stringify(allCards) )
     } )
+    .catch(console.error)

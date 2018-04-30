@@ -1,3 +1,5 @@
+# language: node_js
+
 services:
   - docker
 
@@ -8,12 +10,13 @@ install:
   - docker build -t dbs-scrapper .
 
 script:
-  - docker run -it --rm --name scrapper -e OUTPUT_PATH=/home/node/app/output/cards.json -v ${TRAVIS_BUILD_DIR}:/home/node/app/output dbs-scrapper
+  - docker run --name scrapper -v ${TRAVIS_BUILD_DIR}:/home/node/app/web-page/build dbs-scrapper yarn build
 
 deploy:
-  provider: releases
-  api_key: $GITHUB_OAUTH_TOKEN
-  file: cards.json
-  skip_cleanup: true
-  on:
-    tags: true
+  - provider: pages
+    skip-cleanup: true
+    github-token: $GITHUB_OAUTH_TOKEN
+    keep-history: true
+    on:
+      branch: gh-pages
+      
