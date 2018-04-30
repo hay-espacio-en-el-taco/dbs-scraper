@@ -16,7 +16,8 @@ deploy:
   - provider: pages
     skip-cleanup: true
     github-token: $GITHUB_OAUTH_TOKEN
-    keep-history: true
+    keep-history: false
+    varbose: true
     on:
       branch: gh-pages
       
