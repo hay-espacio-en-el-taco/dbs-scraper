@@ -5,7 +5,11 @@
   "dependencies": {
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
-    "react-scripts": "1.1.4"
+    "react-redux": "^5.0.7",
+    "react-scripts": "1.1.4",
+    "redux": "^3.0.0",
+    "redux-observable": "^0.18.0",
+    "rxjs": "^5.0.0"
   },
   "homepage": "https://xotl.github.io/dbs-scraper",
   "scripts": {
