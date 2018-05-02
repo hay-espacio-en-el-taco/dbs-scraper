@@ -44,6 +44,8 @@ const parseSeries = rawHtml => {
     }
 }
 
+const getImageUrl = elem => elem.attr('src').replace('../..', 'http://www.dbs-cardgame.com')
+
 const getBackCard = elem => {
     const find = elem.find.bind(elem),
           { seriesName, seriesFullName } = parseSeries( find('dl.seriesCol > dd').html() ),
@@ -54,6 +56,7 @@ const getBackCard = elem => {
         seriesFullName,
         skillDescription,
         skillKeywords,
+        'cardImageUrl': getImageUrl( find('.cardimg > img') ),        
         'cardNumber': find('dt.cardNumber').text(),
         'cardName': find('dd.cardName').text(),
         'rarity': find('dl.rarityCol dd').text(),
@@ -74,7 +77,7 @@ const scrapUrl = url =>
                         .then( body =>  Cheerio.load(body) )
                         .then(
                             $ => 
-                                $('ul.list-inner').children().map( (index, cardDomHtml) => {
+                                $('ul.list-inner > li').toArray().map( cardDomHtml => {
                                     const elem = $(cardDomHtml),
                                         cardFront = elem.find('.cardFront'),
                                         find = cardFront.find.bind(cardFront),
@@ -88,6 +91,7 @@ const scrapUrl = url =>
                                         seriesFullName,
                                         skillDescription,
                                         skillKeywords,
+                                        'cardImageUrl': getImageUrl( find('.cardimg > img') ),
                                         'cardNumber': find('dt.cardNumber').text(),
                                         'cardName': find('dd.cardName').text(),
                                         'rarity': find('dl.rarityCol dd').text(),
@@ -99,8 +103,7 @@ const scrapUrl = url =>
                                         'availableDate': find('dl.availableDateCol dd').text(),
                                         'cardBack': type === 'LEADER' ? getBackCard( elem.find('.cardBack') ) : null
                                     }
-
-                                } ).get()
+                                } )
                         )
 
 const scrapMultipleUrls = urls => Promise.all( urls.map( scrapUrl ) ).then( results => [].concat.apply([], results) )
