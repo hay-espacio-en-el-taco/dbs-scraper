@@ -12,12 +12,12 @@ Download & install [Docker](https://www.docker.com)
 `docker build -t dbs-scraper .`
 
 ### Run it
-* Run `docker run -it --rm --name scraper -p 3000:3000 dbs-scraper`
-* Now visit `localhost:3000`
+* Run `docker run --rm --name scraper -p 80:3000 dbs-scraper`
+* Now visit [http://localhost/](http://localhost)
 
 ### Running for development
 * Download the latest `cards.json` file from the [releases section of this repo](https://github.com/hay-espacio-en-el-taco/dbs-scraper/releases)
-* Copy the `cards.json` file into the `/web-page/src` folder
+* Copy the `cards.json` file into the `/web-page/src` folder
 * Run `docker run -it --rm --name scraper -v ${PWD}/web-page/src:/home/node/app/web-page/src -p 3000:3000 dbs-scraper` (note that we are mounting a volume)
 
 
