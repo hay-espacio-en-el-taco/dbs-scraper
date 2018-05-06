@@ -13,6 +13,12 @@ script:
   - docker run --name scrapper -v ${TRAVIS_BUILD_DIR}:/home/node/app/web-page/build dbs-scrapper yarn build
 
 deploy:
+  - provider: releases
+    api_key: $GITHUB_OAUTH_TOKEN
+    file: cards.json
+    skip_cleanup: true
+    on:
+      tags: false
   - provider: pages
     skip-cleanup: true
     github-token: $GITHUB_OAUTH_TOKEN
