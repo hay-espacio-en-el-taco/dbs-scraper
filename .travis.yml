@@ -11,7 +11,7 @@ install:
 
 script:
   - docker run --name scrapper -v ${TRAVIS_BUILD_DIR}:/home/node/app/web-page/build dbs-scrapper yarn build
-  - docker run --name scrapper -v ${TRAVIS_BUILD_DIR}:/home/node/app/releases/ dbs-scrapper cp ./src/cards.json /home/node/app/releases/cards.json
+  - docker run --name scrapper -v ${TRAVIS_BUILD_DIR}:/home/node/app/release dbs-scrapper cp ./src/cards.json /home/node/app/release/cards.json
 
 deploy:
   - provider: releases

@@ -111,8 +111,9 @@ const scrapMultipleUrls = urls => Promise.all( urls.map( scrapUrl ) ).then( resu
 
 scrapMultipleUrls(DBS_DATA_URLS)
     .then( allCards => {
+        console.log(`Fetched and parsed a total of ${allCards.length} cards.`)
         const outputPath = process.env.CARDS_DATA_OUTPUT || DEFAULT_OUTPUT
-        console.log(`Finished with a total of ${allCards.length} cards.`)
         fs.writeFileSync( outputPath, JSON.stringify(allCards) )
+        console.log(`Finished saving the cards data in "${outputPath}".`)
     } )
     .catch(console.error)
