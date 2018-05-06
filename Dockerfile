@@ -2,7 +2,7 @@ FROM node:9
 
 ENV SCRAPER_FOLDER /home/node/app/scraper
 ENV WEBPAGE_FOLDER /home/node/app/web-page
-ENV CARDS_DATA_OUTPUT ${WEBPAGE_FOLDER}/cards.json
+ENV CARDS_DATA_OUTPUT ${WEBPAGE_FOLDER}/src/cards.json
 
 WORKDIR ${SCRAPER_FOLDER}
 ADD ./scraper/package.json ${SCRAPER_FOLDER}/package.json
