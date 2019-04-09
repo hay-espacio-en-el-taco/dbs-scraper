@@ -16,7 +16,8 @@ const
         'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428901',
         'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428303',
         'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428302',
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428301'
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428301',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428006'
     ]
 
 const parseSkill = rawHtml => {
