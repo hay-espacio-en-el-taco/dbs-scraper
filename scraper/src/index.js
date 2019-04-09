@@ -8,16 +8,29 @@ const
 const
     DEFAULT_OUTPUT = `${__dirname}/../cards.json`,
     DBS_DATA_URLS = [
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428001',
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428002',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428006',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428005',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428004',
         'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428003',
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428402',
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428401',
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428901',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428002',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428001',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428103',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428102',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428101',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428308',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428307',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428306',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428305',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428304',
         'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428303',
         'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428302',
         'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428301',
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428006'
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428405',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428404',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428403',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428402',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428401',
+        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428901'
     ]
 
 const parseSkill = rawHtml => {
