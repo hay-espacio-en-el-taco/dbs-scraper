@@ -63,10 +63,10 @@ const getBackCard = elem => {
           { skillDescription, skillKeywords } = parseSkill( find('dl.skillCol dd').html() )
 
     return {
-        'cardName': find('dd.cardName').text(),
-        'power': find('dl.powerCol dd').text(),
+        //'cardName': find('dd.cardName').text(),
+        //'power': find('dl.powerCol dd').text(),
         skillDescription,
-        skillKeywords
+        //skillKeywords
     }
 }
 
@@ -76,13 +76,28 @@ const replaceSpecialChars = rawHtml => {
     .replace(/&#x226A;/g, '≪').replace(/&#x226B;/g, '≫')
     .replace(/&lt;</g, '≪').replace(/[=\"].+?>&gt;/g, '≫')
     .replace(/&apos;/g, "'").replace(/&#x2019;/g, "'")
-    .replace(/&#x3010;/g, '【').replace(/&#x3011;/g, '】')
+    .replace(/&#x3010;/g, '[').replace(/&#x3011;/g, ']')
     .replace(/&#xFF08;/g, '(').replace(/&#xFF09;/g, ')')
     .replace(/&#x2010;/g, '-')
     .replace(/&#xFF1A;/g, ":")
+    .replace(/&#xFF0C;/g, ",")
     .replace(/&#xFF11;/g, 'one')
     .replace(/&quot;/g, '"')
     .replace(/&#x3000;/g, ' ')
+    .replace('(This card inflicts 4 damage instead of 1 when attacking)', '')
+    .replace('(This card inflicts 3 damage instead of 1 when attacking)', '')
+    .replace('(This card inflicts 2 damage instead of 1 when attacking)', '')
+    .replace('(Play this card on top of the specified card)', '')
+    .replace('(When one of your other cards is attacked, you may switch this card to Rest Mode and change the target of the attack to this card)', '')
+    .replace('(Once per turn, when this card attacks, switch this card to Active Mode after the battle)', '')
+    .replace('(Twice per turn, when this card attacks, switch this card to Active Mode after the battle)', '')
+    .replace('(When this card inflicts damage to your opponent\'s life, they place that many cards in their Drop Area instead of their hand)', '')
+    .replace('(When this card inflicts damage to your opponent\'s life, they place that many cards in the Drop Area instead of their hand)', '')
+    .replace('(When this card is attacked, KO the attacking card after the battle)', '')
+    .replace('(Place and activate this card in the Battle Area. It remains in the Battle Area until you activate another [Field]. When you do, place this card in the Drop Area)', '')
+    .replace('(This card cannot be KO-ed by your opponent\'s card\'s skills or battle and does not leave the Battle Area)', '')
+
+
 }
 
 const scrapUrl = url =>  
@@ -109,7 +124,7 @@ const scrapUrl = url =>
                                         'comboEnergy': find('dl.comboEnergyCol dd').text(),
                                         'color': find('dl.colorCol dd').text(),
                                         skillDescription,
-                                        skillKeywords,
+                                        //skillKeywords,
                                         'cardNumber': find('dt.cardNumber').text(),
                                         'rarity': find('dl.rarityCol dd').text(),
                                         'character': find('dl.characterCol dd').text(),
