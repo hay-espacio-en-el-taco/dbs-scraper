@@ -4,12 +4,12 @@ ENV SCRAPER_FOLDER /home/node/app/scraper
 ENV WEBPAGE_FOLDER /home/node/app/web-page
 ENV CARDS_DATA_OUTPUT ${WEBPAGE_FOLDER}/src/cards.json
 
-WORKDIR ${WEBPAGE_FOLDER}
-ADD ./web-page/package.json ${WEBPAGE_FOLDER}/package.json
-RUN npm install
-
 WORKDIR ${SCRAPER_FOLDER}
 ADD ./scraper/package.json ${SCRAPER_FOLDER}/package.json
+RUN npm install
+
+WORKDIR ${WEBPAGE_FOLDER}
+ADD ./web-page/package.json ${WEBPAGE_FOLDER}/package.json
 RUN npm install
 
 ADD ./scraper ${SCRAPER_FOLDER}
