@@ -6,7 +6,7 @@
 
 import AllCards from '../../cards.json'
 
-const CARDS_DICTIONARY = Object.keys(AllCards).reduce(
+const CARDS_DICTIONARY = AllCards.reduce(
         (result, card) => {
             result[card.cardNumber] = card
             return result
@@ -20,10 +20,16 @@ const _searchCards = (filters) => {
         return AllCards
     }
 
-    return AllCards.filter( card => filters.reduce(
-        (carry, filter) => carry && filter(card), 
-        true
-    ) )
+    return AllCards.filter(
+        card => {
+            for (let index = 0; index < filters.length; index++) {
+                if ( !filters[index].filterFn(card) ) {
+                    return false
+                }
+            }
+            return true
+        }
+    )
 }
 
 // Initial State
@@ -46,23 +52,23 @@ const
 export default function reducer(state = initState, action = {}) {
     switch(action.type) {
 
-        case SEARCH_CARDS: return { ...state, ...{ result: _searchCards(state.filters) } }
+        case SEARCH_CARDS: return { ...state, result: _searchCards(state.filters) }
 
         case ADD_FILTER: {
             const newFilterArray = state.filters.slice()
-            newFilterArray.push(action.filter)
-            return { ...state, ...{ filters: newFilterArray } }
+            newFilterArray.push({id: action.id, filterFn: action.filter})
+            return { ...state, filters: newFilterArray }
         }
 
         case REMOVE_FILTER: {
             const newFilterArray = state.filters.slice()
-            const index = newFilterArray.indexOf(action.filter)
+            const index = newFilterArray.findIndex( f => f.id === action.filterId)
             newFilterArray.splice(index, 1)
-            return { ...state, ...{ filters: newFilterArray } }
+            return { ...state, filters: newFilterArray }
         }
 
         case CLEAR_FILTERS:
-            return { ...state, ...{ filters: [] } }
+            return { ...state, filters: [] }
 
         default:  return state
     }
@@ -74,16 +80,23 @@ export const searchCards = () => ({
     type: SEARCH_CARDS
 })
 
-export const addFilter = filter => ({
+export const addFilter = (id, filter) => ({
     type: ADD_FILTER,
-    filter
+    id, filter
 })
 
-export const removeFilter = filter => ({
+export const removeFilter = filterId => ({
     type: REMOVE_FILTER,
-    filter
+    filterId
 })
 
 export const clearFilters = () => ({
     type: CLEAR_FILTERS
 })
+
+
+// Side effects
+export const updateSearch = action$ => 
+    action$
+        .ofType(ADD_FILTER)
+        .map( searchCards )

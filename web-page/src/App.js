@@ -1,41 +1,103 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { test } from './redux/modules/test'
-import { searchCards } from './redux/modules/search'
+import { searchCards, addFilter, removeFilter } from './redux/modules/search'
 import logo from './logo.svg';
 import './App.css';
+import FilterBox from './components/FilterBox';
 
 
-const 
-  mapStateToProps = state => ({ ...state }),
-  mapDispatchToProps = { testAction: test, searchCards }
+const
+    mapStateToProps = state => state,
+    mapDispatchToProps = { testAction:test, searchCards, addFilter, removeFilter }
 
 class App extends Component {
-
-  onClickHandler() {
-    this.props.testAction()
-    this.props.searchCards()
-  }
-
-  render() {
-    const { test: { testCount }, search: { result:cards } } = this.props;
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <button onClick={this.onClickHandler.bind(this)}>Get number of cards ({testCount})</button>
-        { cards ? 
-          <div>{`Total cards: ${cards.length}`}</div> : 
-          null
+    constructor(props) {
+        super(props)
+        
+        const { search: { cardsDictionary } } = props
+        this.state = {
+            fieldsToSearch: this.getFieldsToSearch( cardsDictionary[ Object.keys(cardsDictionary)[4] ] )
         }
-      </div>
-    );
-  }
+    }
+
+    onClickHandler() {
+        this.props.testAction('hola')
+        this.props.searchCards()
+    }
+
+    getFieldsToSearch = (card) => {
+        const struct = Object.keys(card).reduce(
+            (result, fieldName) => {
+                let type = typeof card[fieldName]
+                if (Array.isArray( card[fieldName] )) {
+                        type = 'array'
+                }
+
+                result.push({ fieldName, type, label: fieldName })
+                return result
+            },
+            []
+        )
+
+        console.log(card, struct)
+        return struct
+    }
+
+    render() {
+        const { fieldsToSearch } = this.state
+        const {
+            //State
+            test: { testCount }, search: { result:cards, filters },
+
+            // Actions
+            searchCards, addFilter, removeFilter
+        } = this.props;
+
+
+
+
+        let cardsFound = null
+        if (cards) {
+            cardsFound = cards.map(
+                card => (
+                    <ul key={card.cardNumber}>
+                        {
+                            Object.keys(card).map(
+                                fieldName => (
+                                    <li className={fieldName} key={`${card.cardNumber}_${fieldName}`}>
+                                        {fieldName}: {card[fieldName] ? card[fieldName].toString() : ' - '}
+                                    </li>
+                                )
+                            )
+                        }
+                    </ul>
+                )
+            )
+        }
+
+
+
+        return (
+            <div className="App">
+                <header className="App-header">
+                    <img src={logo} className="App-logo" alt="logo" />
+                    <h1 className="App-title">Welcome to React</h1>
+                </header>
+                <FilterBox
+                    fieldOptions={fieldsToSearch}
+                    appliedFilters={filters}
+                    onFilterAdd={addFilter}
+                    onFilterRemove={removeFilter}
+                />
+                {cards ? 
+                    'Total cards found: ' + cards.length
+                    : null
+                }
+                {cardsFound}
+            </div>
+        );
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
