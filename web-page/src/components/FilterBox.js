@@ -25,13 +25,14 @@ class FilterBox extends Component {
         super(props)
 
         this.state = {
-            filterText: null,
-            fieldToSearch: null
+            filterText: '',
+            fieldToSearch: null,
+            isFilterNegation: false
         }
     }
 
     parseFilterText = text => {
-        return text.trim().split(/\s*\|\|\s*/gm).map(str => str.toLocaleLowerCase())
+        return text.split(/\s*\|\|\s*/gm).map(str => str.toLocaleLowerCase())
     }
 
     onAddFilterClickHandler = event => {
@@ -39,8 +40,14 @@ class FilterBox extends Component {
         if (typeof onFilterAdd !== 'function') {
             return// No handler, so do nothing
         }
-        
-        const { filterText, fieldToSearch: { type, fieldName } } = this.state
+
+        const { filterText:origText, fieldToSearch: { type, fieldName }, isFilterNegation } = this.state
+        let filterText = origText.trim()
+
+        if (typeof filterText !== 'function') {
+            return// No handler, so do nothing
+        }
+
         if (appliedFilters.find(a => a.id === `${fieldName}-${filterText}`)) {
             return// Filter already added
         }
@@ -70,7 +77,13 @@ class FilterBox extends Component {
                 break;
         }
 
-        onFilterAdd(`${fieldName}-${filterText}`, filter)
+
+        if (isFilterNegation) {
+            const oldFilter = filter
+            filter = card => !oldFilter(card)
+        }
+
+        onFilterAdd(`${fieldName}: ${isFilterNegation ? 'NOT ' : ''} ${filterText}`, filter)
     }
 
     onFieldSelectionChangeHandler = event => {
@@ -82,8 +95,12 @@ class FilterBox extends Component {
         this.setState({ filterText: event.target.value })
     }
 
+    onNegationFilterChangeHandler = (event) => {
+        this.setState({ isFilterNegation: event.target.checked })
+    }
+
     render() {
-        const { filterText } = this.props;
+        const { filterText, isFilterNegation } = this.state;
         const { fieldOptions, appliedFilters, onFilterRemove } = this.props;
 
         const optionsToSelect = fieldOptions.map(
@@ -94,18 +111,16 @@ class FilterBox extends Component {
         )
 
         const filtersApplied = appliedFilters.map(
-            ({ id }) =>  (
-                <li key={id}>
-                    {id}
-                    <button onClick={_ => onFilterRemove(id)}>Remove</button>
-                </li>
-            )
+            ({ id }) => <Filter key={id} id={id} onFilterRemove={onFilterRemove} />
         )
+
         return (
             <div>
                 <select onChange={this.onFieldSelectionChangeHandler}> {optionsToSelect} </select>
                 <span>
-                    <input type="text" value={filterText} onChange={this.onFilterTextChangeHandler} />
+                    <input id="negation-checkbox" type="checkbox" checked={isFilterNegation} onChange={this.onNegationFilterChangeHandler}/>
+                    { isFilterNegation ?  <label htmlFor="negation-checkbox">Not</label> : null }
+                    <input type="text" placeholder="For an OR operation use ||" value={filterText} onChange={this.onFilterTextChangeHandler} />
                 </span>
                 <span><button onClick={this.onAddFilterClickHandler}>Add</button></span>
                 <ul>{filtersApplied}</ul>

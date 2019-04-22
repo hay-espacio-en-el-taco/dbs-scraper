@@ -58,7 +58,7 @@ class App extends Component {
 
 
         let cardsFound = null
-        if (cards) {
+        if (cards.length > 0 && filters.length > 0) {
             cardsFound = cards.map(
                 card => (
                     <ul key={card.cardNumber}>
@@ -90,7 +90,7 @@ class App extends Component {
                     onFilterAdd={addFilter}
                     onFilterRemove={removeFilter}
                 />
-                {cards ? 
+                {filters.length > 0 ? 
                     'Total cards found: ' + cards.length
                     : null
                 }

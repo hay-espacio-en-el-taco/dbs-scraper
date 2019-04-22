@@ -15,7 +15,7 @@ const CARDS_DICTIONARY = AllCards.reduce(
 )
 
 // Utils
-const _searchCards = (filters) => {
+const _searchCards = (filters = []) => {
     if (filters.length === 0) {
         return AllCards
     }
@@ -36,7 +36,7 @@ const _searchCards = (filters) => {
 const initState = {
     cardsDictionary: CARDS_DICTIONARY,
     filters: [],
-    result: null
+    result: _searchCards()
 }
 
 
@@ -98,5 +98,5 @@ export const clearFilters = () => ({
 // Side effects
 export const updateSearch = action$ => 
     action$
-        .ofType(ADD_FILTER)
+        .ofType(ADD_FILTER, REMOVE_FILTER)
         .map( searchCards )
