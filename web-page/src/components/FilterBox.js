@@ -3,15 +3,21 @@ import Filter from './Filter';
 
 
 const findArrayItemsInArrayOrString = (itemsToFind, valueToSearchOn) => {
-    if (Array.isArray(valueToSearchOn)) {// Transforms every value into a string lowercase
-        valueToSearchOn = valueToSearchOn.map( str => str.toString().toLocaleLowerCase() )
-    }
-    else {// In case it's a number or boolean
-        valueToSearchOn = valueToSearchOn.toString().toLocaleLowerCase()
+    // if (Array.isArray(valueToSearchOn)) {// Transforms every value into a string lowercase
+    //     valueToSearchOn = valueToSearchOn.map( str => str.toString().toLocaleLowerCase() )
+    // }
+    // else {// In case it's a number or boolean
+    //     valueToSearchOn = valueToSearchOn.toString().toLocaleLowerCase()
+    // }
+
+    if (!Array.isArray(valueToSearchOn)) {
+        valueToSearchOn = [valueToSearchOn]
     }
 
     for (let index  = 0; index < itemsToFind.length; index++) {
-        if (valueToSearchOn.includes( itemsToFind[index].toString().toLocaleLowerCase() )) {
+        if (valueToSearchOn.find(
+            v => v.toString().toLocaleLowerCase().includes( itemsToFind[index].toString().toLocaleLowerCase() ) )
+        ) {
             return true
         }
     }
@@ -26,7 +32,7 @@ class FilterBox extends Component {
 
         this.state = {
             filterText: '',
-            fieldToSearch: null,
+            fieldToSearch: props.fieldOptions[0],
             isFilterNegation: false
         }
     }
@@ -100,7 +106,7 @@ class FilterBox extends Component {
     }
 
     render() {
-        const { filterText, isFilterNegation } = this.state;
+        const { filterText, isFilterNegation, fieldToSearch } = this.state;
         const { fieldOptions, appliedFilters, onFilterRemove } = this.props;
 
         const optionsToSelect = fieldOptions.map(
@@ -116,7 +122,7 @@ class FilterBox extends Component {
 
         return (
             <div>
-                <select onChange={this.onFieldSelectionChangeHandler}> {optionsToSelect} </select>
+                <select defaultValue={0} onChange={this.onFieldSelectionChangeHandler}> {optionsToSelect} </select>
                 <span>
                     <input id="negation-checkbox" type="checkbox" checked={isFilterNegation} onChange={this.onNegationFilterChangeHandler}/>
                     { isFilterNegation ?  <label htmlFor="negation-checkbox">Not</label> : null }

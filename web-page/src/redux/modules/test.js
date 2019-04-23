@@ -43,6 +43,7 @@ export const testSuccess = _ => ({
 export const testEpic = action$ => 
     action$
         .ofType(TEST)
+        .do( (action) => console.log(action.text) )
         .map( testSuccess )
 
 export const testSuccessEpic = action$ => 
