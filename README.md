@@ -1,4 +1,4 @@
-# DBS Scraper & Deck Builder  (WIP) ![Travis Status](https://travis-ci.org/hay-espacio-en-el-taco/dbs-scraper.svg?branch=master)
+# DBS Scraper & Deck Builder  (WIP) [![Travis Status](https://travis-ci.org/hay-espacio-en-el-taco/dbs-scraper.svg?branch=master)](https://travis-ci.org/hay-espacio-en-el-taco/dbs-scraper)
 
 Visit the Github Page of this project at [hay-espacio-en-el-taco.github.io/dbs-scraper](https://hay-espacio-en-el-taco.github.io/dbs-scraper/).
 
