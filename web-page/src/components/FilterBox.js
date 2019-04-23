@@ -44,8 +44,8 @@ class FilterBox extends Component {
         const { filterText:origText, fieldToSearch: { type, fieldName }, isFilterNegation } = this.state
         let filterText = origText.trim()
 
-        if (typeof filterText !== 'function') {
-            return// No handler, so do nothing
+        if (typeof filterText !== 'string') {
+            return// Empty string
         }
 
         if (appliedFilters.find(a => a.id === `${fieldName}-${filterText}`)) {
