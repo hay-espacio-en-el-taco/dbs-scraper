@@ -3,16 +3,6 @@ import Filter from './Filter';
 
 
 const findArrayItemsInArrayOrString = (itemsToFind, valueToSearchOn) => {
-    // if (Array.isArray(valueToSearchOn)) {// Transforms every value into a string lowercase
-    //     valueToSearchOn = valueToSearchOn.map( str => str.toString().toLocaleLowerCase() )
-    // }
-    // else {// In case it's a number or boolean
-    //     valueToSearchOn = valueToSearchOn.toString().toLocaleLowerCase()
-    // }
-
-    if (!Array.isArray(valueToSearchOn)) {
-        valueToSearchOn = [valueToSearchOn]
-    }
 
     for (let index  = 0; index < itemsToFind.length; index++) {
         if (valueToSearchOn.find(
@@ -60,27 +50,13 @@ class FilterBox extends Component {
 
 
         const filterCondition = this.parseFilterText(filterText)
+        
         let filter
-        switch (true) {
-            case type === 'array':
-                filter = card => findArrayItemsInArrayOrString(filterCondition, card[fieldName])
-                break;
-
-            case type === 'object':
-                filter = card => findArrayItemsInArrayOrString(filterCondition, JSON.stringify( card[fieldName] ))
-                break;
-            
-            default:
-                filter =  card => {
-                    const value = card[fieldName] ? card[fieldName].toString().toLocaleLowerCase() : []
-                    for (let index  = 0; index < filterCondition.length; index++) {
-                        if (value.includes( filterCondition[index] )) {
-                            return true
-                        }
-                    }
-                    return false
-                }
-                break;
+        if (type === 'object') {
+            filter = card => findArrayItemsInArrayOrString(filterCondition, [JSON.stringify( card[fieldName] )])
+        }
+        else {
+            filter = card => findArrayItemsInArrayOrString(filterCondition, [ card[fieldName] ])
         }
 
 

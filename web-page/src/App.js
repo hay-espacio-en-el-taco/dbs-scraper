@@ -5,6 +5,7 @@ import { searchCards, addFilter, removeFilter } from './redux/modules/search'
 import logo from './logo.svg';
 import './App.css';
 import FilterBox from './components/FilterBox';
+import Card from './components/Card';
 
 
 const
@@ -59,24 +60,8 @@ class App extends Component {
 
         let cardsFound = null
         if (cards.length > 0 && filters.length > 0) {
-            cardsFound = cards.map(
-                card => (
-                    <ul key={card.cardNumber}>
-                        {
-                            Object.keys(card).map(
-                                fieldName => (
-                                    <li className={fieldName} key={`${card.cardNumber}_${fieldName}`}>
-                                        {fieldName}: {card[fieldName] ? card[fieldName].toString() : ' - '}
-                                    </li>
-                                )
-                            )
-                        }
-                    </ul>
-                )
-            )
+            cardsFound = cards.map( card => <Card cardInfo={card}/> )
         }
-
-
 
         return (
             <div className="App">
