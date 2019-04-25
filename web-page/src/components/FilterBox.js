@@ -105,15 +105,6 @@ class FilterBox extends Component {
 
             return findArrayItemsInArrayOrString(filterConditions, criteriaToSearchOn)
         }
-        
-        // let filter
-        // if (type === 'object') {
-        //     filter = card => findArrayItemsInArrayOrString(filterConditions, [JSON.stringify( card[fieldName] )])
-        // }
-        // else {
-        //     filter = card => findArrayItemsInArrayOrString(filterConditions, [ card[fieldName] ])
-        // }
-
 
         if (isFilterNegation) {
             const oldFilter = filter
