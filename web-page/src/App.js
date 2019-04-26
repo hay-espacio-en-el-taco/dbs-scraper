@@ -41,9 +41,14 @@ class App extends Component {
                 return result
             },
             []
+        ).sort(
+            (a, b) => {
+                if (a.label > b.label) return 1
+                else if (a.label < b.label) return -1
+                return 0
+            }
         )
 
-        console.log(card, struct)
         return struct
     }
 
@@ -62,7 +67,7 @@ class App extends Component {
 
         let cardsFound = null
         if (cards.length > 0 && filters.length > 0) {
-            cardsFound = cards.map( card => <Card cardInfo={card}/> )
+            cardsFound = cards.map( card => <Card key={card.cardNumber} cardInfo={card}/> )
         }
 
         return (
