@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import 'materialize-css/dist/css/materialize.min.css'
+
 import { test } from './redux/modules/test'
 import { searchCards, addFilter, removeFilter } from './redux/modules/search'
 import logo from './logo.svg';
@@ -69,17 +71,21 @@ class App extends Component {
                     <img src={logo} className="App-logo" alt="logo" />
                     <h1 className="App-title">Welcome to React</h1>
                 </header>
-                <FilterBox
-                    fieldOptions={fieldsToSearch}
-                    appliedFilters={filters}
-                    onFilterAdd={addFilter}
-                    onFilterRemove={removeFilter}
-                />
-                {filters.length > 0 ? 
-                    'Total cards found: ' + cards.length
-                    : null
-                }
-                {cardsFound}
+                <div className="container">
+                    <FilterBox
+                        fieldOptions={fieldsToSearch}
+                        appliedFilters={filters}
+                        onFilterAdd={addFilter}
+                        onFilterRemove={removeFilter}
+                    />
+                    {filters.length > 0 ? 
+                        'Total cards found: ' + cards.length
+                        : null
+                    }
+                    <div className="row">
+                        {cardsFound}
+                    </div>
+                </div>
             </div>
         );
     }

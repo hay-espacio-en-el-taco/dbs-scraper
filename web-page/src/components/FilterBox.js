@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import M from "materialize-css";
 import Filter from './Filter';
 
 
@@ -43,6 +44,10 @@ class FilterBox extends Component {
             fieldToSearch: props.fieldOptions[0],
             isFilterNegation: false
         }
+    }
+
+    componentDidMount() {
+        M.AutoInit();
     }
 
     parseFilterText = text => {
@@ -143,15 +148,25 @@ class FilterBox extends Component {
         )
 
         return (
-            <div>
-                <select defaultValue={0} onChange={this.onFieldSelectionChangeHandler}> {optionsToSelect} </select>
-                <span>
-                    <input id="negation-checkbox" type="checkbox" checked={isFilterNegation} onChange={this.onNegationFilterChangeHandler}/>
-                    { isFilterNegation ?  <label htmlFor="negation-checkbox">Not</label> : null }
-                    <input type="text" placeholder="For an OR operation use ||" value={filterText} onChange={this.onFilterTextChangeHandler} />
-                </span>
-                <span><button onClick={this.onAddFilterClickHandler}>Add</button></span>
-                <ul>{filtersApplied}</ul>
+            <div className="col s12">
+                <div className="row">
+                    <div class="input-field col s5">
+                        <select defaultValue={0} onChange={this.onFieldSelectionChangeHandler}> {optionsToSelect} </select>
+                    </div>
+                    <div class="input-field col s5">
+                        <span>
+                            <input id="negation-checkbox" type="checkbox" checked={isFilterNegation} onChange={this.onNegationFilterChangeHandler}/>
+                            { isFilterNegation ?  <label htmlFor="negation-checkbox">Not</label> : null }
+                            <input type="text" placeholder="For an OR operation use ||" value={filterText} onChange={this.onFilterTextChangeHandler} />
+                        </span>
+                    </div>
+                    <div class="input-field col s2">
+                        <span><button className="waves-effect waves-light btn" onClick={this.onAddFilterClickHandler}>Add</button></span>
+                    </div>
+                </div>
+                <div className="row">
+                    <ul>{filtersApplied}</ul>
+                </div>
             </div>
         )
     }

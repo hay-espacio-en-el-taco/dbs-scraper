@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+import M from "materialize-css";
 
 class Card extends Component {
+
+    componentDidMount() {
+        M.AutoInit();
+    }
 
     getFieldInfo = (key, label, info) => {
         let formattedInfo = typeof info === 'number' ? info : (info || ' - ')
@@ -10,9 +15,9 @@ class Card extends Component {
         }
 
         return (
-            <li className={key} key={key}>
-                {label}: {formattedInfo}
-            </li>
+            <p className={key} key={key}>
+                <strong>{label}:</strong> {formattedInfo}
+            </p>
         )
     }
     
@@ -34,9 +39,17 @@ class Card extends Component {
         )
 
         return (
-            <ul key={cardInfo.cardNumber}>
-                {content}
-            </ul>
+            <div class="col s3" key={cardInfo.cardNumber}>
+                <div class="card blue-grey darken-1">
+                    <div class="card-image">
+                        <img src={cardInfo.cardImageUrl} />
+                    </div>
+                    <div class="card-content white-text">
+                        <span class="card-title">{cardInfo.cardName}</span>
+                        <p>{content}</p>
+                    </div>
+                </div>
+            </div>
         )
     }
 }

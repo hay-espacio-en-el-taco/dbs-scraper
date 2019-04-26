@@ -103,5 +103,9 @@ ENV/
 # Mac OSX
 .DS_Store
 
+# node_modules
+node_modules
+
 # DBS Scraper Project specific
 cards.json
+cards.json_*
