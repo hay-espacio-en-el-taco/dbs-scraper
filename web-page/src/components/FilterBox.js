@@ -2,12 +2,30 @@ import React, { Component } from 'react';
 import Filter from './Filter';
 
 
-const findArrayItemsInArrayOrString = (itemsToFind, valueToSearchOn) => {
+const NUMERIC_REGEXP = '^(?<condition>[<>]=?)\\s*?(?<criteria>\\d+)'
 
-    for (let index  = 0; index < itemsToFind.length; index++) {
-        if (valueToSearchOn.find(
-            v => v.toString().toLocaleLowerCase().includes( itemsToFind[index].toString().toLocaleLowerCase() ) )
-        ) {
+const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
+
+    for (let index  = 0; index < filterConditions.length; index++) {
+        const { conditionType, condition, criteria } = filterConditions[index]
+        const found = valuesToSearchOn.find(
+            value => {
+                if (conditionType === 'numeric') {
+                    switch(condition) {
+                        case '<': return  Number(value) < Number(criteria)
+                        case '<=': return  Number(value) <= Number(criteria)
+                        case '>': return  Number(value) > Number(criteria)
+                        case '>=': return  Number(value) >= Number(criteria)
+                    }
+                }
+
+                return value.toString().toLocaleLowerCase().includes(
+                    criteria.toString().toLocaleLowerCase()
+                )
+            }
+        )
+
+        if (found) {
             return true
         }
     }
@@ -28,7 +46,19 @@ class FilterBox extends Component {
     }
 
     parseFilterText = text => {
-        return text.split(/\s*\|\|\s*/gm).map(str => str.toLocaleLowerCase())
+        const criteriaArray = text.trim().toLocaleLowerCase().split(/\s*\|\|\s*/gm)
+
+        return criteriaArray.map(
+            txt => {
+                const foundNumericCondition = (new RegExp(NUMERIC_REGEXP, 'g')).exec(txt)
+                if (foundNumericCondition) {
+                    const { groups: { condition, criteria }} = foundNumericCondition
+                    return { conditionType: 'numeric', criteria, condition }
+                }
+
+                return { conditionType: 'contains', criteria: txt }
+            }
+        )
     }
 
     onAddFilterClickHandler = event => {
@@ -49,16 +79,32 @@ class FilterBox extends Component {
         }
 
 
-        const filterCondition = this.parseFilterText(filterText)
         
-        let filter
-        if (type === 'object') {
-            filter = card => findArrayItemsInArrayOrString(filterCondition, [JSON.stringify( card[fieldName] )])
-        }
-        else {
-            filter = card => findArrayItemsInArrayOrString(filterCondition, [ card[fieldName] ])
-        }
 
+        const filterConditions = this.parseFilterText(filterText)
+        let filter = card => {
+            let criteriaToSearchOn
+            if (type === 'object') {// no implementation yet, so we search in the whole object
+                criteriaToSearchOn = [JSON.stringify( card[fieldName] )]
+            }
+            else {
+                let val = card[fieldName]
+                criteriaToSearchOn = Array.isArray(val) ? val.slice() : [val]
+
+                // We look for the field in the back of the card and add it to our search
+                if (card['cardBack'] && card['cardBack'][fieldName]) {
+                    val = card['cardBack'][fieldName]
+                    if (Array.isArray(val)) {
+                        criteriaToSearchOn = criteriaToSearchOn.concat(val)
+                    }
+                    else {
+                        criteriaToSearchOn.push( val )
+                    }
+                }
+            }
+
+            return findArrayItemsInArrayOrString(filterConditions, criteriaToSearchOn)
+        }
 
         if (isFilterNegation) {
             const oldFilter = filter
