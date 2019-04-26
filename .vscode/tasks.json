@@ -1,0 +1,118 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Docker image",
+            "type": "shell",
+            "command": "docker build -t dbs-scraper .",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Prepare before running React App",
+            "type": "shell",
+            "command": "echo \"Ready to run!\"",
+            "dependsOn": [
+                "Get cards.json file into web-page folder",
+                "Remove react app container"
+            ]
+        },
+        {
+            "label": "Prepare before running scraper app",
+            "type": "shell",
+            "command": "echo \"Ready to run!\"",
+            "dependsOn": [
+                "Remove scraper app container",
+                "Build Docker image"
+            ]
+        },
+        {
+            "label": "Run Tests",
+            "type": "shell",
+            "command": "docker run --rm dbs-scraper npm test",
+            "dependsOn": [ "Build Docker image"],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Remove react app container",
+            "type": "shell",
+            "command": "docker kill dbs-scraper-ui || docker rm dbs-scraper-ui || true",
+            "group": "build",
+            "presentation": {
+                "reveal": "never",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Remove scraper app container",
+            "type": "shell",
+            "command": "docker kill dbs-scraper || docker rm dbs-scraper || true",
+            "group": "build",
+            "presentation": {
+                "reveal": "never",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run react app (detached)",
+            "type": "process",
+            "command": "docker",
+            "args": [
+                "run", "--rm", "-d",
+                "--name", "dbs-scraper-ui",
+                "-p", "3000:3000",
+                "-v", "${workspaceFolder}/web-page/src:/home/node/app/web-page/src",
+                "dbs-scraper",
+                "npm", "start"
+            ],
+            "dependsOn": [
+                "Prepare before running React App"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                // "panel": "new"
+            }
+        },
+        {
+            "label": "Run scraper", 
+            "type": "process",
+            "command": "docker",
+            "args": [
+                "run",
+                "--name", "dbs-scraper",
+                "-p", "9229:9229",
+                "dbs-scraper",
+                "npm", "start", "--prefix", "/home/node/app/scraper"
+            ],
+            "dependsOn": [
+                "Remove scraper app container",
+                "Build Docker image"
+            ],
+            "group": "test"
+        },
+        {
+            "label": "Get cards.json file into web-page folder",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "cp", 
+                "dbs-scraper:/home/node/app/scraper/src/cards.json",
+                "${workspaceFolder}/web-page/src/cards.json",
+                "&&",
+                "docker", "rm" , "dbs-scraper"
+            ],
+            "dependsOn": [
+                "Run scraper"
+            ],
+            "group": "build"
+        }
+    ]
+}
