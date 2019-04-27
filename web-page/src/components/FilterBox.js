@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import M from "materialize-css";
+import './FilterBox.css';
 import Filter from './Filter';
+
 
 
 const NUMERIC_REGEXP = '^(?<condition>[<>]=?)\\s*?(?<criteria>\\d+)'
@@ -66,7 +68,7 @@ class FilterBox extends Component {
         )
     }
 
-    onAddFilterClickHandler = event => {
+    onAddFilterClickHandler = _ => {
         const { onFilterAdd, appliedFilters } = this.props;
         if (typeof onFilterAdd !== 'function') {
             return// No handler, so do nothing
@@ -132,6 +134,13 @@ class FilterBox extends Component {
         this.setState({ isFilterNegation: event.target.checked })
     }
 
+    onInputTextKeyDownHandler = (event) => {
+        const isEnter = event.keyCode === 13
+        if (isEnter) {
+            this.onAddFilterClickHandler()
+        }
+    }
+
     render() {
         const { filterText, isFilterNegation, fieldToSearch } = this.state;
         const { fieldOptions, appliedFilters, onFilterRemove } = this.props;
@@ -148,19 +157,30 @@ class FilterBox extends Component {
         )
 
         return (
-            <div className="col s12">
+            <div className="col s12" className="filter-box">
                 <div className="row">
-                    <div class="input-field col s5">
-                        <select defaultValue={0} onChange={this.onFieldSelectionChangeHandler}> {optionsToSelect} </select>
+                    <div className="input-field col s3">
+                        <select id="filter-box-type-input" defaultValue={0} onChange={this.onFieldSelectionChangeHandler}> {optionsToSelect} </select>
+                        <label htmlFor="filter-box-type-input">Field</label>
                     </div>
-                    <div class="input-field col s5">
-                        <span>
-                            <input id="negation-checkbox" type="checkbox" checked={isFilterNegation} onChange={this.onNegationFilterChangeHandler}/>
-                            { isFilterNegation ?  <label htmlFor="negation-checkbox">Not</label> : null }
-                            <input type="text" placeholder="For an OR operation use ||" value={filterText} onChange={this.onFilterTextChangeHandler} />
-                        </span>
+                    <div className="input-field col s1">
+                        <label>
+                            <input type="checkbox" checked={isFilterNegation} onChange={this.onNegationFilterChangeHandler}/>
+                            <span>
+                                { isFilterNegation ? 'Not' : null }
+                            </span>
+                        </label>
                     </div>
-                    <div class="input-field col s2">
+                    <div className="input-field col s6">
+                        <input
+                            id="filter-box-criteria-input"
+                            type="text" placeholder="For an OR operation use ||"
+                            value={filterText}
+                            onChange={this.onFilterTextChangeHandler} 
+                            onKeyDown={this.onInputTextKeyDownHandler} />
+                        <label htmlFor="filter-box-criteria-input">Search</label>
+                    </div>
+                    <div className="input-field col s2">
                         <span><button className="waves-effect waves-light btn" onClick={this.onAddFilterClickHandler}>Add</button></span>
                     </div>
                 </div>

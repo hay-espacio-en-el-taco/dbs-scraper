@@ -72,24 +72,22 @@ class App extends Component {
 
         return (
             <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <div className="container">
-                    <FilterBox
-                        fieldOptions={fieldsToSearch}
-                        appliedFilters={filters}
-                        onFilterAdd={addFilter}
-                        onFilterRemove={removeFilter}
-                    />
-                    {filters.length > 0 ? 
-                        'Total cards found: ' + cards.length
-                        : null
-                    }
-                    <div className="row">
-                        {cardsFound}
+                <header className="App-header grey darken-3">
+                    <div className="container">
+                        <FilterBox
+                            fieldOptions={fieldsToSearch}
+                            appliedFilters={filters}
+                            onFilterAdd={addFilter}
+                            onFilterRemove={removeFilter}
+                        />
+                        { filters.length > 0 ? 
+                            <div className="col 4 white-text">Total cards found: {cards.length}</div>
+                            : null
+                        }
                     </div>
+                </header>
+                <div className="row">
+                    {cardsFound}
                 </div>
             </div>
         );
