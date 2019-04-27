@@ -5,8 +5,10 @@ class FilterBox extends Component {
         const { onFilterRemove, id } = this.props;
         return (
             <li key={id}>
-                {id}
-                <button onClick={_ => onFilterRemove(id)}>Remove</button>
+                <button className="waves-effect waves-light btn" onClick={_ => onFilterRemove(id)}>
+                    <span>{id}</span> | Remove
+                    {/* <i class="large material-icons">insert_chart</i> */}
+                </button>
             </li>
         )
     }
