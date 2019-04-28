@@ -17,10 +17,12 @@ const CARDS_DICTIONARY = AllCards.reduce(
 // Utils
 const _searchCards = async (filters = []) => {
     if (filters.length === 0) {
+        console.log('Wow, such debugging')
         return AllCards
     }
 
-    return AllCards.filter(
+    var t0 = performance.now();
+    const cardsFound = AllCards.filter(
         card => {
             for (let index = 0; index < filters.length; index++) {
                 if ( !filters[index].filterFn(card) ) {
@@ -30,13 +32,27 @@ const _searchCards = async (filters = []) => {
             return true
         }
     )
+    var t1 = performance.now();
+    console.log("Search cards took " + (t1 - t0) + " miliseconds.")
+    return cardsFound
+
+    // return AllCards.filter(
+    //     card => {
+    //         for (let index = 0; index < filters.length; index++) {
+    //             if ( !filters[index].filterFn(card) ) {
+    //                 return false
+    //             }
+    //         }
+    //         return true
+    //     }
+    // )
 }
 
 // Initial State
 const initState = {
     cardsDictionary: CARDS_DICTIONARY,
     filters: [],
-    result: [],
+    result: AllCards,
     isSearching: false
 }
 
@@ -118,6 +134,6 @@ export const searchCardsEpic = (action$, state$) => action$.pipe(
     mergeMap(
         ({ search }) => from( _searchCards(search.filters) )
     ),
-    tap( console.log ),
+    // tap( console.log ),
     map( searchCardsSuccess )
 )

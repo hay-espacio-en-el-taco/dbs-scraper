@@ -1,46 +1,10 @@
 import React, { Component } from 'react';
-import M from "materialize-css";
 import './Card.css'
 
 class Card extends Component {
 
-    componentDidMount() {
-        M.AutoInit();
-    }
-
-    getFieldInfo = (key, label, info) => {
-        let formattedInfo = typeof info === 'number' ? info : (info || ' - ')
-
-        if (Array.isArray( formattedInfo )) {
-            formattedInfo = formattedInfo.length > 0 ? formattedInfo.join(', ') : '-'
-        }
-
-        const size = key === 'skillDescription' ? 12 : 6
-
-        return (
-            <div className={`col s${size} ${key}`} key={key}>
-                <span className="fieldname white-text">{label}: </span><span className="field-data">{formattedInfo}</span>
-            </div>
-        )
-    }
-    
-
     render() {
         const { cardInfo } = this.props;
-
-        const content = Object.keys(cardInfo).map(
-            fieldName => {
-                if ( cardInfo[ fieldName ] && typeof cardInfo[ fieldName ] === 'object' && !Array.isArray(cardInfo[ fieldName ]) ) {
-                    const objectContent = Object.keys(cardInfo[fieldName]).map(
-                        backFieldName => this.getFieldInfo(`${fieldName}-${backFieldName}`, `${fieldName}.${backFieldName}`, cardInfo[fieldName][backFieldName])
-                    )
-                    return ( <React.Fragment key={fieldName}> {objectContent} </React.Fragment> )
-                }
-
-                return this.getFieldInfo(fieldName, fieldName, cardInfo[fieldName])
-            }
-        )
-
         const {
             type, cardName, energy, color, skillDescription, power, comboPower, comboEnergy,
             character, specialTrait, rarity, cardNumber, skillKeywords, relatedCharacters,
