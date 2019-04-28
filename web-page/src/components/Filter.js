@@ -7,7 +7,6 @@ class FilterBox extends Component {
             <li key={id}>
                 <button className="waves-effect waves-light btn" onClick={_ => onFilterRemove(id)}>
                     <span>{id}</span> | Remove
-                    {/* <i class="large material-icons">insert_chart</i> */}
                 </button>
             </li>
         )

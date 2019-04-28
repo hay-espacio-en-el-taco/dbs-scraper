@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import M from "materialize-css";
+import { connect } from 'react-redux';
+import { searchCards, addFilter, removeFilter } from '../redux/modules/search'
 import './FilterBox.css';
 import Filter from './Filter';
 
@@ -35,6 +36,28 @@ const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
     return false
 }
 
+const getFieldsToSearch = (card) => {
+    const struct = Object.keys(card).reduce(
+        (result, fieldName) => {
+            let type = typeof card[fieldName]
+            if (Array.isArray( card[fieldName] )) {
+                    type = 'array'
+            }
+
+            result.push({ fieldName, type, label: fieldName })
+            return result
+        },
+        []
+    ).sort(
+        (a, b) => {
+            if (a.label > b.label) return 1
+            else if (a.label < b.label) return -1
+            return 0
+        }
+    )
+
+    return struct
+}
 
 class FilterBox extends Component {
 
@@ -46,10 +69,6 @@ class FilterBox extends Component {
             fieldToSearch: props.fieldOptions[0],
             isFilterNegation: false
         }
-    }
-
-    componentDidMount() {
-        M.AutoInit();
     }
 
     parseFilterText = text => {
@@ -96,6 +115,9 @@ class FilterBox extends Component {
             }
             else {
                 let val = card[fieldName]
+                if (val === null || val === undefined) {
+                    return false
+                }
                 criteriaToSearchOn = Array.isArray(val) ? val.slice() : [val]
 
                 // We look for the field in the back of the card and add it to our search
@@ -142,8 +164,8 @@ class FilterBox extends Component {
     }
 
     render() {
-        const { filterText, isFilterNegation, fieldToSearch } = this.state;
-        const { fieldOptions, appliedFilters, onFilterRemove } = this.props;
+        const { filterText, isFilterNegation } = this.state;
+        const { fieldOptions, appliedFilters, onFilterRemove, totalCards } = this.props;
 
         const optionsToSelect = fieldOptions.map(
             (option, index) =>
@@ -187,9 +209,20 @@ class FilterBox extends Component {
                 <div className="row">
                     <ul>{filtersApplied}</ul>
                 </div>
+                <div className="row">
+                    <span className="white-text">Total of cards: {totalCards}</span>
+                </div>
             </div>
         )
     }
 }
 
-export default FilterBox;
+
+const
+    mapStateToProps = ({ search }) => ({
+        totalCards: search.result.length,
+        appliedFilters: search.filters,
+        fieldOptions: getFieldsToSearch( search.cardsDictionary[ Object.keys(search.cardsDictionary)[4] ] )
+    }),
+    mapDispatchToProps = { searchCards, onFilterAdd: addFilter, onFilterRemove: removeFilter }
+export default connect(mapStateToProps, mapDispatchToProps)(FilterBox)
