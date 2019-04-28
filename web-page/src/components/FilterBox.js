@@ -159,11 +159,11 @@ class FilterBox extends Component {
         return (
             <div className="col s12" className="filter-box">
                 <div className="row">
-                    <div className="input-field col s3">
+                    <div className="input-field col s12 m4 l3">
                         <select id="filter-box-type-input" defaultValue={0} onChange={this.onFieldSelectionChangeHandler}> {optionsToSelect} </select>
                         <label htmlFor="filter-box-type-input">Field</label>
                     </div>
-                    <div className="input-field col s1">
+                    <div className="input-field col s3 m2 l1">
                         <label>
                             <input type="checkbox" checked={isFilterNegation} onChange={this.onNegationFilterChangeHandler}/>
                             <span>
@@ -171,7 +171,7 @@ class FilterBox extends Component {
                             </span>
                         </label>
                     </div>
-                    <div className="input-field col s6">
+                    <div className="input-field col s8 m6 l6">
                         <input
                             id="filter-box-criteria-input"
                             type="text" placeholder="For an OR operation use ||"
@@ -180,7 +180,7 @@ class FilterBox extends Component {
                             onKeyDown={this.onInputTextKeyDownHandler} />
                         <label htmlFor="filter-box-criteria-input">Search</label>
                     </div>
-                    <div className="input-field col s2">
+                    <div className="input-field col s3 m2 l2">
                         <span><button className="waves-effect waves-light btn" onClick={this.onAddFilterClickHandler}>Add</button></span>
                     </div>
                 </div>

@@ -50,11 +50,11 @@ class Card extends Component {
 
         return (
             <div className="col s12 card teal lighten-3" key={cardNumber}>
-                <div className="col s3 card-image">
+                <div className="col s12 m5 l3 card-image">
                         <img src={cardImageUrl} />
                 </div>
 
-                <div className="col s9 card-content">
+                <div className="col s12 m7 l9 card-content">
 
                     <div className="row">
                         <div className="col s12">
