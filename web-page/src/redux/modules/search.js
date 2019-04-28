@@ -1,8 +1,8 @@
 'use stric'
 
-// import 'rxjs/add/operator/map'
-// import 'rxjs/add/operator/do'
-// import 'rxjs/add/operator/ignoreElements'
+import { pipe, from } from "rxjs";
+import { ofType } from 'redux-observable';
+import { tap, map, mergeMap, ignoreElements } from 'rxjs/operators';
 
 import AllCards from '../../cards.json'
 
@@ -15,7 +15,7 @@ const CARDS_DICTIONARY = AllCards.reduce(
 )
 
 // Utils
-const _searchCards = (filters = []) => {
+const _searchCards = async (filters = []) => {
     if (filters.length === 0) {
         return AllCards
     }
@@ -36,13 +36,15 @@ const _searchCards = (filters = []) => {
 const initState = {
     cardsDictionary: CARDS_DICTIONARY,
     filters: [],
-    result: _searchCards()
+    result: [],
+    isSearching: false
 }
 
 
 // Actions
 const
     SEARCH_CARDS = 'dbs-scraper/search/SEARCH_CARDS',
+    SEARCH_CARDS_SUCCESS = 'dbs-scraper/search/SEARCH_CARDS_SUCCESS',
     ADD_FILTER = 'dbs-scraper/search/ADD_FILTER',
     REMOVE_FILTER = 'dbs-scraper/search/REMOVE_FILTER',
     CLEAR_FILTERS = 'dbs-scraper/search/CLEAR_FILTERS'
@@ -52,9 +54,13 @@ const
 export default function reducer(state = initState, action = {}) {
     switch(action.type) {
 
-        case SEARCH_CARDS: return { ...state, result: _searchCards(state.filters) }
+        case SEARCH_CARDS: return { ...state, isSearching: true }
+        case SEARCH_CARDS_SUCCESS: return { ...state, isSearching: false, result: action.result }
 
         case ADD_FILTER: {
+            if (state.filters.find( f => f.id === action.id )) {
+                return state// Avoid adding duplicated filters
+            }
             const newFilterArray = state.filters.slice()
             newFilterArray.push({id: action.id, filterFn: action.filter})
             return { ...state, filters: newFilterArray }
@@ -80,6 +86,11 @@ export const searchCards = () => ({
     type: SEARCH_CARDS
 })
 
+export const searchCardsSuccess = (result) => ({
+    type: SEARCH_CARDS_SUCCESS,
+    result
+})
+
 export const addFilter = (id, filter) => ({
     type: ADD_FILTER,
     id, filter
@@ -96,7 +107,17 @@ export const clearFilters = () => ({
 
 
 // Side effects
-export const updateSearch = action$ => 
-    action$
-        .ofType(ADD_FILTER, REMOVE_FILTER)
-        .map( searchCards )
+export const updateSearchEpic = action$ => action$.pipe(
+    ofType(ADD_FILTER, REMOVE_FILTER),
+    map( searchCards )
+)
+
+export const searchCardsEpic = (action$, state$) => action$.pipe(
+    ofType( SEARCH_CARDS ),
+    map( _ => state$.value ),
+    mergeMap(
+        ({ search }) => from( _searchCards(search.filters) )
+    ),
+    tap( console.log ),
+    map( searchCardsSuccess )
+)

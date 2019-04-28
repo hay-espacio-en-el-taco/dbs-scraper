@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import 'materialize-css/dist/css/materialize.min.css'
 
-import { test } from './redux/modules/test'
 import { searchCards, addFilter, removeFilter } from './redux/modules/search'
 import logo from './logo.svg';
 import './App.css';
@@ -12,7 +11,7 @@ import Card from './components/Card';
 
 const
     mapStateToProps = state => state,
-    mapDispatchToProps = { testAction:test, searchCards, addFilter, removeFilter }
+    mapDispatchToProps = { searchCards, addFilter, removeFilter }
 
 class App extends Component {
     constructor(props) {
@@ -20,13 +19,8 @@ class App extends Component {
         
         const { search: { cardsDictionary } } = props
         this.state = {
-            fieldsToSearch: this.getFieldsToSearch( cardsDictionary[ Object.keys(cardsDictionary)[4] ] )
+            fieldsToSearch: this.getFieldsToSearch( cardsDictionary[ Object.keys(cardsDictionary)[4] ] ),
         }
-    }
-
-    onClickHandler() {
-        this.props.testAction('hola')
-        this.props.searchCards()
     }
 
     getFieldsToSearch = (card) => {
@@ -53,16 +47,14 @@ class App extends Component {
     }
 
     render() {
-        const { fieldsToSearch } = this.state
+        const { fieldsToSearch, cardsContent } = this.state
         const {
             //State
-            test: { testCount }, search: { result:cards, filters },
+            search: { result:cards, filters },
 
             // Actions
             searchCards, addFilter, removeFilter
         } = this.props;
-
-
 
 
         let cardsFound = null
