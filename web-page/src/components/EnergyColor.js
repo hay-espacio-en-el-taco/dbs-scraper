@@ -11,8 +11,6 @@ const
 
         switch (i) {
           case 'b':
-              return <div className="energy-color black"></div>
-          case 'u':
               return <div className="energy-color light-blue accent-4"></div>
           case 'g':
               return <div className="energy-color green accent-4"></div>
