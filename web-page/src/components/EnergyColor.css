@@ -1,0 +1,9 @@
+.energy-color {
+    border-radius: 100%;
+    height: 15px;
+    width: 15px;
+    text-align: center;
+    float: left;
+    margin-right: 1px;
+    font-size: 10px;
+}
