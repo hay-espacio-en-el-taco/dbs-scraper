@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Card.css'
+import EnergyColor from './EnergyColor';
 
 class Card extends Component {
 
@@ -32,7 +33,7 @@ class Card extends Component {
                         </div>
 
                         <div className="col s3">
-                            <span className="fieldname white-text">Energy: </span><span className="field-data">{energy}</span>
+                            <span className="fieldname white-text">Energy: </span><span className="field-data"><EnergyColor energy={energy} /></span>
                         </div>
 
                         <div className="col s2">
