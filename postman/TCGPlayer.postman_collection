@@ -1,0 +1,322 @@
+{
+	"variables": [],
+	"info": {
+		"name": "TCGPlayer",
+		"_postman_id": "5c37a28d-ca36-f12a-4534-6e33ae579394",
+		"description": "Get need cards!",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Search",
+			"request": {
+				"url": "http://api.tcgplayer.com/{{VERSION}}/catalog/categories/27/search",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3G2UQ9Ouh5DZPhh93D8VXx6ugQXW1RCzfUl8u2cWgtmDrFK_g9M8mTtdJkVKJmSqUB0U7HkChw7WZyldbfnhUYTLnDWKc1TLE-7Kgx4sk0MBTte2Bj1Ak8i3_STOIWU_yej5DkLrwBD6TT68nE4xDmDMaAl9cqT8PhMjNkqKNsO3C3u7klveCQKVmuvMwBjmlxYRdh1zHUkCbHUPXue_K2enqFQJvoBFXRO8YyeIQr_qjfDNdFRcumEbUFC10Zb6gUSoUsTMfiJe8DMRyyDaVwBYZtPo_MrOSiSOUPLVZtlPDOqDhP4R2EW_l4hpCsO7OsEKg",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "limit",
+							"value": "20",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "filters",
+							"value": "[name, goku]",
+							"description": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is the first call to get the token."
+			},
+			"response": []
+		},
+		{
+			"name": "Group Details by Category Id",
+			"request": {
+				"url": {
+					"raw": "http://api.tcgplayer.com/{{VERSION}}/catalog/groups/?categoryId=27",
+					"protocol": "http",
+					"host": [
+						"api",
+						"tcgplayer",
+						"com"
+					],
+					"path": [
+						"{{VERSION}}",
+						"catalog",
+						"groups",
+						""
+					],
+					"query": [
+						{
+							"key": "categoryId",
+							"value": "27",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3G2UQ9Ouh5DZPhh93D8VXx6ugQXW1RCzfUl8u2cWgtmDrFK_g9M8mTtdJkVKJmSqUB0U7HkChw7WZyldbfnhUYTLnDWKc1TLE-7Kgx4sk0MBTte2Bj1Ak8i3_STOIWU_yej5DkLrwBD6TT68nE4xDmDMaAl9cqT8PhMjNkqKNsO3C3u7klveCQKVmuvMwBjmlxYRdh1zHUkCbHUPXue_K2enqFQJvoBFXRO8YyeIQr_qjfDNdFRcumEbUFC10Zb6gUSoUsTMfiJe8DMRyyDaVwBYZtPo_MrOSiSOUPLVZtlPDOqDhP4R2EW_l4hpCsO7OsEKg",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "limit",
+							"value": "20",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "filters",
+							"value": "[name, goku]",
+							"description": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is the first call to get the token."
+			},
+			"response": []
+		},
+		{
+			"name": "List Products by Category and Group Id",
+			"request": {
+				"url": {
+					"raw": "http://api.tcgplayer.com/{{VERSION}}/catalog/products/?categoryId=27&groupId=2392",
+					"protocol": "http",
+					"host": [
+						"api",
+						"tcgplayer",
+						"com"
+					],
+					"path": [
+						"{{VERSION}}",
+						"catalog",
+						"products",
+						""
+					],
+					"query": [
+						{
+							"key": "categoryId",
+							"value": "27",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "groupId",
+							"value": "2392",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3G2UQ9Ouh5DZPhh93D8VXx6ugQXW1RCzfUl8u2cWgtmDrFK_g9M8mTtdJkVKJmSqUB0U7HkChw7WZyldbfnhUYTLnDWKc1TLE-7Kgx4sk0MBTte2Bj1Ak8i3_STOIWU_yej5DkLrwBD6TT68nE4xDmDMaAl9cqT8PhMjNkqKNsO3C3u7klveCQKVmuvMwBjmlxYRdh1zHUkCbHUPXue_K2enqFQJvoBFXRO8YyeIQr_qjfDNdFRcumEbUFC10Zb6gUSoUsTMfiJe8DMRyyDaVwBYZtPo_MrOSiSOUPLVZtlPDOqDhP4R2EW_l4hpCsO7OsEKg",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "limit",
+							"value": "20",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "filters",
+							"value": "[name, goku]",
+							"description": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is the first call to get the token."
+			},
+			"response": []
+		},
+		{
+			"name": "List Products by Group Id",
+			"request": {
+				"url": "http://api.tcgplayer.com/{{VERSION}}/pricing/group/2392",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3G2UQ9Ouh5DZPhh93D8VXx6ugQXW1RCzfUl8u2cWgtmDrFK_g9M8mTtdJkVKJmSqUB0U7HkChw7WZyldbfnhUYTLnDWKc1TLE-7Kgx4sk0MBTte2Bj1Ak8i3_STOIWU_yej5DkLrwBD6TT68nE4xDmDMaAl9cqT8PhMjNkqKNsO3C3u7klveCQKVmuvMwBjmlxYRdh1zHUkCbHUPXue_K2enqFQJvoBFXRO8YyeIQr_qjfDNdFRcumEbUFC10Zb6gUSoUsTMfiJe8DMRyyDaVwBYZtPo_MrOSiSOUPLVZtlPDOqDhP4R2EW_l4hpCsO7OsEKg",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "limit",
+							"value": "20",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "filters",
+							"value": "[name, goku]",
+							"description": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is the first call to get the token."
+			},
+			"response": []
+		},
+		{
+			"name": "List Product Price by Product Id",
+			"request": {
+				"url": "http://api.tcgplayer.com/{{VERSION}}/pricing/product/184010",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer Y3G2UQ9Ouh5DZPhh93D8VXx6ugQXW1RCzfUl8u2cWgtmDrFK_g9M8mTtdJkVKJmSqUB0U7HkChw7WZyldbfnhUYTLnDWKc1TLE-7Kgx4sk0MBTte2Bj1Ak8i3_STOIWU_yej5DkLrwBD6TT68nE4xDmDMaAl9cqT8PhMjNkqKNsO3C3u7klveCQKVmuvMwBjmlxYRdh1zHUkCbHUPXue_K2enqFQJvoBFXRO8YyeIQr_qjfDNdFRcumEbUFC10Zb6gUSoUsTMfiJe8DMRyyDaVwBYZtPo_MrOSiSOUPLVZtlPDOqDhP4R2EW_l4hpCsO7OsEKg",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "limit",
+							"value": "20",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "filters",
+							"value": "[name, goku]",
+							"description": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is the first call to get the token."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Token",
+			"request": {
+				"url": "https://api.tcgplayer.com/token",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{PUBLIC_KEY}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{ACCESS_TOKEN}}",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": "This is the first call to get the token."
+			},
+			"response": []
+		}
+	]
+}
