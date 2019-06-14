@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { searchCards, addFilter, removeFilter } from '../redux/modules/search'
-import './FilterBox.css';
-import Filter from './Filter';
-
+import './FilterBox.css'
+import Filter from './Filter'
 
 
 const NUMERIC_REGEXP = '^(?<condition>[<>]=?)\\s*?(?<criteria>\\d+)'
@@ -88,7 +87,7 @@ class FilterBox extends Component {
     }
 
     onAddFilterClickHandler = _ => {
-        const { onFilterAdd, appliedFilters } = this.props;
+        const { onFilterAdd, appliedFilters } = this.props
         if (typeof onFilterAdd !== 'function') {
             return// No handler, so do nothing
         }
@@ -103,9 +102,6 @@ class FilterBox extends Component {
         if (appliedFilters.find(a => a.id === `${fieldName}-${filterText}`)) {
             return// Filter already added
         }
-
-
-        
 
         const filterConditions = this.parseFilterText(filterText)
         let filter = card => {
@@ -164,14 +160,17 @@ class FilterBox extends Component {
     }
 
     render() {
-        const { filterText, isFilterNegation } = this.state;
-        const { fieldOptions, appliedFilters, onFilterRemove, totalCards } = this.props;
+        const { filterText, isFilterNegation } = this.state
+        const { fieldOptions, appliedFilters, onFilterRemove, totalCards } = this.props
 
+        const removedOptions = [/*'type', 'color', 'energy', 'comboEnergy', 'rarity', 'character', 'skillKeywords', 'availableDate', 'cardImageUrl', 'cardNumber', 'era'*/]
         const optionsToSelect = fieldOptions.map(
             (option, index) =>
-                <option key={option.fieldName} value={index}>
+                !removedOptions.includes(option.fieldName)
+                ? <option key={option.fieldName} value={index}>
                     {option.label}
                 </option>
+                : null
         )
 
         const filtersApplied = appliedFilters.map(
@@ -181,30 +180,90 @@ class FilterBox extends Component {
         return (
             <div className="col s12" className="filter-box">
                 <div className="row">
-                    <div className="input-field col s12 m4 l3">
-                        <select id="filter-box-type-input" defaultValue={0} onChange={this.onFieldSelectionChangeHandler}> {optionsToSelect} </select>
-                        <label htmlFor="filter-box-type-input">Field</label>
+                    <div className="input-field col s12">
+                        <div htmlFor="type">Card Type</div>
+                        <div className="mx-auto btn-group-toggle btn-group">
+                            {typeOptions}
+                        </div>
                     </div>
-                    <div className="input-field col s3 m2 l1">
-                        <label>
-                            <input type="checkbox" checked={isFilterNegation} onChange={this.onNegationFilterChangeHandler}/>
-                            <span>
-                                { isFilterNegation ? 'Not' : null }
-                            </span>
-                        </label>
+                    <div className="input-field col s12">
+                        <div htmlFor="color">Color</div>
+                        <div id="color" className="mx-auto btn-group-toggle btn-group">
+                            {colorOptions}
+                        </div>
                     </div>
-                    <div className="input-field col s8 m6 l6">
-                        <input
-                            id="filter-box-criteria-input"
-                            type="text" placeholder="For an OR operation use ||"
-                            value={filterText}
-                            onChange={this.onFilterTextChangeHandler} 
-                            onKeyDown={this.onInputTextKeyDownHandler} />
-                        <label htmlFor="filter-box-criteria-input">Search</label>
+                    <div className="input-field col s12">
+                        <div htmlFor="energy">Energy</div>
+                        <div id="energy" className="mx-auto btn-group-toggle btn-group">
+                            {energyOptions}
+                        </div>
                     </div>
-                    <div className="input-field col s3 m2 l2">
-                        <span><button className="waves-effect waves-light btn" onClick={this.onAddFilterClickHandler}>Add</button></span>
+                    <div className="input-field col s12">
+                        <div htmlFor="cboenergy">Combo Energy</div>
+                        <div id="cboenergy" className="mx-auto btn-group-toggle btn-group">
+                            {cboEnergyOptions}
+                        </div>
                     </div>
+                    <div className="input-field col s12">
+                        <select id="rarity" className="mx-auto btn-group-toggle btn-group">
+                            <option value="">Rarity</option>
+                            <option value="Common[C]">Common[C]</option>
+                            <option value="Rare[R]">Rare[R]</option>
+                            <option value="Starter Rare[ST]">Starter Rare[ST]</option>
+                            <option value="Super Rare[SR]">Super Rare[SR]</option>
+                            <option value="Uncommon[UC]">Uncommon[UC]</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div className="input-field col s12">
+                        <select id="character" className="mx-auto btn-group-toggle btn-group">
+                            <option value="">Character</option>
+                            <option value="Common[C]">Common[C]</option>
+                            <option value="Rare[R]">Rare[R]</option>
+                            <option value="Starter Rare[ST]">Starter Rare[ST]</option>
+                            <option value="Super Rare[SR]">Super Rare[SR]</option>
+                            <option value="Uncommon[UC]">Uncommon[UC]</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div className="input-field col s12">
+                        <select id="skillKeywords" className="mx-auto btn-group-toggle btn-group">
+                            <option value="">Skill Keywords</option>
+                            <option value="Common[C]">Common[C]</option>
+                            <option value="Rare[R]">Rare[R]</option>
+                            <option value="Starter Rare[ST]">Starter Rare[ST]</option>
+                            <option value="Super Rare[SR]">Super Rare[SR]</option>
+                            <option value="Uncommon[UC]">Uncommon[UC]</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="input-field col s12">
+                    <select id="filter-box-type-input" defaultValue={0} onChange={this.onFieldSelectionChangeHandler}> {optionsToSelect} </select>
+                    <label htmlFor="filter-box-type-input">Field</label>
+                </div>
+
+                <div className="input-field col s12">
+                    <input
+                        id="filter-box-criteria-input"
+                        type="text" placeholder="For an OR operation use ||"
+                        value={filterText}
+                        onChange={this.onFilterTextChangeHandler} 
+                        onKeyDown={this.onInputTextKeyDownHandler} />
+                    <label htmlFor="filter-box-criteria-input">Search</label>
+                </div>
+
+                <div className="input-field col s3">
+                    <label>
+                        <input type="checkbox" checked={isFilterNegation} onChange={this.onNegationFilterChangeHandler}/>
+                        <span>
+                            { isFilterNegation ? 'Not' : null }
+                        </span>
+                    </label>
+                </div>
+
+                <div className="input-field col s3">
+                    <span><button className="waves-effect waves-light btn" onClick={this.onAddFilterClickHandler}>Add</button></span>
                 </div>
                 <div className="row">
                     <ul>{filtersApplied}</ul>
@@ -217,6 +276,23 @@ class FilterBox extends Component {
     }
 }
 
+const COLORS = ['B', 'U', 'G', 'Y', 'R']
+const colorOptions = COLORS.map((currentColor) => <label id={currentColor} className="btn btn-secondary">{currentColor}</label>)
+
+const TYPES = ['BATTLE', 'EXTRA', 'LEADER']
+const typeOptions = TYPES.map((currentType) => <label id={currentType} className="btn btn-secondary">{currentType}</label>)
+
+const energyOptions = []
+let i=0
+for(i=0; i<=4; i++) {
+    energyOptions[i] = <label id={i} className="btn btn-secondary">{i}</label>
+}
+energyOptions[i] = <label id={i} className="btn btn-secondary">{i}+</label>
+
+const cboEnergyOptions = []
+for(let i=0; i<=2; i++) {
+    cboEnergyOptions[i] = <label id={i} className="btn btn-secondary">{i}</label>
+}
 
 const
     mapStateToProps = ({ search }) => ({
