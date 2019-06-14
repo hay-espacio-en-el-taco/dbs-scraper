@@ -19,40 +19,48 @@ class Card extends Component {
                     <div className="col s12 m4 l3 card-image">
                         <img src={cardImageUrl} />
                     </div>
-                        
+
                     <div className="col s12 m8 l9 card-content">
-                    
-                    <div className="row">
                         <div className="col s12">
                             <span className="card-title">{cardName} <sup>({cardNumber})</sup></span>
                         </div>
-                    </div>
                     
                         <div className="col s4">
                             {/* {content} */}
                             <span className="fieldname white-text">Type: </span><span className="field-data">{type}</span>
                         </div>
 
-                        <div className="col s4">
-                            <span className="fieldname white-text">Energy: </span><span className="field-data"><EnergyColor energy={energy} /></span>
-                        </div>
-
+                        { ! (type === 'LEADER') ? (
+                            <React.Fragment>
+                                <div className="col s4">
+                                    <span className="fieldname white-text">Energy: </span><span className="field-data"><EnergyColor energy={energy} /></span>
+                                </div>
+                            </React.Fragment>
+                            ) : null
+                        }
                         <div className="col s4">
                             <span className="fieldname white-text">Color: </span><span className="field-data">{color}</span>
                         </div>
+                        { ! (type === 'EXTRA') ? (
+                            <React.Fragment>
+                                <div className="col s4">
+                                    <span className="fieldname white-text">Power: </span><span className="field-data">{power}</span>
+                                </div>
+                            </React.Fragment>
+                            ) : null
+                        }
+                        { type === 'BATTLE' ? (
+                            <React.Fragment>
+                                <div className="col s4">
+                                    <span className="fieldname white-text">Combo Power: </span><span className="field-data">{comboPower}</span>
+                                </div>
 
-                        <div className="col s4">
-                            <span className="fieldname white-text">Power: </span><span className="field-data">{power}</span>
-                        </div>
-
-                        <div className="col s4">
-                            <span className="fieldname white-text">Combo Power: </span><span className="field-data">{comboPower}</span>
-                        </div>
-
-                        <div className="col s4">
-                            <span className="fieldname white-text">Combo Energy: </span><span className="field-data">{comboEnergy}</span>
-                        </div>
-
+                                <div className="col s4">
+                                    <span className="fieldname white-text">Combo Energy: </span><span className="field-data">{comboEnergy}</span>
+                                </div>
+                            </React.Fragment>
+                            ) : null
+                        }
                         <div className="col s12">
                             <span className="fieldname white-text">Skill: </span><span className="field-data"><pre>{skillDescription}</pre></span>
                         </div>
@@ -60,15 +68,18 @@ class Card extends Component {
                         <div className="col s4">
                             <span className="fieldname white-text">Rarity: </span><span className="field-data">{rarity}</span>
                         </div>
+                        { ! (type === 'EXTRA') ? (
+                            <React.Fragment>
+                                <div className="col s4">
+                                    <span className="fieldname white-text">Character: </span><span className="field-data">{character}</span>
+                                </div>
 
-                        <div className="col s4">
-                            <span className="fieldname white-text">Character: </span><span className="field-data">{character}</span>
-                        </div>
-
-                        <div className="col s4">
-                            <span className="fieldname white-text">Special Trait: </span><span className="field-data">{specialTrait}</span>
-                        </div>
-
+                                <div className="col s4">
+                                    <span className="fieldname white-text">Special Trait: </span><span className="field-data">{specialTrait}</span>
+                                </div>
+                            </React.Fragment>
+                            ) : null
+                        }
                         <div className="col s12">
                             <span className="fieldname white-text">Skill Keywords: </span><span className="field-data">{skillKeywords.join(', ')}</span>
                         </div>
@@ -84,11 +95,14 @@ class Card extends Component {
                         <div className="col s4">
                             <span className="fieldname white-text">Related Card Names: </span><span className="field-data">{relatedCardNames.join(', ')}</span>
                         </div>
-
-                        <div className="col s12">
-                            <span className="fieldname white-text">Era: </span><span className="field-data">{era}</span>
-                        </div>
-
+                        { ! (type === 'EXTRA') ? (
+                            <React.Fragment>
+                                <div className="col s12">
+                                    <span className="fieldname white-text">Era: </span><span className="field-data">{era}</span>
+                                </div>
+                            </React.Fragment>
+                            ) : null
+                        }
                         <div className="col s3">
                             <span className="fieldname white-text">Series Name: </span><span className="field-data">{seriesName}</span>
                         </div>
