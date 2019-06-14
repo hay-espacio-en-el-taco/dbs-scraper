@@ -14,13 +14,13 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <header className="App-header grey darken-3">
-                    <div className="container">
-                        <FilterBox />
-                    </div>
-                </header>
                 <div className="row">
-                    <CardsContainer />
+                    <div className="App-header grey darken-3 col s12 m5 l3">
+                            <FilterBox />
+                    </div>
+                    <div className="col s12 m7 l9">
+                        <CardsContainer />
+                    </div>
                 </div>
             </div>
         );

@@ -1,3 +1,16 @@
 .filter-box .select-dropdown, #filter-box-criteria-input {
     color: #e0f2f1;
 }
+
+.input-field {
+    margin: 5px;
+}
+
+.input-field.col label {
+    margin: 0 1px;
+}
+
+.App-header {
+    top: 0;
+    position: sticky;
+}

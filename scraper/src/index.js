@@ -7,30 +7,32 @@ const
 
 const
     DEFAULT_OUTPUT = `${__dirname}/../cards.json`,
+    DBS_DATA_BASE_URL = 'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=',
     DBS_DATA_URLS = [
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428006', // BT6 - Detroyer Kings
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428005', // BT5 - Miraculous Revival
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428004', // BT4 - Colossal Warfare
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428003', // BT3 - Cross Worlds
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428002', // BT2 - Union Force
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428001', // BT1 - Galactic Battle
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428103', // TB3 - Clash of Fates
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428102', // TB2 - World Martial Arts Tournament
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428101', // TB1 - The Tournament of Power
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428308', // SD8 - Rising Broly
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428307', // SD7 - Shenrons Advent
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428306', // SD6 - Resurected Fusion
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428305', // SD5 - The Crimson Saian
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428304', // SD4 - The Guardian of Namekians
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428303', // SD3 - Dark Invasion
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428302', // SD2 - The Extreme Evolution
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428301', // SD1 - The Awakening
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428405', // EX05 - Expansion Deck Box 05
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428404', // EX04 - Expansion Deck Box 04
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428403', // EX03 - Ultimate Box
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428402', // EX02 - Expansion Deck Box 02
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428401', // EX01 - Expansion Deck Box 01
-        'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=428901'  // Promos
+        DBS_DATA_BASE_URL + '428006', // BT6 - Detroyer Kings
+        DBS_DATA_BASE_URL + '428005', // BT5 - Miraculous Revival
+        DBS_DATA_BASE_URL + '428004', // BT4 - Colossal Warfare
+        DBS_DATA_BASE_URL + '428003', // BT3 - Cross Worlds
+        DBS_DATA_BASE_URL + '428002', // BT2 - Union Force
+        DBS_DATA_BASE_URL + '428001', // BT1 - Galactic Battle
+        DBS_DATA_BASE_URL + '428103', // TB3 - Clash of Fates
+        DBS_DATA_BASE_URL + '428102', // TB2 - World Martial Arts Tournament
+        DBS_DATA_BASE_URL + '428101', // TB1 - The Tournament of Power
+        DBS_DATA_BASE_URL + '428308', // SD8 - Rising Broly
+        DBS_DATA_BASE_URL + '428307', // SD7 - Shenrons Advent
+        DBS_DATA_BASE_URL + '428306', // SD6 - Resurected Fusion
+        DBS_DATA_BASE_URL + '428305', // SD5 - The Crimson Saian
+        DBS_DATA_BASE_URL + '428304', // SD4 - The Guardian of Namekians
+        DBS_DATA_BASE_URL + '428303', // SD3 - Dark Invasion
+        DBS_DATA_BASE_URL + '428302', // SD2 - The Extreme Evolution
+        DBS_DATA_BASE_URL + '428301', // SD1 - The Awakening
+        DBS_DATA_BASE_URL + '428406', // EX06 - Special Aniversary Box 06
+        DBS_DATA_BASE_URL + '428405', // EX05 - Expansion Deck Box 05
+        DBS_DATA_BASE_URL + '428404', // EX04 - Expansion Deck Box 04
+        DBS_DATA_BASE_URL + '428403', // EX03 - Ultimate Box
+        DBS_DATA_BASE_URL + '428402', // EX02 - Expansion Deck Box 02
+        DBS_DATA_BASE_URL + '428401', // EX01 - Expansion Deck Box 01
+        DBS_DATA_BASE_URL + '428901'  // Promos
     ]
 
 const parseSkill = rawHtml => {
