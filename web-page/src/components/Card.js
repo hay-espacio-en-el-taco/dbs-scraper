@@ -15,19 +15,19 @@ class Card extends Component {
 
         return (
             <div className="col s12 card teal lighten-3" key={cardNumber}>
-
-                <div className="col s12 m4 l3 card-image">
-                    <img src={cardImageUrl} />
-                </div>
-                    
-                <div className="col s12 m8 l9 card-content">
+                <div className="row">
+                    <div className="col s12 m4 l3 card-image">
+                        <img src={cardImageUrl} />
+                    </div>
+                        
+                    <div className="col s12 m8 l9 card-content">
                     
                     <div className="row">
                         <div className="col s12">
                             <span className="card-title">{cardName} <sup>({cardNumber})</sup></span>
                         </div>
                     </div>
-                    <div className="row">
+                    
                         <div className="col s4">
                             {/* {content} */}
                             <span className="fieldname white-text">Type: </span><span className="field-data">{type}</span>
@@ -103,59 +103,61 @@ class Card extends Component {
                     </div>
                 </div>
                 { cardBack ? (
-                            <React.Fragment>
-                                <div className="col s12 m4 l3 card-image">
-                                    <img src={cardBack.cardImageUrl} />
-                                </div>
-                                <div className="col s12 m8 l9 card-content">
-                                    <div className="row">
-                                        <div className="col s12">
-                                            <span className="card-title">{cardBack.cardName} <sup>({cardNumber})</sup></span>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        
-                                        <div className="col s2">
-                                            <span className="fieldname white-text">Color: </span><span className="field-data">{cardBack.color}</span>
-                                        </div>
-
-                                        <div className="col s3">
-                                            <span className="fieldname white-text">Power: </span><span className="field-data">{cardBack.power}</span>
-                                        </div>
-                                        
-                                        <div className="col s12">
-                                            <span className="fieldname white-text">Skill: </span><span className="field-data">{cardBack.skillDescription}</span>
-                                        </div>
-                                        
-                                        <div className="col s4">
-                                            <span className="fieldname white-text">Character: </span><span className="field-data">{cardBack.character}</span>
-                                        </div>
-
-                                        <div className="col s4">
-                                            <span className="fieldname white-text">Special Trait: </span><span className="field-data">{cardBack.specialTrait}</span>
-                                        </div>
-
-                                        <div className="col s12">
-                                            <span className="fieldname white-text">Skill Keywords: </span><span className="field-data">{cardBack.skillKeywords.join(', ')}</span>
-                                        </div>
-
-                                        <div className="col s4">
-                                            <span className="fieldname white-text">Related Characters: </span><span className="field-data">{cardBack.relatedCharacters.join(', ')}</span>
-                                        </div>
-
-                                        <div className="col s4">
-                                            <span className="fieldname white-text">Related Special Traits: </span><span className="field-data">{cardBack.relatedSpecialTraits.join(', ')}</span>
-                                        </div>
-
-                                        <div className="col s4">
-                                            <span className="fieldname white-text">Related Card Names: </span><span className="field-data">{cardBack.relatedCardNames.join(', ')}</span>
-                                        </div>
-
+                    <React.Fragment>
+                        <div className="row">
+                            <div className="col s12 m4 l3 card-image">
+                                <img src={cardBack.cardImageUrl} />
+                            </div>
+                            <div className="col s12 m8 l9 card-content">
+                                <div className="row">
+                                    <div className="col s12">
+                                        <span className="card-title">{cardBack.cardName} <sup>({cardNumber})</sup></span>
                                     </div>
                                 </div>
-                            </React.Fragment>
-                            ) : null
-                        }
+                                <div className="row">
+                                    
+                                    <div className="col s2">
+                                        <span className="fieldname white-text">Color: </span><span className="field-data">{cardBack.color}</span>
+                                    </div>
+
+                                    <div className="col s3">
+                                        <span className="fieldname white-text">Power: </span><span className="field-data">{cardBack.power}</span>
+                                    </div>
+                                    
+                                    <div className="col s12">
+                                        <span className="fieldname white-text">Skill: </span><span className="field-data">{cardBack.skillDescription}</span>
+                                    </div>
+                                    
+                                    <div className="col s4">
+                                        <span className="fieldname white-text">Character: </span><span className="field-data">{cardBack.character}</span>
+                                    </div>
+
+                                    <div className="col s4">
+                                        <span className="fieldname white-text">Special Trait: </span><span className="field-data">{cardBack.specialTrait}</span>
+                                    </div>
+
+                                    <div className="col s12">
+                                        <span className="fieldname white-text">Skill Keywords: </span><span className="field-data">{cardBack.skillKeywords.join(', ')}</span>
+                                    </div>
+
+                                    <div className="col s4">
+                                        <span className="fieldname white-text">Related Characters: </span><span className="field-data">{cardBack.relatedCharacters.join(', ')}</span>
+                                    </div>
+
+                                    <div className="col s4">
+                                        <span className="fieldname white-text">Related Special Traits: </span><span className="field-data">{cardBack.relatedSpecialTraits.join(', ')}</span>
+                                    </div>
+
+                                    <div className="col s4">
+                                        <span className="fieldname white-text">Related Card Names: </span><span className="field-data">{cardBack.relatedCardNames.join(', ')}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </React.Fragment>
+                    ) : null
+                }
 
 
 

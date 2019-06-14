@@ -163,7 +163,7 @@ class FilterBox extends Component {
         const { filterText, isFilterNegation } = this.state
         const { fieldOptions, appliedFilters, onFilterRemove, totalCards } = this.props
 
-        const removedOptions = [/*'type', 'color', 'energy', 'comboEnergy', 'rarity', 'character', 'skillKeywords', 'availableDate', 'cardImageUrl', 'cardNumber', 'era'*/]
+        const removedOptions = [/*'type', 'color', 'energy', 'comboEnergy', 'rarity', 'character', 'skillKeywords', 'availableDate', 'cardImageUrl', 'cardNumber', 'era', 'cardBack'*/]
         const optionsToSelect = fieldOptions.map(
             (option, index) =>
                 !removedOptions.includes(option.fieldName)
