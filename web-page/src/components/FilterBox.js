@@ -4,7 +4,6 @@ import { searchCards, addFilter, removeFilter } from '../redux/modules/search'
 import './FilterBox.css'
 import Filter from './Filter'
 
-
 const NUMERIC_REGEXP = '^(?<condition>[<>]=?)\\s*?(?<criteria>\\d+)'
 
 const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
@@ -19,6 +18,7 @@ const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
                         case '<=': return  Number(value) <= Number(criteria)
                         case '>': return  Number(value) > Number(criteria)
                         case '>=': return  Number(value) >= Number(criteria)
+                        default: break;
                     }
                 }
 

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import './EnergyColor.css';
 
 const
-    reg = /[\dbugry+]/g,
+    reg = /[\dbugyr]+/g,
     filterColors = e => e.match(reg),
-    iconPrinter = e => filterColors(e).map(i => {
+    iconPrinter = e => filterColors(e).map((i, index) => {
         if (!isNaN(Number(i))) {
           return <div className="energy-color white">{i}</div>
         }

@@ -22,7 +22,7 @@ class CardsContainer extends Component {
         return (
             <React.Fragment>
                 { cards.length > MAX_CARDS_TO_SHOW ? 
-                    <div>Just showing first {MAX_CARDS_TO_SHOW} cards to protect your browser!</div>
+                    <div>Showing first {MAX_CARDS_TO_SHOW} cards</div>
                     : null
                 }
                 {cardsComponent}

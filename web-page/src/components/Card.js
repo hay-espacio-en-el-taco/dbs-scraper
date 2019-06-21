@@ -17,7 +17,7 @@ class Card extends Component {
             <div className="col s12 card teal lighten-3" key={cardNumber}>
                 <div className="row">
                     <div className="col s12 m4 l3 card-image">
-                        <img src={cardImageUrl} />
+                        <img src={cardImageUrl} alt={cardName} />
                     </div>
 
                     <div className="col s12 m8 l9 card-content">
@@ -120,7 +120,7 @@ class Card extends Component {
                     <React.Fragment>
                         <div className="row">
                             <div className="col s12 m4 l3 card-image">
-                                <img src={cardBack.cardImageUrl} />
+                                <img src={cardBack.cardImageUrl} alt={cardName} />
                             </div>
                             <div className="col s12 m8 l9 card-content">
                                 <div className="row">
