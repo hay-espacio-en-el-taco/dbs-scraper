@@ -4,7 +4,7 @@ import './EnergyColor.css';
 const
     reg = /[\dbugyr]+/g,
     filterColors = e => e.match(reg),
-    iconPrinter = e => filterColors(e).map((i) => {
+    iconPrinter = e => filterColors(e).map(i => {
         if (!isNaN(Number(i))) {
           return <div className="energy-color white">{i}</div>
         }
