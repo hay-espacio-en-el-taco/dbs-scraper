@@ -9,6 +9,7 @@ const
     DEFAULT_OUTPUT = `${__dirname}/../cards.json`,
     DBS_DATA_BASE_URL = 'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=',
     DBS_DATA_URLS = [
+        DBS_DATA_BASE_URL + '428007', // BT7 - ASSAULT OF THE SAIYANS
         DBS_DATA_BASE_URL + '428006', // BT6 - Detroyer Kings
         DBS_DATA_BASE_URL + '428005', // BT5 - Miraculous Revival
         DBS_DATA_BASE_URL + '428004', // BT4 - Colossal Warfare
