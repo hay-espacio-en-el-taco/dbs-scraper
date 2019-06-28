@@ -1,10 +1,31 @@
-.card .card-image img {
-    width: 100%;
-    padding-top: 24px;
+.card.teal {
+    padding: 0;
+}
+
+.card .col {
+    padding: 0 4px;
 }
 
 .card .card-content {
-    padding-bottom: 0px;
+    padding: 12px 1px;
+}
+
+.card .row {
+    margin: 0;
+}
+
+.card .card-image img {
+    width: 100%;
+    padding: 12px 0;
+}
+
+.card .field-data {
+    float: left;
+    padding-left: 10px;
+}
+
+.card .fieldname {
+    float: left;
 }
 
 pre {

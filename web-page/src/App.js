@@ -15,10 +15,10 @@ class App extends Component {
         return (
             <div className="App">
                 <div className="row">
-                    <div className="App-header grey darken-3 col s12 m5 l3">
+                    <div className="App-header grey darken-3 col s12 m4 l3">
                         <FilterBox />
                     </div>
-                    <div className="col s12 m7 l9">
+                    <div className="col s12 m8 l9">
                         <CardsContainer />
                     </div>
                 </div>
