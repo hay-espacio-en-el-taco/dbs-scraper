@@ -9,6 +9,7 @@ const
     DEFAULT_OUTPUT = `${__dirname}/../cards.json`,
     DBS_DATA_BASE_URL = 'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=',
     DBS_DATA_URLS = [
+        DBS_DATA_BASE_URL + '428007', // BT7 - ASSAULT OF THE SAIYANS
         DBS_DATA_BASE_URL + '428006', // BT6 - Detroyer Kings
         DBS_DATA_BASE_URL + '428005', // BT5 - Miraculous Revival
         DBS_DATA_BASE_URL + '428004', // BT4 - Colossal Warfare
@@ -36,7 +37,7 @@ const
     ]
 
 const parseSkill = rawHtml => {
-    const skillCleanupRegexp = /<img.+?alt="(.*?)".*?>/g
+    const skillCleanupRegexp = /<img(?:.(?!_ball.png))+?alt="(.*?)".*?>/g
     const costCleanupRegexp = /<img src=.+?\/cardlist\/common\/(.)(?:[^_]+)_ball.png.*?>/g
 
     const skillsRegexp = /\[(.+?)\]/g
@@ -44,7 +45,7 @@ const parseSkill = rawHtml => {
     const specialTraitsRegexp = /≪(.+?)≫/g
     const cardNamesRegexp = /{(.+?)}/g
 
-    const newHtml = rawHtml.replace(/<br>/g, '\n').replace(skillCleanupRegexp, '[$1]').replace(costCleanupRegexp, '($1)')
+    const newHtml = rawHtml.replace(/<br>/g, '\n').replace(skillCleanupRegexp, '[$1]').replace(costCleanupRegexp, '$1')
     let skillDescription = replaceSpecialChars(newHtml)
     skillDescription = removeVerboseText(skillDescription)
 

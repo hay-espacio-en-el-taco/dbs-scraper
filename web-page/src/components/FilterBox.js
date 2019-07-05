@@ -4,7 +4,6 @@ import { searchCards, addFilter, removeFilter } from '../redux/modules/search'
 import './FilterBox.css'
 import Filter from './Filter'
 
-
 const NUMERIC_REGEXP = '^(?<condition>[<>]=?)\\s*?(?<criteria>\\d+)'
 
 const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
@@ -19,6 +18,7 @@ const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
                         case '<=': return  Number(value) <= Number(criteria)
                         case '>': return  Number(value) > Number(criteria)
                         case '>=': return  Number(value) >= Number(criteria)
+                        default: break;
                     }
                 }
 
@@ -163,7 +163,7 @@ class FilterBox extends Component {
         const { filterText, isFilterNegation } = this.state
         const { fieldOptions, appliedFilters, onFilterRemove, totalCards } = this.props
 
-        const removedOptions = [/*'type', 'color', 'energy', 'comboEnergy', 'rarity', 'character', 'skillKeywords', 'availableDate', 'cardImageUrl', 'cardNumber', 'era', 'cardBack'*/]
+        const removedOptions = ['availableDate', 'cardImageUrl', 'cardBack', 'era', /*'type', 'color', 'energy', 'comboEnergy', 'rarity', 'character', 'skillKeywords', 'cardNumber', */]
         const optionsToSelect = fieldOptions.map(
             (option, index) =>
                 !removedOptions.includes(option.fieldName)
@@ -178,7 +178,7 @@ class FilterBox extends Component {
         )
 
         return (
-            <div className="col s12" className="filter-box">
+            <div className="col s12" className="filter-box white-text">
                 <div className="row">
                     <div className="input-field col s12">
                         <div htmlFor="type">Card Type</div>
@@ -284,7 +284,7 @@ const typeOptions = TYPES.map((currentType) => <label id={currentType} className
 
 const energyOptions = []
 let i=0
-for(i=0; i<=4; i++) {
+for(i=0; i<=5; i++) {
     energyOptions[i] = <label id={i} className="btn btn-secondary">{i}</label>
 }
 energyOptions[i] = <label id={i} className="btn btn-secondary">{i}+</label>

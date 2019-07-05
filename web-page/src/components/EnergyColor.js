@@ -2,24 +2,24 @@ import React, { Component } from 'react';
 import './EnergyColor.css';
 
 const
-    reg = /[\dbugry+]/g,
+    reg = /[\dbugyr]+/g,
     filterColors = e => e.match(reg),
     iconPrinter = e => filterColors(e).map(i => {
         if (!isNaN(Number(i))) {
-          return <div className="energy-color white">{i}</div>
+          return <span className="energy-color white">{i}</span>
         }
 
         switch (i) {
           case 'b':
-              return <div className="energy-color light-blue accent-4"></div>
+              return <span className="energy-color light-blue accent-4"></span>
           case 'g':
-              return <div className="energy-color green accent-4"></div>
+              return <span className="energy-color green accent-4"></span>
           case 'r':
-              return <div className="energy-color red accent-4"></div>
+              return <span className="energy-color red accent-4"></span>
           case 'y':
-              return <div className="energy-color yellow accent-2"></div>
+              return <span className="energy-color yellow accent-2"></span>
           default:
-              return <div className="energy-color white">{i}</div>
+              return <span className="energy-color white">{i}</span>
         }
     })
 
@@ -27,12 +27,12 @@ class EnergyColor extends Component {
 
     render() {
         const { energy } = this.props;
-        if (!energy) return <div>{energy}</div>;
+        if (!energy) return <span>{energy}</span>;
 
         return (
-            <div key={energy}>
+            <span key={energy}>
                 {iconPrinter(energy)}
-            </div>
+            </span>
         )
     }
 }

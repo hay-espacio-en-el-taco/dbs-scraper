@@ -2,6 +2,10 @@
     color: #e0f2f1;
 }
 
+.filter-box .btn {
+    padding: 0 10px;
+}
+
 .input-field {
     margin: 5px;
 }

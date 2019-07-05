@@ -6,7 +6,7 @@ class FilterBox extends Component {
         return (
             <li key={id}>
                 <button className="waves-effect waves-light btn" onClick={_ => onFilterRemove(id)}>
-                    <span>{id}</span> | Remove
+                    <span>{id}</span> | [X]
                 </button>
             </li>
         )
