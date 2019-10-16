@@ -3,21 +3,25 @@ import { connect } from 'react-redux'
 import { searchCards, addFilter, removeFilter } from '../redux/modules/search'
 import './FilterBox.css'
 import Filter from './Filter'
+import FilterButton from './FilterButton';
 
 const NUMERIC_REGEXP = '^(?<condition>[<>]=?)\\s*?(?<criteria>\\d+)'
+const NUMERIC_REGEXP_WITH_OPERATORS = '^(?<criteria>\\d+)\\s*?(?<condition>[+-])'
 
 const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
-
-    for (let index  = 0; index < filterConditions.length; index++) {
+    for (let index = 0; index < filterConditions.length; index++) {
         const { conditionType, condition, criteria } = filterConditions[index]
         const found = valuesToSearchOn.find(
             value => {
                 if (conditionType === 'numeric') {
-                    switch(condition) {
-                        case '<': return  Number(value) < Number(criteria)
-                        case '<=': return  Number(value) <= Number(criteria)
-                        case '>': return  Number(value) > Number(criteria)
-                        case '>=': return  Number(value) >= Number(criteria)
+                    const nValue = Number(value.replace(/\D+/g, ""));
+                    switch (condition) {
+                        case '<': return nValue < Number(criteria)
+                        case '<=': return nValue <= Number(criteria)
+                        case '>': return nValue > Number(criteria)
+                        case '>=': return nValue >= Number(criteria)
+                        case '-': return nValue <= Number(criteria)
+                        case '+': return nValue >= Number(criteria)
                         default: break;
                     }
                 }
@@ -27,7 +31,6 @@ const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
                 )
             }
         )
-
         if (found) {
             return true
         }
@@ -40,7 +43,7 @@ const getFieldsToSearch = (card) => {
         (result, fieldName) => {
             let type = typeof card[fieldName]
             if (Array.isArray( card[fieldName] )) {
-                    type = 'array'
+                type = 'array'
             }
 
             result.push({ fieldName, type, label: fieldName })
@@ -58,6 +61,10 @@ const getFieldsToSearch = (card) => {
     return struct
 }
 
+const isInFilters = (ar, field, current) => (
+    ar.find(a=> a.id.toLocaleLowerCase() === `${field}:  ${current.toString().toLocaleLowerCase()}`)
+)
+
 class FilterBox extends Component {
 
     constructor(props) {
@@ -72,12 +79,12 @@ class FilterBox extends Component {
 
     parseFilterText = text => {
         const criteriaArray = text.trim().toLocaleLowerCase().split(/\s*\|\|\s*/gm)
-
         return criteriaArray.map(
             txt => {
                 const foundNumericCondition = (new RegExp(NUMERIC_REGEXP, 'g')).exec(txt)
-                if (foundNumericCondition) {
-                    const { groups: { condition, criteria }} = foundNumericCondition
+                const foundNumericConditionFinal = foundNumericCondition ? foundNumericCondition : (new RegExp(NUMERIC_REGEXP_WITH_OPERATORS, 'g')).exec(txt) 
+                if (foundNumericConditionFinal) {
+                    const { groups: { condition, criteria } } = foundNumericConditionFinal
                     return { conditionType: 'numeric', criteria, condition }
                 }
 
@@ -86,14 +93,25 @@ class FilterBox extends Component {
         )
     }
 
+    onAddFilterButtonHandler = e => {
+        const filterText = e.target.id;
+        const fieldName = e.target.getAttribute('fieldname');
+        const type = 'string';
+        const { isFilterNegation } = this.state;
+        this.onAddFilter(type, fieldName, filterText, isFilterNegation)
+    }
+
     onAddFilterClickHandler = _ => {
+        const { filterText: origText, fieldToSearch: { type, fieldName }, isFilterNegation } = this.state
+        let filterText = origText.trim()
+        this.onAddFilter(type, fieldName, filterText, isFilterNegation)
+    }
+
+    onAddFilter = (type, fieldName, filterText, isFilterNegation) => {
         const { onFilterAdd, appliedFilters } = this.props
         if (typeof onFilterAdd !== 'function') {
             return// No handler, so do nothing
         }
-
-        const { filterText:origText, fieldToSearch: { type, fieldName }, isFilterNegation } = this.state
-        let filterText = origText.trim()
 
         if (typeof filterText !== 'string') {
             return// Empty string
@@ -167,18 +185,70 @@ class FilterBox extends Component {
         const optionsToSelect = fieldOptions.map(
             (option, index) =>
                 !removedOptions.includes(option.fieldName)
-                ? <option key={option.fieldName} value={index}>
-                    {option.label}
-                </option>
-                : null
+                    ? <option key={option.fieldName} value={index}>
+                        {option.label}
+                    </option>
+                    : null
         )
 
         const filtersApplied = appliedFilters.map(
             ({ id }) => <Filter key={id} id={id} onFilterRemove={onFilterRemove} />
         )
 
+        const TYPES = ['BATTLE', 'EXTRA', 'LEADER']
+        const typeOptions = TYPES.map((currentType, ind) =>
+            <FilterButton
+                id={currentType}
+                key={currentType + ind}
+                fieldname={'type'}
+                customClass={isInFilters(appliedFilters, 'type', currentType)}
+                onClick={this.onAddFilterButtonHandler}
+            />
+        )
+
+        const COLORS = ['B', 'U', 'G', 'Y', 'R']
+        const colorOptions = COLORS.map((currentColor, ind) =>
+            <FilterButton
+                id={currentColor}
+                key={currentColor + ind}
+                fieldname={'color'}
+                customClass={isInFilters(appliedFilters, 'color', currentColor)}
+                onClick={this.onAddFilterButtonHandler}
+            />
+        )
+
+        const energyOptions = []
+        let i = 0
+        for (i = 0; i <= 5; i++) {
+            energyOptions[i] = <FilterButton
+                id={i}
+                key={"energy" + i}
+                fieldname={'energy'}
+                customClass={isInFilters(appliedFilters, 'energy', i)}
+                onClick={this.onAddFilterButtonHandler}
+            />
+        }
+        energyOptions[i] = <FilterButton
+            id={i + "+"}
+            key={"energy" + i}
+            fieldname={'energy'}
+            customClass={isInFilters(appliedFilters, 'energy', i + "+")}
+            onClick={this.onAddFilterButtonHandler}
+        />
+
+        const cboEnergyOptions = []
+        for (let i = 0; i <= 2; i++) {
+            cboEnergyOptions[i] = <FilterButton
+                id={i}
+                key={"comboEnergy" + i}
+                fieldname={'comboEnergy'}
+                customClass={isInFilters(appliedFilters, 'comboenergy', i)}
+                onClick={this.onAddFilterButtonHandler}
+            />
+        }
+
         return (
-            <div className="col s12" className="filter-box white-text">
+            <div className="col s12 filter-box white-text">
                 <div className="row">
                     <div className="input-field col s12">
                         <div htmlFor="type">Card Type</div>
@@ -248,7 +318,7 @@ class FilterBox extends Component {
                         id="filter-box-criteria-input"
                         type="text" placeholder="For an OR operation use ||"
                         value={filterText}
-                        onChange={this.onFilterTextChangeHandler} 
+                        onChange={this.onFilterTextChangeHandler}
                         onKeyDown={this.onInputTextKeyDownHandler} />
                     <label htmlFor="filter-box-criteria-input">Search</label>
                 </div>
@@ -274,24 +344,6 @@ class FilterBox extends Component {
             </div>
         )
     }
-}
-
-const COLORS = ['B', 'U', 'G', 'Y', 'R']
-const colorOptions = COLORS.map((currentColor) => <label id={currentColor} className="btn btn-secondary">{currentColor}</label>)
-
-const TYPES = ['BATTLE', 'EXTRA', 'LEADER']
-const typeOptions = TYPES.map((currentType) => <label id={currentType} className="btn btn-secondary">{currentType}</label>)
-
-const energyOptions = []
-let i=0
-for(i=0; i<=5; i++) {
-    energyOptions[i] = <label id={i} className="btn btn-secondary">{i}</label>
-}
-energyOptions[i] = <label id={i} className="btn btn-secondary">{i}+</label>
-
-const cboEnergyOptions = []
-for(let i=0; i<=2; i++) {
-    cboEnergyOptions[i] = <label id={i} className="btn btn-secondary">{i}</label>
 }
 
 const
