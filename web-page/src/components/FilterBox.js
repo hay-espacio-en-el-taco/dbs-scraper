@@ -65,6 +65,14 @@ const isInFilters = (ar, field, current) => (
     ar.find(a=> a.id.toLocaleLowerCase() === `${field}:  ${current.toString().toLocaleLowerCase()}`)
 )
 
+const mapIdToColor = {
+    B: "Black",
+    U: "Blue",
+    G: "Green",
+    Y: "Yellow",
+    R: "Red"
+}
+
 class FilterBox extends Component {
 
     constructor(props) {
@@ -94,8 +102,8 @@ class FilterBox extends Component {
     }
 
     onAddFilterButtonHandler = e => {
-        const filterText = e.target.id;
         const fieldName = e.target.getAttribute('fieldname');
+        const filterText = fieldName === "color" ? mapIdToColor[e.target.id] : e.target.id;
         const type = 'string';
         const { isFilterNegation } = this.state;
         this.onAddFilter(type, fieldName, filterText, isFilterNegation)
@@ -212,7 +220,7 @@ class FilterBox extends Component {
                 id={currentColor}
                 key={currentColor + ind}
                 fieldname={'color'}
-                customClass={isInFilters(appliedFilters, 'color', currentColor)}
+                customClass={isInFilters(appliedFilters, 'color', mapIdToColor[currentColor])}
                 onClick={this.onAddFilterButtonHandler}
             />
         )
