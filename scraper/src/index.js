@@ -9,6 +9,7 @@ const
     DEFAULT_OUTPUT = `${__dirname}/../cards.json`,
     DBS_DATA_BASE_URL = 'http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=',
     DBS_DATA_URLS = [
+        DBS_DATA_BASE_URL + '428008', // BT8 - MALICIOUS MACHINATIONS
         DBS_DATA_BASE_URL + '428007', // BT7 - ASSAULT OF THE SAIYANS
         DBS_DATA_BASE_URL + '428006', // BT6 - Detroyer Kings
         DBS_DATA_BASE_URL + '428005', // BT5 - Miraculous Revival
@@ -19,20 +20,27 @@ const
         DBS_DATA_BASE_URL + '428103', // TB3 - Clash of Fates
         DBS_DATA_BASE_URL + '428102', // TB2 - World Martial Arts Tournament
         DBS_DATA_BASE_URL + '428101', // TB1 - The Tournament of Power
-        DBS_DATA_BASE_URL + '428308', // SD8 - Rising Broly
-        DBS_DATA_BASE_URL + '428307', // SD7 - Shenrons Advent
-        DBS_DATA_BASE_URL + '428306', // SD6 - Resurected Fusion
-        DBS_DATA_BASE_URL + '428305', // SD5 - The Crimson Saian
-        DBS_DATA_BASE_URL + '428304', // SD4 - The Guardian of Namekians
-        DBS_DATA_BASE_URL + '428303', // SD3 - Dark Invasion
-        DBS_DATA_BASE_URL + '428302', // SD2 - The Extreme Evolution
-        DBS_DATA_BASE_URL + '428301', // SD1 - The Awakening
+        DBS_DATA_BASE_URL + '428502', // XD02 - ANDROID DUALITY
+        DBS_DATA_BASE_URL + '428501', // XD01 - UNIVERSE 6 ASSAILANTS
+        DBS_DATA_BASE_URL + '428310', // SD10 - PARASITIC OVERLORD
+        DBS_DATA_BASE_URL + '428309', // SD09 - SAIYAN LEGACY
+        DBS_DATA_BASE_URL + '428308', // SD08 - Rising Broly
+        DBS_DATA_BASE_URL + '428307', // SD07 - Shenrons Advent
+        DBS_DATA_BASE_URL + '428306', // SD06 - Resurected Fusion
+        DBS_DATA_BASE_URL + '428305', // SD05 - The Crimson Saian
+        DBS_DATA_BASE_URL + '428304', // SD04 - The Guardian of Namekians
+        DBS_DATA_BASE_URL + '428303', // SD03 - Dark Invasion
+        DBS_DATA_BASE_URL + '428302', // SD02 - The Extreme Evolution
+        DBS_DATA_BASE_URL + '428301', // SD01 - The Awakening
+        DBS_DATA_BASE_URL + '428408', // EX08 - Magnificent Collection -Forsaken Warrior-
+        DBS_DATA_BASE_URL + '428407', // EX07 - Magnificent Collection -Fusion Hero-
         DBS_DATA_BASE_URL + '428406', // EX06 - Special Aniversary Box 06
         DBS_DATA_BASE_URL + '428405', // EX05 - Expansion Deck Box 05
         DBS_DATA_BASE_URL + '428404', // EX04 - Expansion Deck Box 04
         DBS_DATA_BASE_URL + '428403', // EX03 - Ultimate Box
         DBS_DATA_BASE_URL + '428402', // EX02 - Expansion Deck Box 02
         DBS_DATA_BASE_URL + '428401', // EX01 - Expansion Deck Box 01
+        DBS_DATA_BASE_URL + '428601', // DB01 - DRAGON BRAWL
         DBS_DATA_BASE_URL + '428901'  // Promos
     ]
 
