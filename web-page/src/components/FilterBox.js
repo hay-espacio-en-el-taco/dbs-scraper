@@ -102,31 +102,37 @@ class FilterBox extends Component {
     }
 
     onAddFilterButtonHandler = e => {
+        const { appliedFilters, onFilterRemove } = this.props
         const fieldName = e.target.getAttribute('fieldname');
         const filterText = fieldName === "color" ? mapIdToColor[e.target.id] : e.target.id;
         const type = 'string';
         const { isFilterNegation } = this.state;
+        let isFilterAdd = appliedFilters.find(a=> a.id.toLocaleLowerCase() === `${fieldName}:  ${filterText.toString().toLocaleLowerCase()}`)
+        if (isFilterAdd) {
+            onFilterRemove(isFilterAdd.id);
+            return// Filter already added
+        }
         this.onAddFilter(type, fieldName, filterText, isFilterNegation)
     }
 
     onAddFilterClickHandler = _ => {
+        const { appliedFilters } = this.props
         const { filterText: origText, fieldToSearch: { type, fieldName }, isFilterNegation } = this.state
         let filterText = origText.trim()
+        if (appliedFilters.find(a => a.id === `${fieldName}-${filterText}`)) {
+            return// Filter already added
+        }
         this.onAddFilter(type, fieldName, filterText, isFilterNegation)
     }
 
     onAddFilter = (type, fieldName, filterText, isFilterNegation) => {
-        const { onFilterAdd, appliedFilters } = this.props
+        const { onFilterAdd } = this.props
         if (typeof onFilterAdd !== 'function') {
             return// No handler, so do nothing
         }
 
         if (typeof filterText !== 'string') {
             return// Empty string
-        }
-
-        if (appliedFilters.find(a => a.id === `${fieldName}-${filterText}`)) {
-            return// Filter already added
         }
 
         const filterConditions = this.parseFilterText(filterText)
