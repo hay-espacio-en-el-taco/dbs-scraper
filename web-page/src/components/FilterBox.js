@@ -107,7 +107,7 @@ class FilterBox extends Component {
         const filterText = fieldName === "color" ? mapIdToColor[e.target.id] : e.target.id;
         const type = 'string';
         const { isFilterNegation } = this.state;
-        let isFilterAdd = appliedFilters.find(a=> a.id.toLocaleLowerCase() === `${fieldName}:  ${filterText.toString().toLocaleLowerCase()}`)
+        let isFilterAdd = appliedFilters.find(a=> a.id.toLocaleLowerCase() === `${fieldName}:  ${filterText.toString()}`.toLocaleLowerCase())
         if (isFilterAdd) {
             onFilterRemove(isFilterAdd.id);
             return// Filter already added
