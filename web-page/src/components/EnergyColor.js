@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import './EnergyColor.css';
+import React, { Component } from 'react'
+import './EnergyColor.css'
 
 const
     reg = /[\dbugyr]+/g,
@@ -10,7 +10,7 @@ const
             if (i-extraColors > 0)
                 return <span className="energy-color white">{i-extraColors}</span> 
             else
-                return
+                return null
         }
 
         switch (i) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'materialize-css/dist/css/materialize.min.css'
 import M from "materialize-css"
 import './App.css'
-import FilterBox from './components/FilterBox'
+import FilterBox from './components/filter-box/index'
 import CardsContainer from './components/CardsContainer'
 
 class App extends Component {
