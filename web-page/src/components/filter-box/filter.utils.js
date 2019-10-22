@@ -5,6 +5,8 @@ const NUMERIC_REGEXP = '^(?<condition>[<>]=?)\\s*?(?<criteria>\\d+)'
 const NUMERIC_REGEXP_WITH_OPERATORS = '^(?<criteria>\\d+)\\s*?(?<condition>[+-])'
 const TYPES = ['BATTLE', 'EXTRA', 'LEADER']
 const COLORS = ['B', 'U', 'G', 'Y', 'R']
+const ENERGYS = ['0', '1', '2', '3', '4', '5', '6+']
+const COMBOENERGYS = ['0', '1', '2']
 const FILTER_FIELDNAME = {
     TYPE: 'type',
     COLOR: 'color',
@@ -93,58 +95,23 @@ export const parseFilterText = text => {
     )
 }
 
+const createButtons = (appliedFilters, onAddFilterButtonHandler, buttons, field) => (
+    buttons.map((current, ind) =>
+        <FilterButton
+            id={current}
+            key={field + ind}
+            fieldname={field}
+            customClass={isInFilters(appliedFilters, field, field === FILTER_FIELDNAME.COLOR ? mapIdToColor[current] : current)}
+            onClick={onAddFilterButtonHandler}
+        />
+    )
+)
+
 export const createAllButtons = (appliedFilters, onAddFilterButtonHandler) => {
-    let allButtons = {}
-    allButtons.type = TYPES.map((currentType, ind) =>
-        <FilterButton
-            id={currentType}
-            key={currentType + ind}
-            fieldname={FILTER_FIELDNAME.TYPE}
-            customClass={isInFilters(appliedFilters, FILTER_FIELDNAME.TYPE, currentType)}
-            onClick={onAddFilterButtonHandler}
-        />
-    )
-    allButtons.color = COLORS.map((currentColor, ind) =>
-        <FilterButton
-            id={currentColor}
-            key={currentColor + ind}
-            fieldname={FILTER_FIELDNAME.COLOR}
-            customClass={isInFilters(appliedFilters, FILTER_FIELDNAME.COLOR, mapIdToColor[currentColor])}
-            onClick={onAddFilterButtonHandler}
-        />
-    )
-    allButtons.energy = []
-    let i = 0
-    for (i = 0; i <= 5; i++) {
-        allButtons.energy[i] = <FilterButton
-            id={i}
-            key={FILTER_FIELDNAME.ENERGY + i}
-            fieldname={FILTER_FIELDNAME.ENERGY}
-            customClass={isInFilters(appliedFilters, FILTER_FIELDNAME.ENERGY, i)}
-            onClick={onAddFilterButtonHandler}
-        />
+    return {
+        type: createButtons(appliedFilters, onAddFilterButtonHandler, TYPES, FILTER_FIELDNAME.TYPE),
+        color: createButtons(appliedFilters, onAddFilterButtonHandler, COLORS, FILTER_FIELDNAME.COLOR),
+        energy: createButtons(appliedFilters, onAddFilterButtonHandler, ENERGYS, FILTER_FIELDNAME.ENERGY),
+        comboEnergy: createButtons(appliedFilters, onAddFilterButtonHandler, COMBOENERGYS, FILTER_FIELDNAME.COMBO_ENERGY)
     }
-    allButtons.energy[i] = <FilterButton
-        id={i + "+"}
-        key={FILTER_FIELDNAME.ENERGY + i}
-        fieldname={FILTER_FIELDNAME.ENERGY}
-        customClass={isInFilters(appliedFilters, FILTER_FIELDNAME.ENERGY, i + "+")}
-        onClick={onAddFilterButtonHandler}
-    />
-    allButtons.comboEnergy = []
-    for (let i = 0; i <= 2; i++) {
-        allButtons.comboEnergy[i] = <FilterButton
-            id={i}
-            key={FILTER_FIELDNAME.COMBO_ENERGY + i}
-            fieldname={FILTER_FIELDNAME.COMBO_ENERGY}
-            customClass={isInFilters(appliedFilters, FILTER_FIELDNAME.COMBO_ENERGY, i)}
-            onClick={onAddFilterButtonHandler}
-        />
-    }
-
-    return allButtons;
 }
-
-
-
-    
