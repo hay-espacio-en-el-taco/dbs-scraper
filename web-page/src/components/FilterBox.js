@@ -86,7 +86,7 @@ class FilterBox extends Component {
         )
     }
 
-    onAddFilterClickHandler = _ => {
+    onAddFilterClickHandler = () => {
         const { onFilterAdd, appliedFilters } = this.props
         if (typeof onFilterAdd !== 'function') {
             return// No handler, so do nothing
@@ -178,7 +178,7 @@ class FilterBox extends Component {
         )
 
         return (
-            <div className="col s12" className="filter-box white-text">
+            <div className="col s12 filter-box white-text">
                 <div className="row">
                     <div className="input-field col s12">
                         <div htmlFor="type">Card Type</div>
@@ -277,10 +277,10 @@ class FilterBox extends Component {
 }
 
 const COLORS = ['B', 'U', 'G', 'Y', 'R']
-const colorOptions = COLORS.map((currentColor) => <label id={currentColor} className="btn btn-secondary">{currentColor}</label>)
+const colorOptions = COLORS.map((currentColor) => <label id={currentColor} className="btn btn-secondary" key={currentColor}>{currentColor}</label>)
 
 const TYPES = ['BATTLE', 'EXTRA', 'LEADER']
-const typeOptions = TYPES.map((currentType) => <label id={currentType} className="btn btn-secondary">{currentType}</label>)
+const typeOptions = TYPES.map((currentType) => <label id={currentType} className="btn btn-secondary" key={currentType}>{currentType}</label>)
 
 const energyOptions = []
 let i=0

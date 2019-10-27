@@ -1,8 +1,8 @@
 'use stric'
 
-import { pipe, from } from "rxjs";
+import { from } from "rxjs";
 import { ofType } from 'redux-observable';
-import { tap, map, mergeMap, ignoreElements } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 
 import AllCards from '../../cards.json'
 
@@ -130,7 +130,7 @@ export const updateSearchEpic = action$ => action$.pipe(
 
 export const searchCardsEpic = (action$, state$) => action$.pipe(
     ofType( SEARCH_CARDS ),
-    map( _ => state$.value ),
+    map( () => state$.value ),
     mergeMap(
         ({ search }) => from( _searchCards(search.filters) )
     ),
