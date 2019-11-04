@@ -14,34 +14,29 @@ const FILTER_FIELDNAME = {
     COMBO_ENERGY: 'comboEnergy'
 }
 
-export const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
-    for (let index = 0; index < filterConditions.length; index++) {
-        const { conditionType, condition, criteria } = filterConditions[index]
-        const found = valuesToSearchOn.find(
+const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
+    return !!filterConditions.find(values => {
+        const { conditionType, condition, criteria, negate } = values
+        return valuesToSearchOn.find(
             value => {
                 if (conditionType === 'numeric') {
                     const nValue = Number(value.replace(/\D+/g, ""))
                     switch (condition) {
                         case '<': return nValue < Number(criteria)
-                        case '<=': return nValue <= Number(criteria)
                         case '>': return nValue > Number(criteria)
-                        case '>=': return nValue >= Number(criteria)
+                        case '<=': 
                         case '-': return nValue <= Number(criteria)
+                        case '>=':
                         case '+': return nValue >= Number(criteria)
                         default: break;
                     }
                 }
 
-                return value.toString().toLocaleLowerCase().includes(
-                    criteria.toString().toLocaleLowerCase()
-                )
+                const val = value.toString().toLocaleLowerCase().includes(criteria.toString().toLocaleLowerCase())
+                return negate ? !val : val
             }
         )
-        if (found) {
-            return true
-        }
-    }
-    return false
+    })
 }
 
 export const getFieldsToSearch = (card) => {
@@ -68,7 +63,7 @@ export const getFieldsToSearch = (card) => {
 }
 
 export const isInFilters = (ar, field, current) => (
-    ar.find(a=> a.id.toLocaleLowerCase() === `${field}:  ${current.toString()}`.toLocaleLowerCase())
+    ar.find(({ id })=> id.toLocaleLowerCase().startsWith(field.toLocaleLowerCase()) && id.toLocaleLowerCase().includes(current.toLocaleLowerCase()))
 )
 
 export const mapIdToColor = {
@@ -87,10 +82,9 @@ export const parseFilterText = text => {
             const foundNumericConditionFinal = foundNumericCondition ? foundNumericCondition : (new RegExp(NUMERIC_REGEXP_WITH_OPERATORS, 'g')).exec(txt) 
             if (foundNumericConditionFinal) {
                 const { groups: { condition, criteria } } = foundNumericConditionFinal
-                return { conditionType: 'numeric', criteria, condition }
+                return { conditionType: 'numeric', criteria: criteria.includes('not') ? criteria.split(/\s/gm)[1] : criteria, condition, negate: criteria.includes('not') }
             }
-
-            return { conditionType: 'contains', criteria: txt }
+            return { conditionType: 'contains', criteria: txt.includes('not') ? txt.split(/\s/gm)[1].trim() : txt, negate: txt.includes('not') }
         }
     )
 }
@@ -114,4 +108,33 @@ export const createAllButtons = (appliedFilters, onAddFilterButtonHandler) => {
         energy: createButtons(appliedFilters, onAddFilterButtonHandler, ENERGYS, FILTER_FIELDNAME.ENERGY),
         comboEnergy: createButtons(appliedFilters, onAddFilterButtonHandler, COMBOENERGYS, FILTER_FIELDNAME.COMBO_ENERGY)
     }
+}
+
+export const createFilter = (fieldName, filterConditions, type) => {
+    let filter = card => {
+        let criteriaToSearchOn
+        if (type === 'object') {// no implementation yet, so we search in the whole object
+            criteriaToSearchOn = [JSON.stringify( card[fieldName] )]
+        }
+        else {
+            let val = card[fieldName]
+            if (val === null || val === undefined) {
+                return false
+            }
+            criteriaToSearchOn = Array.isArray(val) ? val.slice() : [val]
+            // We look for the field in the back of the card and add it to our search
+            if (card['cardBack'] && card['cardBack'][fieldName]) {
+                val = card['cardBack'][fieldName]
+                if (Array.isArray(val)) {
+                    criteriaToSearchOn = criteriaToSearchOn.concat(val)
+                }
+                else {
+                    criteriaToSearchOn.push( val )
+                }
+            }
+        }
+
+        return findArrayItemsInArrayOrString(filterConditions, criteriaToSearchOn)
+    }
+    return filter;
 }

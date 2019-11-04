@@ -1,17 +1,28 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { searchCards, addFilter, removeFilter } from '../../redux/modules/search'
+import { 
+    searchCards, 
+    addFilter, 
+    updateFilter, 
+    removeFilter 
+} from '../../redux/modules/search'
 import './index.css'
 import Filter from '../Filter'
-import { parseFilterText, findArrayItemsInArrayOrString, getFieldsToSearch, mapIdToColor, createAllButtons } from './filter.utils'
+import { 
+    parseFilterText, 
+    getFieldsToSearch, 
+    mapIdToColor, 
+    createAllButtons,
+    createFilter
+} from './filter.utils'
 
-const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFilterAdd, onFilterRemove }) => {
+const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFilterAdd, onUpdateFilter, onFilterRemove }) => {
     const [ filterValues, setFilter ] = useState({ filterText: '', fieldToSearch: '', isFilterNegation: false })
     const { filterText, isFilterNegation } = filterValues
 
     const onAddFilterButtonHandler = (id, fieldName) => {
         const filterText = fieldName === "color" ? mapIdToColor[id] : id.toString(), type = 'string'
-        let isFilterAdd = appliedFilters.find(a=> a.id.toLocaleLowerCase() === `${fieldName}:  ${filterText}`.toLocaleLowerCase())
+        let isFilterAdd = appliedFilters.find(a=> a.id.toLocaleLowerCase().replace('not ', '') === `${fieldName}: ${filterText}`.toLocaleLowerCase())
         if (isFilterAdd) {
             onFilterRemove(isFilterAdd.id)
             return// Filter already added
@@ -37,39 +48,25 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
             return// Empty string
         }
 
+        let filterExists = appliedFilters.find(a=> a.id.toLocaleLowerCase().startsWith(fieldName.toLocaleLowerCase()))
+        if(filterExists){
+            let newId, newFilterText, removeFilterRegexp = new RegExp(`\\s\\|\\|\\s(not\\s)?${filterText}|(not\\s)?${filterText}\\s\\|\\|\\s`, 'i')
+            if(filterExists.id.toLocaleLowerCase().includes(filterText.toLocaleLowerCase()))
+                newId = filterExists.id.replace(removeFilterRegexp, '')
+            else 
+                newId = filterExists.id + ' || ' + (isFilterNegation ? 'NOT ' : '') + filterText
+            newFilterText = newId.split(':')[1]
+            const filterConditions = parseFilterText(newFilterText)
+            const filter = createFilter(fieldName, filterConditions, type)
+            onUpdateFilter(filterExists.id, newId, filter)
+            return
+        }
+
+        if(isFilterNegation)
+            filterText = 'not ' + filterText
         const filterConditions = parseFilterText(filterText)
-        let filter = card => {
-            let criteriaToSearchOn
-            if (type === 'object') {// no implementation yet, so we search in the whole object
-                criteriaToSearchOn = [JSON.stringify( card[fieldName] )]
-            }
-            else {
-                let val = card[fieldName]
-                if (val === null || val === undefined) {
-                    return false
-                }
-                criteriaToSearchOn = Array.isArray(val) ? val.slice() : [val]
-
-                // We look for the field in the back of the card and add it to our search
-                if (card['cardBack'] && card['cardBack'][fieldName]) {
-                    val = card['cardBack'][fieldName]
-                    if (Array.isArray(val)) {
-                        criteriaToSearchOn = criteriaToSearchOn.concat(val)
-                    }
-                    else {
-                        criteriaToSearchOn.push( val )
-                    }
-                }
-            }
-
-            return findArrayItemsInArrayOrString(filterConditions, criteriaToSearchOn)
-        }
-
-        if (isFilterNegation) {
-            const oldFilter = filter
-            filter = card => !oldFilter(card)
-        }
-        onFilterAdd(`${fieldName}: ${isFilterNegation ? 'NOT ' : ''} ${filterText}`, filter)
+        const filter = createFilter(fieldName, filterConditions, type)
+        onFilterAdd(`${fieldName}: ${filterText}`, filter)
     }
 
     const onFieldSelectionChangeHandler = event => {
@@ -211,5 +208,5 @@ const
         appliedFilters: search.filters,
         fieldOptions: getFieldsToSearch( search.cardsDictionary[ Object.keys(search.cardsDictionary)[4] ] )
     }),
-    mapDispatchToProps = { searchCards, onFilterAdd: addFilter, onFilterRemove: removeFilter }
+    mapDispatchToProps = { searchCards, onFilterAdd: addFilter, onUpdateFilter: updateFilter, onFilterRemove: removeFilter }
 export default connect(mapStateToProps, mapDispatchToProps)(FilterBox)

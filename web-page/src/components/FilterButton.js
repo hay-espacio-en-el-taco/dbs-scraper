@@ -7,7 +7,7 @@ const FilterButton = (props) => {
     return <label
                 id={id} 
                 className={`${customClass ? 'filter-on' : ''} btn btn-secondary`}
-                onClick={ _ => onClick(id, fieldname) }
+                onClick={ () => onClick(id, fieldname) }
             >{id}</label>
 }
 

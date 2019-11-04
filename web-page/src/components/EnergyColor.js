@@ -6,7 +6,7 @@ const
     filterColors = e => e.match(reg),
     iconPrinter = e => filterColors(e).map(i => {
         if (!isNaN(Number(i))) {
-            let extraColors = filterColors(e).length-1
+            let extraColors = filterColors(e).length - 1
             if (i-extraColors > 0)
                 return <span className="energy-color white">{i-extraColors}</span> 
             else
