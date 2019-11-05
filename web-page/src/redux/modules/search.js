@@ -1,8 +1,8 @@
 'use stric'
 
-import { pipe, from } from "rxjs";
-import { ofType } from 'redux-observable';
-import { tap, map, mergeMap, ignoreElements } from 'rxjs/operators';
+import { pipe, from } from "rxjs"
+import { ofType } from 'redux-observable'
+import { tap, map, mergeMap, ignoreElements } from 'rxjs/operators'
 
 import AllCards from '../../cards.json'
 
@@ -21,7 +21,7 @@ const _searchCards = async (filters = []) => {
         return AllCards
     }
 
-    var t0 = performance.now();
+    var t0 = performance.now()
     const cardsFound = AllCards.filter(
         card => {
             for (let index = 0; index < filters.length; index++) {
@@ -32,7 +32,7 @@ const _searchCards = async (filters = []) => {
             return true
         }
     )
-    var t1 = performance.now();
+    var t1 = performance.now()
     console.log("Search cards took " + (t1 - t0) + " miliseconds.")
     return cardsFound
 

@@ -30,8 +30,8 @@ const
 class EnergyColor extends Component {
 
     render() {
-        const { energy } = this.props;
-        if (!energy) return <span>{energy}</span>;
+        const { energy } = this.props
+        if (!energy) return <span>{energy}</span>
 
         return (
             <span key={energy}>
@@ -41,4 +41,4 @@ class EnergyColor extends Component {
     }
 }
 
-export default EnergyColor;
+export default EnergyColor

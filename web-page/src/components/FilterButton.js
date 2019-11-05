@@ -11,4 +11,4 @@ const FilterButton = (props) => {
             >{id}</label>
 }
 
-export default FilterButton;
+export default FilterButton

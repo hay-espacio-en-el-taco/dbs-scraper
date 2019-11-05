@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import FilterButton from '../FilterButton'
 
 const NUMERIC_REGEXP = '^(?<condition>[<>]=?)\\s*?(?<criteria>\\d+)'
@@ -28,7 +28,7 @@ const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
                         case '-': return nValue <= Number(criteria)
                         case '>=':
                         case '+': return nValue >= Number(criteria)
-                        default: break;
+                        default: break
                     }
                 }
 
@@ -136,5 +136,5 @@ export const createFilter = (fieldName, filterConditions, type) => {
 
         return findArrayItemsInArrayOrString(filterConditions, criteriaToSearchOn)
     }
-    return filter;
+    return filter
 }
