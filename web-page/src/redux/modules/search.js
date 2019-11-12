@@ -1,8 +1,8 @@
 'use stric'
 
-import { pipe, from } from "rxjs";
-import { ofType } from 'redux-observable';
-import { tap, map, mergeMap, ignoreElements } from 'rxjs/operators';
+import { pipe, from } from "rxjs"
+import { ofType } from 'redux-observable'
+import { tap, map, mergeMap, ignoreElements } from 'rxjs/operators'
 
 import AllCards from '../../cards.json'
 
@@ -21,7 +21,7 @@ const _searchCards = async (filters = []) => {
         return AllCards
     }
 
-    var t0 = performance.now();
+    var t0 = performance.now()
     const cardsFound = AllCards.filter(
         card => {
             for (let index = 0; index < filters.length; index++) {
@@ -32,7 +32,7 @@ const _searchCards = async (filters = []) => {
             return true
         }
     )
-    var t1 = performance.now();
+    var t1 = performance.now()
     console.log("Search cards took " + (t1 - t0) + " miliseconds.")
     return cardsFound
 
@@ -62,6 +62,7 @@ const
     SEARCH_CARDS = 'dbs-scraper/search/SEARCH_CARDS',
     SEARCH_CARDS_SUCCESS = 'dbs-scraper/search/SEARCH_CARDS_SUCCESS',
     ADD_FILTER = 'dbs-scraper/search/ADD_FILTER',
+    UPDATE_FILTER = 'dbs-scraper/search/UPDATE_FILTER',
     REMOVE_FILTER = 'dbs-scraper/search/REMOVE_FILTER',
     CLEAR_FILTERS = 'dbs-scraper/search/CLEAR_FILTERS'
 
@@ -80,6 +81,19 @@ export default function reducer(state = initState, action = {}) {
             const newFilterArray = state.filters.slice()
             newFilterArray.push({id: action.id, filterFn: action.filter})
             return { ...state, filters: newFilterArray }
+        }
+
+        case UPDATE_FILTER: {
+            return {
+                ...state,
+                filters: state.filters.map(f => {
+                    if(f.id === action.id){
+                        f.id = action.newId
+                        f.filterFn = action.filter
+                    }    
+                    return f
+                } )
+            }
         }
 
         case REMOVE_FILTER: {
@@ -112,6 +126,11 @@ export const addFilter = (id, filter) => ({
     id, filter
 })
 
+export const updateFilter = (id, newId, filter) => ({
+    type: UPDATE_FILTER,
+    id, newId, filter
+})
+
 export const removeFilter = filterId => ({
     type: REMOVE_FILTER,
     filterId
@@ -124,7 +143,7 @@ export const clearFilters = () => ({
 
 // Side effects
 export const updateSearchEpic = action$ => action$.pipe(
-    ofType(ADD_FILTER, REMOVE_FILTER),
+    ofType(ADD_FILTER, UPDATE_FILTER, REMOVE_FILTER),
     map( searchCards )
 )
 

@@ -1,12 +1,16 @@
-import React, { Component } from 'react';
-import './EnergyColor.css';
+import React, { Component } from 'react'
+import './EnergyColor.css'
 
 const
     reg = /[\dbugyr]+/g,
     filterColors = e => e.match(reg),
     iconPrinter = e => filterColors(e).map(i => {
         if (!isNaN(Number(i))) {
-          return <span className="energy-color white">{i}</span>
+            let extraColors = filterColors(e).length - 1
+            if (i-extraColors > 0)
+                return <span className="energy-color white">{i-extraColors}</span> 
+            else
+                return null
         }
 
         switch (i) {
@@ -26,8 +30,8 @@ const
 class EnergyColor extends Component {
 
     render() {
-        const { energy } = this.props;
-        if (!energy) return <span>{energy}</span>;
+        const { energy } = this.props
+        if (!energy) return <span>{energy}</span>
 
         return (
             <span key={energy}>
@@ -37,4 +41,4 @@ class EnergyColor extends Component {
     }
 }
 
-export default EnergyColor;
+export default EnergyColor
