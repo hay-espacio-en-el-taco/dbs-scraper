@@ -29,8 +29,9 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
         }
         let filterExists = appliedFilters.find(a=> a.id.toLocaleLowerCase().startsWith(fieldName.toLocaleLowerCase()))
         if(filterExists){
-            let newId, newFilterText, removeFilterRegexp = new RegExp(`\\s\\|\\|\\s(not\\s)?${filterText}|(not\\s)?${filterText}\\s\\|\\|\\s`, 'i')
-            if(filterExists.id.toLocaleLowerCase().includes(filterText.toLocaleLowerCase()))
+            let newId, newFilterText, removeFilterRegexp = new RegExp(`\\s\\|\\|\\s(not\\s)?${filterText}|(not\\s)?${filterText}\\s\\|\\|\\s`, 'i'),
+            criteriaExist = filterExists.id.toLocaleLowerCase().includes(filterText.toLocaleLowerCase())
+            if(criteriaExist)
                 newId = filterExists.id.replace(removeFilterRegexp, '')
             else 
                 newId = filterExists.id + ' || ' + (isFilterNegation ? 'NOT ' : '') + filterText
