@@ -27,6 +27,21 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
             onFilterRemove(isFilterAdd.id)
             return// Filter already added
         }
+        let filterExists = appliedFilters.find(a =>
+            a.id.toLocaleLowerCase().startsWith(fieldName.toLocaleLowerCase()))
+        if(filterExists){
+            let newId, newFilterText, removeFilterRegexp = new RegExp(`\\s\\|\\|\\s(not\\s)?${filterText}|(not\\s)?${filterText}\\s\\|\\|\\s`, 'i'),
+            criteriaExist = filterExists.id.toLocaleLowerCase().includes(filterText.toLocaleLowerCase())
+            if(criteriaExist)
+                newId = filterExists.id.replace(removeFilterRegexp, '')
+            else 
+                newId = filterExists.id + ' || ' + (isFilterNegation ? 'NOT ' : '') + filterText
+            newFilterText = newId.split(':')[1]
+            const filterConditions = parseFilterText(newFilterText)
+            const filter = createFilter(fieldName, filterConditions, type)
+            onUpdateFilter(filterExists.id, newId, filter)
+            return
+        }
         onAddFilter(type, fieldName, filterText, isFilterNegation)
     }
 
@@ -46,20 +61,6 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
 
         if (typeof filterText !== 'string') {
             return// Empty string
-        }
-
-        let filterExists = appliedFilters.find(a=> a.id.toLocaleLowerCase().startsWith(fieldName.toLocaleLowerCase()))
-        if(filterExists){
-            let newId, newFilterText, removeFilterRegexp = new RegExp(`\\s\\|\\|\\s(not\\s)?${filterText}|(not\\s)?${filterText}\\s\\|\\|\\s`, 'i')
-            if(filterExists.id.toLocaleLowerCase().includes(filterText.toLocaleLowerCase()))
-                newId = filterExists.id.replace(removeFilterRegexp, '')
-            else 
-                newId = filterExists.id + ' || ' + (isFilterNegation ? 'NOT ' : '') + filterText
-            newFilterText = newId.split(':')[1]
-            const filterConditions = parseFilterText(newFilterText)
-            const filter = createFilter(fieldName, filterConditions, type)
-            onUpdateFilter(filterExists.id, newId, filter)
-            return
         }
 
         if(isFilterNegation)
@@ -88,7 +89,7 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
         }
     }
 
-    const removedOptions = ['availableDate', 'cardImageUrl', 'cardBack', 'era', /*'type', 'color', 'energy', 'comboEnergy', 'rarity', 'character', 'skillKeywords', 'cardNumber', */]
+    const removedOptions = ['availableDate', 'cardImageUrl', 'cardBack', 'era', 'type', 'color', 'energy', 'comboEnergy', /*'rarity', 'character', 'skillKeywords', 'cardNumber', */]
     const optionsToSelect = fieldOptions.map(
         (option, index) =>
             !removedOptions.includes(option.fieldName)
