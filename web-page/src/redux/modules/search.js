@@ -72,26 +72,20 @@ export default createReducer(initState, {
     [SEARCH_CARDS]: (state) => ({ ...state, isSearching: true }),
     [SEARCH_CARDS_SUCCESS]: (state, action) => ({ ...state, isSearching: false, result: action.result }),
     [ADD_FILTER]: (state, action) => {
-        if (state.filters.find( f => f.id === action.id )) {
+        if (state.filters.find(f => f.id === action.id)) {
             return state// Avoid adding duplicated filters
         }
         const newFilterArray = state.filters.slice()
-        newFilterArray.push({id: action.id, filterFn: action.filter})
+        newFilterArray.push({ id: action.id, filterFn: action.filter })
         return { ...state, filters: newFilterArray }
     },
     [UPDATE_FILTER]: (state, action) => ({
         ...state,
-        filters: state.filters.map(f => {
-            if(f.id === action.id){
-                f.id = action.newId
-                f.filterFn = action.filter
-            }    
-            return f
-        } )
+        filters: state.filters.map(f => (f.id === action.id) ? { ...f, id: action.newId, filterFn: action.filter } : f)
     }),
     [REMOVE_FILTER]: (state, action) => {
         const newFilterArray = state.filters.slice()
-        const index = newFilterArray.findIndex( f => f.id === action.filterId)
+        const index = newFilterArray.findIndex(f => f.id === action.filterId)
         newFilterArray.splice(index, 1)
         return { ...state, filters: newFilterArray }
     },
