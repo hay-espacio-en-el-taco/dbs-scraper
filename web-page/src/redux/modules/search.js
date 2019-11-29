@@ -3,6 +3,7 @@
 import { pipe, from } from "rxjs"
 import { ofType } from 'redux-observable'
 import { tap, map, mergeMap, ignoreElements } from 'rxjs/operators'
+import { createReducer } from '@reduxjs/toolkit'
 
 import AllCards from '../../cards.json'
 
@@ -66,50 +67,36 @@ const
     REMOVE_FILTER = 'dbs-scraper/search/REMOVE_FILTER',
     CLEAR_FILTERS = 'dbs-scraper/search/CLEAR_FILTERS'
 
-
 // Reducer
-export default function reducer(state = initState, action = {}) {
-    switch(action.type) {
-
-        case SEARCH_CARDS: return { ...state, isSearching: true }
-        case SEARCH_CARDS_SUCCESS: return { ...state, isSearching: false, result: action.result }
-
-        case ADD_FILTER: {
-            if (state.filters.find( f => f.id === action.id )) {
-                return state// Avoid adding duplicated filters
-            }
-            const newFilterArray = state.filters.slice()
-            newFilterArray.push({id: action.id, filterFn: action.filter})
-            return { ...state, filters: newFilterArray }
+export default createReducer(initState, {
+    [SEARCH_CARDS]: (state) => ({ ...state, isSearching: true }),
+    [SEARCH_CARDS_SUCCESS]: (state, action) => ({ ...state, isSearching: false, result: action.result }),
+    [ADD_FILTER]: (state, action) => {
+        if (state.filters.find( f => f.id === action.id )) {
+            return state// Avoid adding duplicated filters
         }
-
-        case UPDATE_FILTER: {
-            return {
-                ...state,
-                filters: state.filters.map(f => {
-                    if(f.id === action.id){
-                        f.id = action.newId
-                        f.filterFn = action.filter
-                    }    
-                    return f
-                } )
-            }
-        }
-
-        case REMOVE_FILTER: {
-            const newFilterArray = state.filters.slice()
-            const index = newFilterArray.findIndex( f => f.id === action.filterId)
-            newFilterArray.splice(index, 1)
-            return { ...state, filters: newFilterArray }
-        }
-
-        case CLEAR_FILTERS:
-            return { ...state, filters: [] }
-
-        default:  return state
-    }
-}
-
+        const newFilterArray = state.filters.slice()
+        newFilterArray.push({id: action.id, filterFn: action.filter})
+        return { ...state, filters: newFilterArray }
+    },
+    [UPDATE_FILTER]: (state, action) => ({
+        ...state,
+        filters: state.filters.map(f => {
+            if(f.id === action.id){
+                f.id = action.newId
+                f.filterFn = action.filter
+            }    
+            return f
+        } )
+    }),
+    [REMOVE_FILTER]: (state, action) => {
+        const newFilterArray = state.filters.slice()
+        const index = newFilterArray.findIndex( f => f.id === action.filterId)
+        newFilterArray.splice(index, 1)
+        return { ...state, filters: newFilterArray }
+    },
+    [CLEAR_FILTERS]: (state) => ({ ...state, filters: [] })
+})
 
 // Action Creators
 export const searchCards = () => ({
