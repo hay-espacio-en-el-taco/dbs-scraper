@@ -13,6 +13,15 @@
             }
         },
         {
+            "label": "Build scraper Docker image",
+            "type": "shell",
+            "command": "cd ./scraper; docker build -t dbs-scraper .",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
             "label": "Prepare before running React App",
             "type": "shell",
             "command": "echo \"Ready to run!\"",
@@ -27,7 +36,7 @@
             "command": "echo \"Ready to run!\"",
             "dependsOn": [
                 "Remove scraper app container",
-                "Build Docker image"
+                "Build scraper Docker image"
             ]
         },
         {

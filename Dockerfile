@@ -1,4 +1,4 @@
-FROM node:9
+FROM node:13.5
 
 ENV SCRAPER_FOLDER /home/node/app/scraper
 ENV WEBPAGE_FOLDER /home/node/app/web-page
