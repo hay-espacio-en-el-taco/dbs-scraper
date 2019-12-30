@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Run scrapper",
+            "name": "Run scraper",
             "preLaunchTask": "Prepare before running scraper app",
             "runtimeExecutable": "docker",
             "runtimeArgs": [
