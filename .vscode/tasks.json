@@ -43,7 +43,7 @@
         {
             "label": "Build React app Docker image",
             "type": "shell",
-            "command": "docker build -t dbs-web ./scraper",
+            "command": "docker build -t dbs-web ./web-page",
             "presentation": {
                 "reveal":"silent",
                 "panel": "shared",
