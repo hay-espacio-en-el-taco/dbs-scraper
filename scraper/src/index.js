@@ -20,7 +20,7 @@ async function main() {
     console.log(`Fetched and parsed a total of ${cards.length} cards!.`)
 
     const outputPath = process.env.CARDS_DATA_OUTPUT || DEFAULT_OUTPUT
-    FS.writeFileSync( outputPath, JSON.stringify({ cards, urlsList }) )
+    FS.writeFileSync( outputPath, JSON.stringify({ urlsList, cards }) )
     console.log(`Cards data saved at "${outputPath}".`)
 }
 

@@ -20,6 +20,25 @@
             ],
             "localRoot": "${workspaceFolder}/scraper",
             "remoteRoot": "/home/node/app",
+            "port": 9229
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run web page",
+            "preLaunchTask": "Prepare before running React app",
+            "runtimeExecutable": "docker",
+            "runtimeArgs": [
+                "run", "--rm",
+                "--name", "dbs-web",
+                "-p", "3000:3000",
+                "-p", "9229:9229",
+                "-v", "${workspaceFolder}/web-page/src:/home/node/app/src",
+                "dbs-web",
+                "npm", "start",
+            ],
+            "localRoot": "${workspaceFolder}/web-page",
+            "remoteRoot": "/home/node/app",
             "port": 9229,
             // "console":"integratedTerminal",
         }
