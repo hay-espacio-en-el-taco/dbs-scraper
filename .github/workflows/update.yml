@@ -22,7 +22,7 @@ jobs:
       - name: Download cards.json from latest release
         uses: Xotl/cool-github-releases@v1
         with:
-          assets: cards.json|${{LATEST_RELEASE_CARDS_FILE}}
+          assets: cards.json|${{env.LATEST_RELEASE_CARDS_FILE}}
           github_token: ${{ github.token }} 
 
       - name: Scrap page for cards.json
@@ -32,7 +32,7 @@ jobs:
 
       - name: Check if there are differences
         run: |
-          if [ "$(cat ${{LATEST_RELEASE_CARDS_FILE}})" != "$(cat ${{TODAY_CARDS_FILE}})" ]; \
+          if [ "$(cat ${{env.LATEST_RELEASE_CARDS_FILE}})" != "$(cat ${{env.TODAY_CARDS_FILE}})" ]; \
           then echo ::set-env name=NEW_CARDS::true; fi
 
       - name: Create new release
