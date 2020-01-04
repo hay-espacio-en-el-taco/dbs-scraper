@@ -40,5 +40,5 @@ jobs:
           then echo ::set-env name=NEW_CARDS::true; fi
 
       - name: Create new release
-        if: ${{env.NEW_CARDS}} == true
+        if: env.NEW_CARDS == 'true'
         run: echo "Needs to create a new release"
