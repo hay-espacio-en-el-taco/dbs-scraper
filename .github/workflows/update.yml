@@ -27,6 +27,7 @@ jobs:
 
       - name: Scrap page for cards.json
         run: |
+          docker build -t dbs-scraper ./scraper
           chmod +x tools/get-cards-file.sh
           ./tools/get-cards-file.sh
           ls
