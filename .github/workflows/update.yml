@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Download cards.json from latest release
-        uses: Xotl/cool-github-releases@v1
+        uses: Xotl/cool-github-releases@v1.0.2
         with:
           assets: cards.json|${{env.LATEST_RELEASE_CARDS_FILE}}
           github_token: ${{ github.token }} 
@@ -29,6 +29,7 @@ jobs:
         run: |
           chmod +x tools/get-cards-file.sh
           ./tools/get-cards-file.sh
+          ls
 
       - name: Check if there are differences
         run: |
