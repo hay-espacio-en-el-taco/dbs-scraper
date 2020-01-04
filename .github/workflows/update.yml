@@ -26,6 +26,8 @@ jobs:
           github_token: ${{ github.token }} 
 
       - name: Scrap page for cards.json
+        env: 
+          CARDS_OUTPUT: ${{env.TODAY_CARDS_FILE}}
         run: |
           docker build -t dbs-scraper ./scraper
           chmod +x tools/get-cards-file.sh
