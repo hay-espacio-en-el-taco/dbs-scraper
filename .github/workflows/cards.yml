@@ -14,6 +14,7 @@ jobs:
     name: 'Scrap page & get cards'
     runs-on: ubuntu-latest
     env:
+      NEW_CARDS: false
       LATEST_RELEASE_CARDS_FILE: ./cards-latest_release.json
       TODAY_CARDS_FILE: ./cards.json
 
@@ -42,6 +43,7 @@ jobs:
           then echo ::set-env name=NEW_CARDS::true; fi
   
       - name: Create tag & title variables
+        if: env.NEW_CARDS == 'true'
         run: |
           NEW_TITLE="New cards found at $(date --utc '+%Y/%m/%d %H:%Mhrs (UTC)')"
           NEW_TAG="cards_$(date --utc ''+%Y/%m/%d-%H:%Mhrs'')"
@@ -49,6 +51,7 @@ jobs:
           echo "::set-env name=NEW_TAG::${NEW_TAG}"
 
       - name: Create new release
+        if: env.NEW_CARDS == 'true'
         uses: Xotl/cool-github-releases@v1
         with:
           mode: update
