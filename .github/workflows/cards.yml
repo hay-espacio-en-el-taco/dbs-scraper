@@ -10,7 +10,7 @@ on:
 
 
 env:
-  NEW_CARDS: false
+  NEW_CARDS: 'false'
 
 jobs:
   get_cards:
