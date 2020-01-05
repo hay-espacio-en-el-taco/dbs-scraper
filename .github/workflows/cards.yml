@@ -52,7 +52,7 @@ jobs:
   
   release:
     name: 'Scrap page & get cards'
-    if: env.NEW_CARDS == 'true'
+    if: ${{env.NEW_CARDS}} == 'true'
     runs-on: ubuntu-latest
 
     steps:
