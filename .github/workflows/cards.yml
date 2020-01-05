@@ -1,12 +1,12 @@
 name: 'DBS Scraper | Update cards'
 
 on:
-  # schedule:
-  #   - cron:  '0 6 * * *'
+  schedule:
+    - cron:  '0 6 * * *'
   push: 
     paths:
       - 'scraper/**'
-      - '.github/worflows/cards.yml'
+      - '.github/workflows/cards.yml'
 
 
 env:
