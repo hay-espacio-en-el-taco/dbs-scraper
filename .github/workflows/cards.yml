@@ -6,7 +6,7 @@ on:
   push: 
     paths:
       - 'scraper/**'
-      - '.github/worflows/update.yml'
+      - '.github/worflows/cards.yml'
 
 
 env:
