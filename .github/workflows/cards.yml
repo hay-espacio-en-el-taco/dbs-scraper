@@ -35,7 +35,6 @@ jobs:
           docker build -t dbs-scraper ./scraper
           chmod +x tools/get-cards-file.sh
           ./tools/get-cards-file.sh
-          ls
 
       - name: Check if there are differences
         run: |
@@ -46,7 +45,7 @@ jobs:
         if: env.NEW_CARDS == 'true'
         run: |
           NEW_TITLE="New cards found at $(date --utc '+%Y/%m/%d %H:%Mhrs (UTC)')"
-          NEW_TAG="cards_$(date --utc ''+%Y/%m/%d-%H:%Mhrs'')"
+          NEW_TAG="cards_$(date --utc '+%Y-%m-%d/%Hh-%Mm')"
           echo "::set-env name=NEW_TITLE::${NEW_TITLE}"
           echo "::set-env name=NEW_TAG::${NEW_TAG}"
 
