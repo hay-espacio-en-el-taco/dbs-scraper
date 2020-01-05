@@ -10,7 +10,7 @@ on:
 
 
 env:
-  NEW_CARDS: false
+  NEW_CARDS: 'false'
 
 jobs:
   testing:
@@ -18,16 +18,16 @@ jobs:
     if: env.NEW_CARDS == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Create tag & title variables
+      - name: Something
         run: echo "Won't run"
 
-  testing2:
-    name: 'Hello'
-    if: env.NEW_CARDS == 'false'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create tag & title variables
-        run: echo "It works!"
+  # testing2:
+  #   name: 'Hello'
+  #   if: env.NEW_CARDS == 'false'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Something
+  #       run: echo "It works!"
 
   
   # get_cards:
