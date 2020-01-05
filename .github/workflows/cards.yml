@@ -9,91 +9,52 @@ on:
       - '.github/workflows/cards.yml'
 
 
-env:
-  NEW_CARDS: 'false'
-
 jobs:
-  testing:
-    name: 'No no'
-    if: env.NEW_CARDS == 'true'
+  get_cards:
+    name: 'Scrap page & get cards'
     runs-on: ubuntu-latest
+    env:
+      LATEST_RELEASE_CARDS_FILE: ./cards-latest_release.json
+      TODAY_CARDS_FILE: ./cards.json
+
     steps:
-      - name: Something
-        run: echo "Won't run"
+      - name: Checkout
+        uses: actions/checkout@v2
 
-  # testing2:
-  #   name: 'Hello'
-  #   if: env.NEW_CARDS == 'false'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Something
-  #       run: echo "It works!"
+      - name: Download cards.json from latest release
+        uses: Xotl/cool-github-releases@v1
+        with:
+          assets: cards.json|${{env.LATEST_RELEASE_CARDS_FILE}}
+          github_token: ${{ github.token }} 
 
+      - name: Scrap page for cards.json
+        env: 
+          CARDS_OUTPUT: ${{env.TODAY_CARDS_FILE}}
+        run: |
+          docker build -t dbs-scraper ./scraper
+          chmod +x tools/get-cards-file.sh
+          ./tools/get-cards-file.sh
+          ls
+
+      - name: Check if there are differences
+        run: |
+          if [ "$(cat ${{env.LATEST_RELEASE_CARDS_FILE}})" != "$(cat ${{env.TODAY_CARDS_FILE}})" ]; \
+          then echo ::set-env name=NEW_CARDS::true; fi
   
-  # get_cards:
-  #   name: 'Scrap page & get cards'
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     LATEST_RELEASE_CARDS_FILE: ./cards-latest_release.json
-  #     TODAY_CARDS_FILE: ./cards.json
+      - name: Create tag & title variables
+        run: |
+          NEW_TITLE="New cards found at $(date --utc '+%Y/%m/%d %H:%Mhrs (UTC)')"
+          NEW_TAG="cards_$(date --utc ''+%Y/%m/%d-%H:%Mhrs'')"
+          echo "::set-env name=NEW_TITLE::${NEW_TITLE}"
+          echo "::set-env name=NEW_TAG::${NEW_TAG}"
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-
-  #     - name: Download cards.json from latest release
-  #       uses: Xotl/cool-github-releases@v1
-  #       with:
-  #         assets: cards.json|${{env.LATEST_RELEASE_CARDS_FILE}}
-  #         github_token: ${{ github.token }} 
-
-  #     - name: Scrap page for cards.json
-  #       env: 
-  #         CARDS_OUTPUT: ${{env.TODAY_CARDS_FILE}}
-  #       run: |
-  #         docker build -t dbs-scraper ./scraper
-  #         chmod +x tools/get-cards-file.sh
-  #         ./tools/get-cards-file.sh
-  #         ls
-
-  #     - name: Check if there are differences
-  #       run: |
-  #         if [ "$(cat ${{env.LATEST_RELEASE_CARDS_FILE}})" != "$(cat ${{env.TODAY_CARDS_FILE}})" ]; \
-  #         then echo ::set-env name=NEW_CARDS::true; fi
-
-  #     - name: Save cards.json as artifact
-  #       if: env.NEW_CARDS == 'true'
-  #       uses: actions/upload-artifact@v1
-  #       with:
-  #         name: cards.json
-  #         path: ${{env.TODAY_CARDS_FILE}}
-  
-  # create-release:
-  #   name: 'Scrap page & get cards'
-  #   if: env.NEW_CARDS == 'true'
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Download cards.json from prev job
-  #       uses: actions/download-artifact@v1
-  #       with:
-  #         name: cards.json
-
-  #     - name: Create tag & title variables
-  #       run: |
-  #         NEW_TITLE="New cards found at $(date --utc '+%Y/%m/%d %H:%Mhrs (UTC)')"
-  #         NEW_TAG="cards_$(date --utc ''+%Y/%m/%d-%H:%Mhrs'')"
-  #         echo "::set-env name=NEW_TITLE::${NEW_TITLE}"
-  #         echo "::set-env name=NEW_TAG::${NEW_TAG}"
-
-  #     - name: Create new release
-  #       uses: Xotl/cool-github-releases@v1
-  #       with:
-  #         mode: update
-  #         tag_name: ${{env.NEW_TAG}}
-  #         release_name: ${{env.NEW_TITLE}}
-  #         body_mrkdwn: "${{env.NEW_TITLE}}. 🎉"
-  #         assets: cards.json
-  #         github_token: ${{ github.token }}
-
+      - name: Create new release
+        uses: Xotl/cool-github-releases@v1
+        with:
+          mode: update
+          tag_name: ${{env.NEW_TAG}}
+          release_name: ${{env.NEW_TITLE}}
+          body_mrkdwn: "${{env.NEW_TITLE}}. 🎉"
+          assets: ${{env.TODAY_CARDS_FILE}}
+          github_token: ${{ github.token }}
         
