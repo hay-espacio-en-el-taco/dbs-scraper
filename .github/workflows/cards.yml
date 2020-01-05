@@ -45,6 +45,7 @@ jobs:
           then echo ::set-env name=NEW_CARDS::true; fi
 
       - name: Save cards.json as artifact
+        if: env.NEW_CARDS == 'true'
         uses: actions/upload-artifact@v1
         with:
           name: cards.json
