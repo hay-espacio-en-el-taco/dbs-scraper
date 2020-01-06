@@ -4,8 +4,8 @@ on:
     paths:
       - 'web-page/**'
       - '.github/workflows/**'
-    tags:
-      - cards*
+    # tags:
+    #   - cards*
 
 jobs:
   deploy:
