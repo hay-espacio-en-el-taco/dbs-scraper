@@ -30,7 +30,10 @@ jobs:
       
       - name: Build app files
         run: |
+          ls
           mkdir build
+          ls
+          echo ${PWD}
           docker run --rm -v ${PWD}/build:/home/node/app/build dbs-web npm run build
           echo "listing ${PWD}/build"
           ls ./build
