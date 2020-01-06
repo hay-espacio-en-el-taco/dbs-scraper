@@ -32,7 +32,7 @@ jobs:
         run: |
           mkdir build
           docker run --rm -v ${PWD}/build:/home/node/app/build dbs-web npm run build
-          ls ${PWD}/build
+          find ${PWD}/build -type f -exec chmod 777 {} \;
 
       - name: Push to gh-pages branch
         env:
