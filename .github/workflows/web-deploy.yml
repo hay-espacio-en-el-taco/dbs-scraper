@@ -1,4 +1,4 @@
-name: 'DBS Scraper | Update cards'
+name: 'DBS Scraper | Web deploy'
 
 on:
   push: 
