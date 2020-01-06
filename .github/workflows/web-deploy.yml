@@ -26,20 +26,12 @@ jobs:
 
       - name: Build Docker image
         run: |
-          echo "Wow, such pwd ${PWD}"
-          ls -a
           docker build --no-cache -t dbs-web ./web-page
-          echo "Wow, such pwd ${PWD}"
-          ls -a
       
       - name: Build app files
         run: |
-          echo "Wow, such pwd ${PWD}"
           mkdir build
-          ls -a
           docker run --rm -v ${PWD}/build:/home/node/app/build dbs-web npm run build
-          echo "listing ${PWD}/build"
-          ls ./build
           ls ${PWD}/build
 
       - name: Push to gh-pages branch
@@ -47,7 +39,8 @@ jobs:
           REMOTE_REPO: https://${{ secrets.GITHUB_OAUTH_TOKEN }}@github.com/${{ github.repository }}.git
         run: |
           find ./ -regextype 'posix-extended' -mindepth 1 ! -regex '^\.\/(build|\.git)(\/.*)?' -delete
-          mv ./build/* ./
+          mv ${PWD}/build/* ./
+          rm -rf ${PWD}/build
           ls -a
         # run: |
         #   NEW_TAG="web_$(date --utc '+%Y-%m-%d/%Hh-%Mm')"
