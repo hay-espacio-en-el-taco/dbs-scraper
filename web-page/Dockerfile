@@ -7,7 +7,6 @@ ADD ./package.json ${WEBPAGE_FOLDER}/package.json
 RUN npm install
 
 ADD . ${WEBPAGE_FOLDER}
-RUN ls ./src
 
 EXPOSE 3000
 EXPOSE 9229
