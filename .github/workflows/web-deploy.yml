@@ -33,7 +33,7 @@ jobs:
           APP_PATH: /home/node/app
         run: |
           mkdir build
-          docker run --rm -v ./build:${{env.APP_PATH}}/build dbs-web npm run build
+          docker run --rm -v ${PWD}/build:${{env.APP_PATH}}/build dbs-web npm run build
           echo "listing ${PWD}/build"
           ls ./build
 
