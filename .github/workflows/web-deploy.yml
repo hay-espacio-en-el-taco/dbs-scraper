@@ -1,8 +1,8 @@
 name: 'DBS Scraper | Web deploy'
 on:
   push: 
-    branches: 
-      - 'refs/tags/cards**'
+    # branches: 
+    #   - 'refs/tags/cards**'
     paths:
       - 'web-page/**'
       - '.github/workflows/**'
