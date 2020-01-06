@@ -1,20 +1,16 @@
 name: 'DBS Scraper | Web deploy'
-
 on:
   push: 
-    tags:
-      - cards*
     paths:
       - 'web-page/**'
       - '.github/workflows/**'
-
+    tags:
+      - cards*
 
 jobs:
-  get_cards:
+  deploy:
     name: 'Scrap page & get cards'
     runs-on: ubuntu-latest
-    env:
-      LATEST_RELEASE_CARDS_FILE: ./web-page/src/cards.json
 
     steps:
       - name: Checkout
@@ -22,6 +18,8 @@ jobs:
 
       - name: Download cards.json from latest release
         uses: Xotl/cool-github-releases@v1
+        env:
+          LATEST_RELEASE_CARDS_FILE: ./web-page/src/cards.json
         with:
           assets: cards.json|${{env.LATEST_RELEASE_CARDS_FILE}}
           github_token: ${{ github.token }} 
