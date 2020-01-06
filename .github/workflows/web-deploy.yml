@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: 'Deploy'
+    name: 'Build & Deploy'
     runs-on: ubuntu-latest
     env:
       LATEST_RELEASE_CARDS_FILE: ./web-page/src/cards.json
@@ -29,16 +29,20 @@ jobs:
       - name: Build app files
         run: |
           docker run --name dbs-container dbs-web npm run build
-
-      - name: Push to gh-pages branch
-        env:
-          REMOTE_REPO: https://${{ secrets.GITHUB_OAUTH_TOKEN }}@github.com/${{ github.repository }}.git
-          NEW_TAG: web_$(date --utc '+%Y-%m-%d/%Hh-%Mm')
+      
+      - name: Extract build files & prepare folder
         run: |
           git rm -rf .
           git clean -fxd
           docker cp dbs-container:/home/node/app/build/. ./
+          docker rm dbs-container
+
+      - name: Push to gh-pages branch
+        env:
+          REMOTE_REPO: https://${{ github.token }}@github.com/${{ github.repository }}.git
+          NEW_TAG: web_$(date --utc '+%Y-%m-%d/%Hh-%Mm')
+        run: |
           git add -A
-          git commit -m "New version"
+          git commit -m "${{env.NEW_TAG}} | Auto pushed from Github Actions"
           git tag -a "${{env.NEW_TAG}}" -m "${{env.NEW_TAG}} | Auto pushed from Github Actions"
           git push -f --follow-tags ${REMOTE_REPO} HEAD:gh-pages
