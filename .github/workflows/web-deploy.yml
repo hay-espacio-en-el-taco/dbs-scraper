@@ -39,7 +39,7 @@ jobs:
           REMOTE_REPO: https://${{ secrets.GITHUB_OAUTH_TOKEN }}@github.com/${{ github.repository }}.git
         run: |
           find ./ -regextype 'posix-extended' -mindepth 1 ! -regex '^\.\/(build|\.git)(\/.*)?' -delete
-          cp ${PWD}/build/* ./
+          cp -a ${PWD}/build/. ./
           rm -rf ${PWD}/build
           ls -a
         # run: |
