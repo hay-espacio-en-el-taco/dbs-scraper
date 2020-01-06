@@ -26,14 +26,17 @@ jobs:
 
       - name: Build Docker image
         run: |
+          echo "Wow, such pwd ${PWD}"
+          ls -a
           docker build --no-cache -t dbs-web ./web-page
+          echo "Wow, such pwd ${PWD}"
+          ls -a
       
       - name: Build app files
         run: |
-          ls
+          echo "Wow, such pwd ${PWD}"
           mkdir build
-          ls
-          echo ${PWD}
+          ls -a
           docker run --rm -v ${PWD}/build:/home/node/app/build dbs-web npm run build
           echo "listing ${PWD}/build"
           ls ./build
