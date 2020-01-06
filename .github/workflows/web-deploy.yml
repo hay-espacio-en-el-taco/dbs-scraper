@@ -1,12 +1,12 @@
 name: 'DBS Scraper | Web deploy'
 
-on:
-  push: 
-    tags:
-      - cards*
-    paths:
-      - 'web-page/**'
-      - '.github/workflows/**'
+on: push
+  # push: 
+  #   tags:
+  #     - cards*
+  #   paths:
+  #     - 'web-page/**'
+  #     - '.github/workflows/**'
 
 
 jobs:
