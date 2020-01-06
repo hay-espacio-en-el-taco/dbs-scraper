@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    name: 'Scrap page & get cards'
+    name: 'Deploy'
     runs-on: ubuntu-latest
     env:
       LATEST_RELEASE_CARDS_FILE: ./web-page/src/cards.json
@@ -24,12 +24,16 @@ jobs:
           assets: cards.json|${{env.LATEST_RELEASE_CARDS_FILE}}
           github_token: ${{ github.token }} 
 
+      - name: Build Docker image
+        env: 
+          APP_PATH: /home/node/app
+        run: |
+          docker build --no-cache -t dbs-web ./web-page
+      
       - name: Build app files
         env: 
           APP_PATH: /home/node/app
         run: |
-          ls ./web-page/src
-          docker build --no-cache -t dbs-web ./web-page
           docker run --rm -v ${PWD}/build:${{env.APP_PATH}}/build dbs-web npm run build
           echo "listing ${PWD}/build"
           ls ./build
@@ -38,7 +42,10 @@ jobs:
         env:
           REMOTE_REPO: https://${{ secrets.GITHUB_OAUTH_TOKEN }}@github.com/${{ github.repository }}.git
         run: |
-          find ./build -regextype 'posix-extended' -mindepth 1 ! -regex '^\.\/(build|\.git)(\/.*)?' -delete
+          ls -a
+          find ./ -regextype 'posix-extended' -mindepth 1 ! -regex '^\.\/(build|\.git)(\/.*)?' -delete
+          ls -a
+          mv ./build ${PWD}
           ls -a
         # run: |
         #   NEW_TAG="web_$(date --utc '+%Y-%m-%d/%Hh-%Mm')"
