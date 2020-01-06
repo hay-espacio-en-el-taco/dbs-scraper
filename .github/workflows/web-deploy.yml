@@ -1,11 +1,11 @@
 name: 'DBS Scraper | Web deploy'
 on:
   push: 
+    branches: 
+      - 'refs/tags/cards**'
     paths:
       - 'web-page/**'
       - '.github/workflows/**'
-    # tags:
-    #   - cards*
 
 jobs:
   deploy:
@@ -29,13 +29,12 @@ jobs:
           docker build --no-cache -t dbs-web ./web-page
       
       - name: Build app files
-        env: 
-          APP_PATH: /home/node/app
         run: |
           mkdir build
-          docker run --rm -v ${PWD}/build:${{env.APP_PATH}}/build dbs-web npm run build
+          docker run --rm -v ${PWD}/build:/home/node/app/build dbs-web npm run build
           echo "listing ${PWD}/build"
           ls ./build
+          ls ${PWD}/build
 
       - name: Push to gh-pages branch
         env:
