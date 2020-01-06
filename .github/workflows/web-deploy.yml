@@ -1,0 +1,45 @@
+name: 'DBS Scraper | Update cards'
+
+on:
+  push: 
+    tags:
+      - cards*
+    paths:
+      - 'web-page/**'
+      - '.github/workflows/web-deploy.yml'
+
+
+jobs:
+  get_cards:
+    name: 'Scrap page & get cards'
+    runs-on: ubuntu-latest
+    env:
+      LATEST_RELEASE_CARDS_FILE: ./web-page/src/cards.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download cards.json from latest release
+        uses: Xotl/cool-github-releases@v1
+        with:
+          assets: cards.json|${{env.LATEST_RELEASE_CARDS_FILE}}
+          github_token: ${{ github.token }} 
+
+      - name: Build app files
+        run: |
+          docker build -t dbs-web ./web-page
+          docker run --rm -v ${PWD}/build:/home/node/app/build dbs-scraper npm run build
+          echo "listing ${PWD}/build"
+          ls ./build
+
+      # - name: Push to gh-pages branch
+      #   env:
+      #     REMOTE_REPO: https://${{ secrets.GITHUB_OAUTH_TOKEN }}@github.com/${{ github.repository }}.git
+      #   run: |
+      #     NEW_TAG="web_$(date --utc '+%Y-%m-%d/%Hh-%Mm')"
+      #     find ./build -regextype 'posix-extended' -mindepth 1 ! -regex '^\.\/(build|\.git)(\/.*)?' -delete
+      #     git add -A
+      #     git commit -m "New version"
+      #     git tag -a "${{env.NEW_TAG}}" -m "${{env.NEW_TAG}} | Auto pushed from Github Actions"
+      #     git push -f --follow-tags ${REMOTE_REPO} HEAD:gh-pages
