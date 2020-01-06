@@ -1,12 +1,12 @@
 name: 'DBS Scraper | Web deploy'
 
-on: push
-  # push: 
-  #   tags:
-  #     - cards*
-  #   paths:
-  #     - 'web-page/**'
-  #     - '.github/workflows/**'
+on:
+  push: 
+    tags:
+      - cards*
+    paths:
+      - 'web-page/**'
+      - '.github/workflows/**'
 
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
       - name: Build app files
         run: |
           docker build -t dbs-web ./web-page
-          docker run --rm -v ${PWD}/build:/home/node/app/build dbs-scraper npm run build
+          docker run --rm -v ${PWD}/build:/home/node/app/build dbs-web npm run build
           echo "listing ${PWD}/build"
           ls ./build
 
