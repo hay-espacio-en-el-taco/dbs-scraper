@@ -6,7 +6,7 @@ on:
       - cards*
     paths:
       - 'web-page/**'
-      - '.github/workflows/web-deploy.yml'
+      - '.github/workflows/**'
 
 
 jobs:
