@@ -5,7 +5,7 @@ import { ofType } from 'redux-observable'
 import { tap, map, mergeMap, ignoreElements } from 'rxjs/operators'
 import { createReducer } from '@reduxjs/toolkit'
 
-import AllCards from '../../cards.json'
+import { cards as AllCards } from '../../cards.json'
 
 const CARDS_DICTIONARY = AllCards.reduce(
         (result, card) => {

@@ -5,59 +5,42 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch React App",
-            "preLaunchTask": "Run react app (detached)",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}"
-        },
-        {
             "type": "node",
             "request": "launch",
-            "name": "Run scrapper",
+            "name": "Run scraper",
             "preLaunchTask": "Prepare before running scraper app",
             "runtimeExecutable": "docker",
             "runtimeArgs": [
                 "run", "--rm",
                 "--name", "dbs-scraper",
                 "-p", "9229:9229",
-                "-v", "${workspaceFolder}/scraper/src:/home/node/app/scraper/src",
+                "-v", "${workspaceFolder}/scraper/src:/home/node/app/src",
                 "dbs-scraper",
-                "npm", "run", "debug", "--prefix", "/home/node/app/scraper/"
-                // "node", "--inspect-brk=0.0.0.0:9229", "/home/node/app/scraper/"
+                "npm", "run", "debug",
             ],
             "localRoot": "${workspaceFolder}/scraper",
-            "remoteRoot": "/home/node/app/scraper",
+            "remoteRoot": "/home/node/app",
+            "port": 9229
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run web page",
+            "preLaunchTask": "Prepare before running React app",
+            "runtimeExecutable": "docker",
+            "runtimeArgs": [
+                "run", "--rm",
+                "--name", "dbs-web",
+                "-p", "3000:3000",
+                "-p", "9229:9229",
+                "-v", "${workspaceFolder}/web-page/src:/home/node/app/src",
+                "dbs-web",
+                "npm", "start",
+            ],
+            "localRoot": "${workspaceFolder}/web-page",
+            "remoteRoot": "/home/node/app",
             "port": 9229,
             // "console":"integratedTerminal",
-            // "internalConsoleOptions":"neverOpen"
-        },
-        // {
-        //     "type": "node",
-        //     "request": "launch",
-        //     "name": "Run web app",
-        //     "preLaunchTask": "Prepare before running React App",
-        //     "runtimeExecutable": "docker",
-        //     "runtimeArgs": [
-        //         "run", "--rm",
-        //         "--name", "dbs-scraper-ui",
-        //         "-p", "3000:3000",
-        //         "-v", "${workspaceFolder}/web-page/src:/home/node/app/web-page/src",
-        //         "dbs-scraper",
-        //         "npm", "start"
-        //     ],
-        //     "serverReadyAction": {
-        //         "pattern": "You can now view dbs-scraper in the browser.",
-        //         "uriFormat": "http://localhost:3000",
-        //         "action": "openExternally"
-        //     },
-        //     // "localRoot": "${workspaceFolder}/web-page",
-        //     // "remoteRoot": "/home/node/app/web-page/src",
-        //     "port": 9229,
-        //     // "console":"integratedTerminal",
-        //     // "internalConsoleOptions":"neverOpen"
-
-        // }
+        }
     ]
 }
