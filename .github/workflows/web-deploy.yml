@@ -1,7 +1,8 @@
 name: 'DBS Scraper | Web deploy'
 on:
-    tags:
-      - cards**'
+    push:
+      tags:
+        - cards**'
 
 jobs:
   deploy:
