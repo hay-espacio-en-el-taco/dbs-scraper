@@ -8,7 +8,6 @@ on:
       - 'scraper/**'
       - '.github/workflows/cards.yml'
 
-
 jobs:
   get_cards:
     name: 'Scrap page & get cards'
