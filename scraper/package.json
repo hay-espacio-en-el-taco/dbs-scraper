@@ -6,6 +6,7 @@
     "scripts": {
         "start": "node --unhandled-rejections=strict src/index.js",
         "debug": "node --inspect-brk=0.0.0.0:9229 --unhandled-rejections=strict src/index.js",
+        "generate-changelog": "npm start && node src/tools/changelog.js ${CARDS_OUTPUT}",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
