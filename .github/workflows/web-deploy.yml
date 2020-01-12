@@ -57,5 +57,5 @@ jobs:
         run: >-
           curl -L -X POST 
           -H "Content-Type: application/json"
-          -H "Authorization: token ${{ github.token }}"
+          -H "Authorization: token ${{ secrets.GITHUB_OAUTH_TOKEN }}"
           "https://api.github.com/repos/${{ github.repository }}/pages/builds"
