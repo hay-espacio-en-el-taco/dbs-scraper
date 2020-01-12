@@ -55,5 +55,5 @@ jobs:
           git remote add pages ${REMOTE_REPO}
           git push pages HEAD:gh-pages -f --follow-tags
           
-          
+
 # git push -f --follow-tags ${REMOTE_REPO} HEAD:gh-pages
