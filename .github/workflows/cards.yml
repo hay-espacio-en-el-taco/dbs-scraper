@@ -4,6 +4,8 @@ on:
   schedule:
     - cron:  '0 6 * * *'
   push: 
+    branches:
+      - 'master'
     paths:
       - 'scraper/**'
       - '.github/workflows/cards.yml'
@@ -15,7 +17,8 @@ jobs:
     env:
       NEW_CARDS: false
       LATEST_RELEASE_CARDS_FILE: ./cards-latest_release.json
-      TODAY_CARDS_FILE: ./cards.json
+      CARDS_OUTPUT: ./cards.json
+      CARDS_CHANGELOG_OUTPUT: ./changelog.cards.txt
 
     steps:
       - name: Checkout
@@ -28,8 +31,6 @@ jobs:
           github_token: ${{ github.token }} 
 
       - name: Scrap page for cards.json
-        env: 
-          CARDS_OUTPUT: ${{env.TODAY_CARDS_FILE}}
         run: |
           docker build -t dbs-scraper ./scraper
           chmod +x tools/get-cards-file.sh
@@ -37,16 +38,18 @@ jobs:
 
       - name: Check if there are differences
         run: |
-          if [ "$(cat ${{env.LATEST_RELEASE_CARDS_FILE}})" != "$(cat ${{env.TODAY_CARDS_FILE}})" ]; \
+          if [ "$(cat ${LATEST_RELEASE_CARDS_FILE})" != "$(cat ${CARDS_OUTPUT})" ]; \
           then echo ::set-env name=NEW_CARDS::true; fi
   
-      - name: Create tag & title variables
+      - name: Create tag, description & title variables
         if: env.NEW_CARDS == 'true'
         run: |
           NEW_TITLE="New cards found at $(date --utc '+%Y/%m/%d %H:%Mhrs (UTC)')"
           NEW_TAG="cards_$(date --utc '+%Y-%m-%d/%Hh-%Mm')"
+          BODY_MRKDWN="$(cat ${CARDS_CHANGELOG_OUTPUT})"
           echo "::set-env name=NEW_TITLE::${NEW_TITLE}"
           echo "::set-env name=NEW_TAG::${NEW_TAG}"
+          echo "::set-env name=BODY_MRKDWN::${BODY_MRKDWN}"
 
       - name: Create new release
         if: env.NEW_CARDS == 'true'
@@ -54,8 +57,7 @@ jobs:
         with:
           mode: update
           tag_name: ${{env.NEW_TAG}}
-          release_name: ${{env.NEW_TITLE}}
-          body_mrkdwn: "${{env.NEW_TITLE}}. 🎉"
-          assets: ${{env.TODAY_CARDS_FILE}}
+          release_name: "${{env.NEW_TITLE}} 🎉"
+          body_mrkdwn: "${{env.BODY_MRKDWN}}"
+          assets: ${{env.CARDS_OUTPUT}}
           github_token: ${{ github.token }}
-        
