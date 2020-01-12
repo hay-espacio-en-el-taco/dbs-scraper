@@ -68,7 +68,7 @@ ${typesMrkdwn}
 ${seriesMrkdwn}
 </p>
 </details>
-`
+`.trim()
 
 FS.writeFileSync(changelogOutput, changelogMrkd)
 console.log(changelogMrkd)
