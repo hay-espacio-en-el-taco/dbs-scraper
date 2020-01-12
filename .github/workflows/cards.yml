@@ -74,4 +74,3 @@ jobs:
           body_mrkdwn: ${{env.BODY_MRKDWN}}
           assets: ${{env.CARDS_OUTPUT}}
           github_token: ${{ secrets.GITHUB_OAUTH_TOKEN }}
- 

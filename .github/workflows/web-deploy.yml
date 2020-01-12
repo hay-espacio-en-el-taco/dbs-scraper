@@ -53,9 +53,9 @@ jobs:
           git tag -a "${NEW_TAG}" -m "${NEW_TAG} | Auto pushed from Github Actions"
           git push -f --follow-tags ${REMOTE_REPO} HEAD:gh-pages
           
-      - name: Push to gh-pages branch
+      - name: Request Github Pages build job
         run: >-
           curl -L -X POST 
           -H "Content-Type: application/json"
           -H "Authorization: token ${{ github.token }}"
-          "https://api.github.com/repos/${{ github.repository }}/builds"
+          "https://api.github.com/repos/${{ github.repository }}/pages/builds"
