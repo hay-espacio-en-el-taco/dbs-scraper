@@ -19,7 +19,7 @@ jobs:
       NEW_CARDS: false
       LATEST_RELEASE_CARDS_FILE: ./cards-latest_release.json
       CARDS_OUTPUT: ./cards.json
-      CARDS_CHANGELOG_OUTPUT: ./changelog.cards.txt
+      CHANGELOG_OUTPUT: ./changelog.cards.txt
 
     steps:
       - name: Checkout
@@ -31,12 +31,20 @@ jobs:
           assets: cards.json|${{env.LATEST_RELEASE_CARDS_FILE}}
           github_token: ${{ github.token }} 
 
+      - name: Build docker image
+        run: docker build -t dbs-scraper ./scraper
+
       - name: Scrap page for cards.json
         run: |
-          docker build -t dbs-scraper ./scraper
           chmod +x tools/get-cards-file.sh
           ./tools/get-cards-file.sh
-          ls -a
+
+      - name: Generate changelog file
+        env:
+          OLD_CARDS_FILE: ${{ env.LATEST_RELEASE_CARDS_FILE }}
+        run: |
+          chmod +x tools/generate-changelog.sh
+          ./tools/generate-changelog.sh
 
       - name: Check if there are differences
         run: |
@@ -48,7 +56,7 @@ jobs:
         run: |
           NEW_TITLE="New cards found at $(date --utc '+%Y/%m/%d %H:%Mhrs (UTC)')"
           NEW_TAG="cards_$(date --utc '+%Y-%m-%d/%Hh-%Mm')"
-          BODY_MRKDWN=$(cat ${CARDS_CHANGELOG_OUTPUT})
+          BODY_MRKDWN=$(cat ${CHANGELOG_OUTPUT})
           BODY_MRKDWN="${BODY_MRKDWN//'%'/'%25'}"
           BODY_MRKDWN="${BODY_MRKDWN//$'\n'/'%0A'}"
           BODY_MRKDWN="${BODY_MRKDWN//$'\r'/'%0D'}"
@@ -57,13 +65,17 @@ jobs:
           echo "::set-env name=BODY_MRKDWN::${BODY_MRKDWN}"
           echo "le markdown ${BODY_MRKDWN}"
 
-      - name: Create new release
+      - name: Build docker image
         if: env.NEW_CARDS == 'true'
-        uses: Xotl/cool-github-releases@v1
-        with:
-          mode: update
-          tag_name: ${{env.NEW_TAG}}
-          release_name: "${{env.NEW_TITLE}} 🎉"
-          body_mrkdwn: ${{env.BODY_MRKDWN}}
-          assets: ${{env.CARDS_OUTPUT}}
-          github_token: ${{ github.token }}
+        run: echo "${{env.BODY_MRKDWN}}"
+
+      # - name: Create new release
+      #   if: env.NEW_CARDS == 'true'
+      #   uses: Xotl/cool-github-releases@v1
+      #   with:
+      #     mode: update
+      #     tag_name: ${{env.NEW_TAG}}
+      #     release_name: "${{env.NEW_TITLE}} 🎉"
+      #     body_mrkdwn: ${{env.BODY_MRKDWN}}
+      #     assets: ${{env.CARDS_OUTPUT}}
+      #     github_token: ${{ github.token }}
