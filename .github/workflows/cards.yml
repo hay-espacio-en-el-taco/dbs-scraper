@@ -19,7 +19,7 @@ jobs:
       NEW_CARDS: false
       LATEST_RELEASE_CARDS_FILE: ./cards-latest_release.json
       CARDS_OUTPUT: ./cards.json
-      CARDS_CHANGELOG_OUTPUT: changelog.cards.txt
+      CARDS_CHANGELOG_OUTPUT: ./changelog.cards.txt
 
     steps:
       - name: Checkout
@@ -36,6 +36,7 @@ jobs:
           docker build -t dbs-scraper ./scraper
           chmod +x tools/get-cards-file.sh
           ./tools/get-cards-file.sh
+          ls -a
 
       - name: Check if there are differences
         run: |
@@ -47,10 +48,11 @@ jobs:
         run: |
           NEW_TITLE="New cards found at $(date --utc '+%Y/%m/%d %H:%Mhrs (UTC)')"
           NEW_TAG="cards_$(date --utc '+%Y-%m-%d/%Hh-%Mm')"
-          BODY_MRKDWN="$(cat ${PWD}/${CARDS_CHANGELOG_OUTPUT})"
+          BODY_MRKDWN="$(cat ${CARDS_CHANGELOG_OUTPUT})"
           echo "::set-env name=NEW_TITLE::${NEW_TITLE}"
           echo "::set-env name=NEW_TAG::${NEW_TAG}"
           echo "::set-env name=BODY_MRKDWN::${BODY_MRKDWN}"
+          echo "le markdown ${BODY_MRKDWN}"
 
       - name: Create new release
         if: env.NEW_CARDS == 'true'
