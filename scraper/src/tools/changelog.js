@@ -93,7 +93,7 @@ const diffMrkdwn = (seriesDiff, typesDiff) => {
         (key) => {
             const count = typesDiff.allKeysDiff[key]
             if (count !== 0) {
-                result.push(`* Added ${count} cards of type \`${key}\``)
+                result.push(`* Added ${count} \`${key}\` card(s)`)
             }
         }
     )
@@ -106,7 +106,7 @@ const diffMrkdwn = (seriesDiff, typesDiff) => {
         (key) => {
             const count = seriesDiff.allKeysDiff[key]
             if (count !== 0) {
-                result.push(`* Added ${count} cards to serie \`${key}\``)
+                result.push(`* Added ${count} card(s) to serie \`${key}\``)
             }
         }
     )
@@ -145,6 +145,8 @@ ${getTypesMrkdwn(newCardsObj.types)}
 
 ${getSeriesMrkdwn(newCardsObj.series)}
 </p>
+</details>
+
 </details>
 `.trim()
 
