@@ -49,6 +49,9 @@ jobs:
           NEW_TITLE="New cards found at $(date --utc '+%Y/%m/%d %H:%Mhrs (UTC)')"
           NEW_TAG="cards_$(date --utc '+%Y-%m-%d/%Hh-%Mm')"
           BODY_MRKDWN=$(cat ${CARDS_CHANGELOG_OUTPUT})
+          BODY_MRKDWN="${BODY_MRKDWN//'%'/'%25'}"
+          BODY_MRKDWN="${BODY_MRKDWN//$'\n'/'%0A'}"
+          BODY_MRKDWN="${BODY_MRKDWN//$'\r'/'%0D'}"
           echo "::set-env name=NEW_TITLE::${NEW_TITLE}"
           echo "::set-env name=NEW_TAG::${NEW_TAG}"
           echo "::set-env name=BODY_MRKDWN::${BODY_MRKDWN}"
