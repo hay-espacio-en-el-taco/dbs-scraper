@@ -1,0 +1,61 @@
+
+<details>
+    <summary>
+        Found a total of <strong>2253</strong> cards
+    </summary>
+
+<p>
+
+* `LEADER` type: **157** cards
+* `BATTLE` type: **1797** cards
+* `EXTRA` type: **299** cards
+</p>
+</details>
+
+<details>
+    <summary>
+        Found a total of <strong>38</strong> series </p>
+    </summary>
+
+<p>
+
+* `Series 9 -UNIVERSAL ONSLAUGHT-`: **49** cards
+* `Series 8 -MALICIOUS MACHINATIONS-`: **149** cards
+* `Series7 ～ASSAULT OF THE SAIYANS～`: **253** cards
+* `Series6 ～DESTROYER KINGS～`: **212** cards
+* `Series 5  ～MIRACULOUS REVIVAL～`: **150** cards
+* `Series 4  ～COLOSSAL WARFARE～`: **152** cards
+* `Series 3 Booster ～CROSS WORLDS～`: **155** cards
+* `Series 2 Booster ～UNION FORCE～`: **146** cards
+* `Series 1 Booster ～GALACTIC BATTLE～`: **154** cards
+* `Themed Booster ～CLASH OF FATES～`: **79** cards
+* `Themed Booster ～World Martial Arts Tournament～`: **80** cards
+* `Themed Booster ～The Tournament Of Power～`: **117** cards
+* `DRAFT BOX 04 -DRAGON BRAWL-`: **103** cards
+* `STARTER DECK ~INSTINCT SURPASSED~[DBS-SD11]`: **5** cards
+* `STARTER DECK ~PARASITIC OVERLORD~ [DBS-SD10]`: **5** cards
+* `STARTER DECK ~SAIYAN LEGACY~ [DBS-SD09]`: **5** cards
+* `STARTER DECK ～RISING BROLY～[DBS-SD08]`: **10** cards
+* `STARTER DECK ～SHENRON's ADVENT～[DBS-SD07]`: **5** cards
+* `STARTER DECK ～RESURRECTED FUSION～[DBS-SD06]`: **5** cards
+* `STARTER DECK ～THE CRIMSON SAIYAN～[DBS-SD05]`: **5** cards
+* `STARTER DECK ～THE Guardian of Namekians～[DBS-SD04]`: **5** cards
+* `Series 3 Starter ～THE DARK INVASION～`: **5** cards
+* `Series 3 Starter ～THE EXTREME EVOLUTION～`: **6** cards
+* `Series 1 Starter ～THE AWAKENING～`: **5** cards
+* `EXPERT DECK ~THE ULTIMATE LIFE FORM~[DBS-XD03]`: **10** cards
+* `EXPERT DECK ~ANDROID DUALITY~[DBS-XD02]`: **10** cards
+* `EXPERT DECK ~UNIVERSE 6 ASSAILANTS~[DBS-XD01]`: **10** cards
+* `EXPANSION SET 10 -Namekian Surge-`: **6** cards
+* `EXPANSION SET 09 -Saiyan Surge- `: **6** cards
+* `EXPANSION SET Magnificent Collection`: **18** cards
+* `Special Anniversary Box Special Anniversary Box`: **36** cards
+* `EXPANSION SET05 -Unity of Destruction- `: **4** cards
+* `EXPANSION SET04 -Unity of Saiyans- `: **4** cards
+* `ULTIMATE BOX ULTIMATE BOX`: **31** cards
+* `EXPANSION DECK BOX SET 02 -Dark Demon's Villains-`: **9** cards
+* `EXPANSION DECK BOX SET 01 -Mighty Heroes-`: **7** cards
+* `Promotion Cards Promotion Cards`: **241** cards
+* `- -`: **1** cards
+</p>
+</details>
