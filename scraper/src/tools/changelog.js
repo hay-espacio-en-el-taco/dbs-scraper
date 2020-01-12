@@ -2,7 +2,7 @@
 const FS = require('fs')
 const Path = require('path');
 
-const changelogOutput = process.env.CARDS_CHANGELOG_OUTPUT || './changelog.cards.txt'
+const changelogOutput = process.env.CARDS_CHANGELOG_OUTPUT || 'changelog.cards.txt'
 let cardsPath = process.argv[2]
 if (!cardsPath) {
     return console.error('Must provide the path where the cards file is located.')
