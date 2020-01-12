@@ -2,7 +2,6 @@ name: 'DBS Scraper | Web deploy'
 
 on:
   release:
-  push:
 
 jobs:
   deploy:
@@ -14,7 +13,7 @@ jobs:
 
     steps:
       - name: Checking event data
-        run: actions/checkout@v2
+        run: echo "${{ toJson(github.event) }}"
 
     #   - name: Checkout
     #     uses: actions/checkout@v2
