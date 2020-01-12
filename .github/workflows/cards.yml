@@ -9,6 +9,7 @@ on:
     paths:
       - 'scraper/**'
       - '.github/workflows/cards.yml'
+      - 'tools/**'
 
 jobs:
   get_cards:
