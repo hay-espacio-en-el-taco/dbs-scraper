@@ -12,10 +12,17 @@ cardsPath = Path.normalize( Path.join(cardsPath) )
 const fileContents = FS.readFileSync(cardsPath, 'utf8')
 const cardsObj = JSON.parse(fileContents)
 
+const typesDict = cardsObj.cards.reduce(
+    (dict, { type }) => {
+        if (typeof dict[type] !== 'number') {
+            dict[type] = 0
+        }
+        dict[type]++
 
-const leaderCount = cardsObj.cards.filter(c => c.type === 'LEADER').length
-const battleCount = cardsObj.cards.filter(c => c.type === 'BATTLE').length
-const extraCount = cardsObj.cards.filter(c => c.type === 'EXTRA').length
+        return dict
+    },
+    {}
+)
 
 const seriesDict = cardsObj.cards.reduce(
     (dict, { seriesName, seriesFullName }) => {
@@ -30,19 +37,37 @@ const seriesDict = cardsObj.cards.reduce(
     {}
 )
 
+const typesMrkdwn = Object.keys(typesDict).map(
+    type => `* \`${type}\` type: **${typesDict[type]}** cards`
+).join('\n')
+
 const seriesMrkdwn = Object.keys(seriesDict).map(
-    series => `* ${series}: **${seriesDict[series]}**`
+    series => `* \`${series}\`: **${seriesDict[series]}** cards`
 ).join('\n')
 
 
 const changelogMrkd = `
-Found *${cardsObj.cards.length}* cards:
-* Leader cards: **${leaderCount}**
-* Battle cards: **${battleCount}**
-* Extra cards: **${extraCount}**
+<details>
+    <summary>
+        Found a total of <strong>${cardsObj.cards.length}</strong> cards
+    </summary>
 
-From *${cardsObj.urlsList.length}* series:
+<p>
+
+${typesMrkdwn}
+</p>
+</details>
+
+<details>
+    <summary>
+        Found a total of <strong>${cardsObj.urlsList.length}</strong> series </p>
+    </summary>
+
+<p>
+
 ${seriesMrkdwn}
+</p>
+</details>
 `
 
 FS.writeFileSync(changelogOutput, changelogMrkd)
