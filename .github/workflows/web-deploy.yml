@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - 'cards_**'
+    paths:
+      - 'web-page/**'
+      - '.github/workflows/web-deploy.yml'
 
 jobs:
   deploy:
@@ -11,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LATEST_RELEASE_CARDS_FILE: ./web-page/src/cards.json
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
