@@ -151,5 +151,4 @@ ${getSeriesMrkdwn(newCardsObj.series)}
 `.trim()
 
 FS.writeFileSync(changelogOutput, changelogMrkd)
-console.log(changelogMrkd)
 console.log('Changelog generated succesfully!')

@@ -63,7 +63,6 @@ jobs:
           echo "::set-env name=NEW_TITLE::${NEW_TITLE}"
           echo "::set-env name=NEW_TAG::${NEW_TAG}"
           echo "::set-env name=BODY_MRKDWN::${BODY_MRKDWN}"
-          echo "le markdown ${BODY_MRKDWN}"
 
       - name: Create new release
         if: env.NEW_CARDS == 'true'
