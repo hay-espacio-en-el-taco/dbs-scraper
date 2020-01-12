@@ -2,7 +2,7 @@ name: 'DBS Scraper | Web deploy'
 
 on:
   release:
-    types: [published, edited]
+    types: [created, edited]
 
 jobs:
   deploy:
