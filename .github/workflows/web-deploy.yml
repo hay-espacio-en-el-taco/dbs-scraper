@@ -43,7 +43,8 @@ jobs:
 
       - name: Push to gh-pages branch
         env:
-          REMOTE_REPO: https://${{ secrets.GITHUB_OAUTH_TOKEN }}@github.com/${{ github.repository }}.git
+          REMOTE_REPO: https://x-access-token:${{ secrets.GITHUB_OAUTH_TOKEN }}@github.com${{ github.repository }}.git
+          # REMOTE_REPO: https://${{ secrets.GITHUB_OAUTH_TOKEN }}@github.com/${{ github.repository }}.git
         run: |
           NEW_TAG="web_$(date --utc '+%Y-%m-%d/%Hh-%Mm')"
           git config user.name "github"
@@ -51,4 +52,8 @@ jobs:
           git add -A
           git commit -m "${NEW_TAG} | Auto pushed from Github Actions"
           git tag -a "${NEW_TAG}" -m "${NEW_TAG} | Auto pushed from Github Actions"
-          git push -f --follow-tags ${REMOTE_REPO} HEAD:gh-pages
+          git remote add pages ${REMOTE_REPO}
+          git push pages HEAD:gh-pages -f --follow-tags
+          
+          
+# git push -f --follow-tags ${REMOTE_REPO} HEAD:gh-pages
