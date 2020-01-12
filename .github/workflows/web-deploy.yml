@@ -1,8 +1,9 @@
 name: 'DBS Scraper | Web deploy'
+
 on:
-    push:
-      tags:
-        - cards**'
+  push:
+    tags:
+      - 'cards_**'
 
 jobs:
   deploy:
@@ -27,22 +28,17 @@ jobs:
       
       - name: Build app files
         run: |
-          mkdir build
-          docker run --rm -v ${PWD}/build:/home/node/app/build dbs-web npm run build
-          find ${PWD}/build -type f -exec chmod 777 {} \;
+          docker run --name dbs-container dbs-web npm run build
 
       - name: Push to gh-pages branch
         env:
           REMOTE_REPO: https://${{ secrets.GITHUB_OAUTH_TOKEN }}@github.com/${{ github.repository }}.git
+          NEW_TAG: web_$(date --utc '+%Y-%m-%d/%Hh-%Mm')
         run: |
-          find ./ -regextype 'posix-extended' -mindepth 1 ! -regex '^\.\/(build|\.git)(\/.*)?' -delete
-          cp -a ${PWD}/build/. ./
-          rm -rf ${PWD}/build
-          ls -a
-        # run: |
-        #   NEW_TAG="web_$(date --utc '+%Y-%m-%d/%Hh-%Mm')"
-        #   find ./build -regextype 'posix-extended' -mindepth 1 ! -regex '^\.\/(build|\.git)(\/.*)?' -delete
-        #   git add -A
-        #   git commit -m "New version"
-        #   git tag -a "${{env.NEW_TAG}}" -m "${{env.NEW_TAG}} | Auto pushed from Github Actions"
-        #   git push -f --follow-tags ${REMOTE_REPO} HEAD:gh-pages
+          git rm -rf .
+          git clean -fxd
+          docker cp dbs-container:/home/node/app/build/. ./
+          git add -A
+          git commit -m "New version"
+          git tag -a "${{env.NEW_TAG}}" -m "${{env.NEW_TAG}} | Auto pushed from Github Actions"
+          git push -f --follow-tags ${REMOTE_REPO} HEAD:gh-pages
