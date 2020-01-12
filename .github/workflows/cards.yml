@@ -54,13 +54,20 @@ jobs:
           echo "::set-env name=BODY_MRKDWN::${BODY_MRKDWN}"
           echo "le markdown ${BODY_MRKDWN}"
 
-      - name: Create new release
+      - name: Test
         if: env.NEW_CARDS == 'true'
-        uses: Xotl/cool-github-releases@v1
-        with:
-          mode: update
-          tag_name: ${{env.NEW_TAG}}
-          release_name: "${{env.NEW_TITLE}} 🎉"
-          body_mrkdwn: "${{env.BODY_MRKDWN}}"
-          assets: ${{env.CARDS_OUTPUT}}
-          github_token: ${{ github.token }}
+        env:
+          body_mrkdwn: ${{env.BODY_MRKDWN}}
+        run: |
+          echo "le markdown ${body_mrkdwn}"
+
+      # - name: Create new release
+      #   if: env.NEW_CARDS == 'true'
+      #   uses: Xotl/cool-github-releases@v1
+      #   with:
+      #     mode: update
+      #     tag_name: ${{env.NEW_TAG}}
+      #     release_name: "${{env.NEW_TITLE}} 🎉"
+      #     body_mrkdwn: ${{env.BODY_MRKDWN}}
+      #     assets: ${{env.CARDS_OUTPUT}}
+      #     github_token: ${{ github.token }}
