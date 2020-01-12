@@ -1,6 +1,8 @@
 name: 'DBS Scraper | Web deploy'
 
-on: release
+on:
+  release:
+  push:
 
 jobs:
   deploy:
