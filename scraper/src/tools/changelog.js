@@ -46,8 +46,7 @@ const seriesMrkdwn = Object.keys(seriesDict).map(
 ).join('\n')
 
 
-const changelogMrkd = `
-<details>
+const changelogMrkd = `<details>
     <summary>
         Found a total of <strong>${cardsObj.cards.length}</strong> cards
     </summary>
