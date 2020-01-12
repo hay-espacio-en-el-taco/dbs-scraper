@@ -43,7 +43,7 @@ jobs:
 
       - name: Push to gh-pages branch
         env:
-          REMOTE_REPO: https://${{ github.token }}@github.com/${{ github.repository }}.git
+          REMOTE_REPO: https://${{ secrets.GITHUB_OAUTH_TOKEN }}@github.com/${{ github.repository }}.git
         run: |
           NEW_TAG="web_$(date --utc '+%Y-%m-%d/%Hh-%Mm')"
           git config user.name "github"
