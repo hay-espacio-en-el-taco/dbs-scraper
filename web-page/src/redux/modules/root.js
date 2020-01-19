@@ -2,13 +2,13 @@
 
 import { combineEpics } from 'redux-observable';
 import { combineReducers } from 'redux';
-import search, { updateSearchEpic, searchCardsEpic } from './search'
+import search, { updateSearchEpic } from './search'
 import deck from './deck'
 
 export const rootEpic = combineEpics(
 
   // Search
-  updateSearchEpic, searchCardsEpic
+  updateSearchEpic//, searchCardsEpic
 );
 
 export const rootReducer = combineReducers({

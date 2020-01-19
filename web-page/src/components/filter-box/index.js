@@ -1,11 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { 
-    searchCards, 
-    addFilter, 
-    updateFilter, 
-    removeFilter 
-} from '../../redux/modules/search'
+import { searchCards } from '../../redux/modules/search'
+import { addFilter, updateFilter, removeFilter } from '../../redux/modules/search/filters'
 import './index.css'
 import Filter from '../Filter'
 import { 
@@ -24,7 +20,7 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
         const filterText = fieldName === "color" ? mapIdToColor[id] : id.toString(), type = 'string'
         let isFilterAdd = appliedFilters.find(a=> a.id.toLocaleLowerCase().replace('not ', '') === `${fieldName}: ${filterText}`.toLocaleLowerCase())
         if (isFilterAdd) {
-            onFilterRemove(isFilterAdd.id)
+            onFilterRemove({ id: isFilterAdd.id })
             return// Filter already added
         }
         let filterExists = appliedFilters.find(a =>
@@ -39,7 +35,7 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
             newFilterText = newId.split(':')[1]
             const filterConditions = parseFilterText(newFilterText)
             const filter = createFilter(fieldName, filterConditions, type)
-            onUpdateFilter(filterExists.id, newId, filter)
+            onUpdateFilter({ id: filterExists.id, newId, filter })
             return
         }
         onAddFilter(type, fieldName, filterText, isFilterNegation)
@@ -67,7 +63,7 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
             filterText = 'not ' + filterText
         const filterConditions = parseFilterText(filterText)
         const filter = createFilter(fieldName, filterConditions, type)
-        onFilterAdd(`${fieldName}: ${filterText}`, filter)
+        onFilterAdd({ id: `${fieldName}: ${filterText}`, filter })
     }
 
     const onFieldSelectionChangeHandler = event => {
