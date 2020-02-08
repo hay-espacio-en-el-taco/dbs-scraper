@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import 'materialize-css/dist/css/materialize.min.css'
 import M from "materialize-css"
 import './App.css'
-import FilterBox from './components/filter-box'
+import FilterSideBar from './components/FilterSideBar'
 import CardsContainer from './components/CardsContainer'
 
 class App extends Component {
@@ -16,7 +16,7 @@ class App extends Component {
             <div className="App">
                 <div className="row">
                     <div className="App-header grey darken-3 col s12 m4 l3">
-                        <FilterBox />
+                        <FilterSideBar />
                     </div>
                     <div className="col s12 m8 l9">
                         <CardsContainer />
