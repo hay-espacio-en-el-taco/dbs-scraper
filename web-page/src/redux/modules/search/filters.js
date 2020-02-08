@@ -26,7 +26,11 @@ export const filtersSlice = createSlice({
             if (filterFound) {
                 filterFound.id = newId || id
                 filterFound.filterFn = filter
+                return// Can't update a non existant filter
             }
+
+            // Since no filter found, let's add a new filter instead
+            state.push({ id: newId || id, filterFn: filter })
         },
         clearFilters() {
             return []

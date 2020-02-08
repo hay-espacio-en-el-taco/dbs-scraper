@@ -92,10 +92,9 @@ export const parseFilterText = text => {
 const createButtons = (appliedFilters, onAddFilterButtonHandler, buttons, field) => (
     buttons.map((current, ind) =>
         <FilterButton
-            id={current}
             key={field + ind}
-            fieldname={field}
-            customClass={isInFilters(appliedFilters, field, field === FILTER_FIELDNAME.COLOR ? mapIdToColor[current] : current)}
+            label={current}
+            highlighted={isInFilters(appliedFilters, field, field === FILTER_FIELDNAME.COLOR ? mapIdToColor[current] : current)}
             onClick={onAddFilterButtonHandler}
         />
     )

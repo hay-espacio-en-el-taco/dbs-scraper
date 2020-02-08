@@ -4,6 +4,7 @@ import { searchCards } from '../../redux/modules/search'
 import { addFilter, updateFilter, removeFilter } from '../../redux/modules/search/filters'
 import './index.css'
 import Filter from '../Filter'
+import CardTypeFilter from './CardTypeFilter'
 import { 
     parseFilterText, 
     getFieldsToSearch, 
@@ -104,12 +105,14 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
     return (
         <div className="col s12 filter-box white-text">
             <div className="row">
-                <div className="input-field col s12">
+                {/* <div className="input-field col s12">
                     <div htmlFor="type">Card Type</div>
                     <div className="mx-auto btn-group-toggle btn-group">
                         {allButtons.type}
                     </div>
-                </div>
+                </div> */}
+                <CardTypeFilter />
+
                 <div className="input-field col s12">
                     <div htmlFor="color">Color</div>
                     <div id="color" className="mx-auto btn-group-toggle btn-group">
