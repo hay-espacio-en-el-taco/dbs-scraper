@@ -29,7 +29,7 @@ const FilterSideBar = (props) => {
                 <EnergyFilter />
                 <ComboEnergyFilter />
                 
-                <div className="input-field col s12">
+                {/* <div className="input-field col s12">
                     <select id="rarity" className="mx-auto btn-group-toggle btn-group">
                         <option value="">Rarity</option>
                         <option value="Common[C]">Common[C]</option>
@@ -39,8 +39,8 @@ const FilterSideBar = (props) => {
                         <option value="Uncommon[UC]">Uncommon[UC]</option>
                         <option value="Other">Other</option>
                     </select>
-                </div>
-                <div className="input-field col s12">
+                </div> */}
+                {/* <div className="input-field col s12">
                     <select id="character" className="mx-auto btn-group-toggle btn-group">
                         <option value="">Character</option>
                         <option value="Common[C]">Common[C]</option>
@@ -50,8 +50,8 @@ const FilterSideBar = (props) => {
                         <option value="Uncommon[UC]">Uncommon[UC]</option>
                         <option value="Other">Other</option>
                     </select>
-                </div>
-                <div className="input-field col s12">
+                </div> */}
+                {/* <div className="input-field col s12">
                     <select id="skillKeywords" className="mx-auto btn-group-toggle btn-group">
                         <option value="">Skill Keywords</option>
                         <option value="Common[C]">Common[C]</option>
@@ -61,7 +61,7 @@ const FilterSideBar = (props) => {
                         <option value="Uncommon[UC]">Uncommon[UC]</option>
                         <option value="Other">Other</option>
                     </select>
-                </div>
+                </div> */}
             </div>
 
             <FilterBox 
