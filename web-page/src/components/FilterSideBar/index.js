@@ -5,6 +5,8 @@ import { addFilter, updateFilter, removeFilter } from '../../redux/modules/searc
 import './index.css'
 import Filter from '../Filter'
 import CardTypeFilter from './CardTypeFilter'
+import ColorFilter from './ColorFilter'
+import EnergyFilter from './EnergyFilter'
 import { 
     parseFilterText, 
     getFieldsToSearch, 
@@ -105,26 +107,11 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
     return (
         <div className="col s12 filter-box white-text">
             <div className="row">
-                {/* <div className="input-field col s12">
-                    <div htmlFor="type">Card Type</div>
-                    <div className="mx-auto btn-group-toggle btn-group">
-                        {allButtons.type}
-                    </div>
-                </div> */}
                 <CardTypeFilter />
+                <ColorFilter />
+                <EnergyFilter />
+                
 
-                <div className="input-field col s12">
-                    <div htmlFor="color">Color</div>
-                    <div id="color" className="mx-auto btn-group-toggle btn-group">
-                        {allButtons.color}
-                    </div>
-                </div>
-                <div className="input-field col s12">
-                    <div htmlFor="energy">Energy</div>
-                    <div id="energy" className="mx-auto btn-group-toggle btn-group">
-                        {allButtons.energy}
-                    </div>
-                </div>
                 <div className="input-field col s12">
                     <div htmlFor="cboenergy">Combo Energy</div>
                     <div id="cboenergy" className="mx-auto btn-group-toggle btn-group">
