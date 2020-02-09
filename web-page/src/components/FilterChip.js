@@ -4,9 +4,9 @@ class FilterChip extends Component {
     render() {
         const { onRemove, text } = this.props;
         return (
-            <div class="chip">
+            <div className="chip">
                 {text}
-                <i class="close material-icons" onClick={onRemove}>close</i>
+                <i className="close material-icons" onClick={onRemove}>close</i>
             </div>
         )
     }
