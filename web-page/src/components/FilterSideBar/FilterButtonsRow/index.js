@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { updateFilter, removeFilter } from '../../../redux/modules/search/filters'
 
 
-const IDENTIFIER_PREFIX = '_$hide:'
+export const IDENTIFIER_PREFIX = '_$hide:'
 
 const FilterButtonsRow = (props) => {
     const {

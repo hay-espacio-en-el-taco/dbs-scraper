@@ -3,47 +3,22 @@ import { connect } from 'react-redux'
 import { searchCards } from '../../redux/modules/search'
 import { addFilter, updateFilter, removeFilter } from '../../redux/modules/search/filters'
 import './index.css'
-import Filter from '../Filter'
+
 import CardTypeFilter from './CardTypeFilter'
 import ColorFilter from './ColorFilter'
 import EnergyFilter from './EnergyFilter'
 import ComboEnergyFilter from './ComboEnergyFilter'
+import FiltersApplied from './FiltersApplied'
+
 import { 
     parseFilterText, 
     getFieldsToSearch, 
-    mapIdToColor, 
-    createAllButtons,
     createFilter
 } from './filter.utils'
 
-const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFilterAdd, onUpdateFilter, onFilterRemove }) => {
+const FilterBox = ({ totalCards, appliedFilters, fieldOptions, onFilterAdd }) => {
     const [ filterValues, setFilter ] = useState({ filterText: '', fieldToSearch: '', isFilterNegation: false })
     const { filterText, isFilterNegation } = filterValues
-
-    const onAddFilterButtonHandler = (id, fieldName) => {
-        const filterText = fieldName === "color" ? mapIdToColor[id] : id.toString(), type = 'string'
-        let isFilterAdd = appliedFilters.find(a=> a.id.toLocaleLowerCase().replace('not ', '') === `${fieldName}: ${filterText}`.toLocaleLowerCase())
-        if (isFilterAdd) {
-            onFilterRemove({ id: isFilterAdd.id })
-            return// Filter already added
-        }
-        let filterExists = appliedFilters.find(a =>
-            a.id.toLocaleLowerCase().startsWith(fieldName.toLocaleLowerCase()))
-        if(filterExists){
-            let newId, newFilterText, removeFilterRegexp = new RegExp(`\\s\\|\\|\\s(not\\s)?${filterText}|(not\\s)?${filterText}\\s\\|\\|\\s`, 'i'),
-            criteriaExist = filterExists.id.toLocaleLowerCase().includes(filterText.toLocaleLowerCase())
-            if(criteriaExist)
-                newId = filterExists.id.replace(removeFilterRegexp, '')
-            else 
-                newId = filterExists.id + ' || ' + (isFilterNegation ? 'NOT ' : '') + filterText
-            newFilterText = newId.split(':')[1]
-            const filterConditions = parseFilterText(newFilterText)
-            const filter = createFilter(fieldName, filterConditions, type)
-            onUpdateFilter({ id: filterExists.id, newId, filter })
-            return
-        }
-        onAddFilter(type, fieldName, filterText, isFilterNegation)
-    }
 
     const onAddFilterClickHandler = _ => {
         const { filterText: origText, fieldToSearch: { type, fieldName }, isFilterNegation } = filterValues
@@ -98,12 +73,6 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
                 </option>
                 : null
     )
-
-    const filtersApplied = appliedFilters.map(
-        ({ id }) => <Filter key={id} id={id} onFilterRemove={onFilterRemove} />
-    )
-
-    const allButtons = createAllButtons(appliedFilters, onAddFilterButtonHandler)
 
     return (
         <div className="col s12 filter-box white-text">
@@ -175,7 +144,7 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
                 <span><button className="waves-effect waves-light btn" onClick={onAddFilterClickHandler}>Add</button></span>
             </div>
             <div className="row">
-                <ul>{filtersApplied}</ul>
+                <FiltersApplied filters={appliedFilters} />
             </div>
             <div className="row">
                 <span className="white-text">Total of cards: {totalCards}</span>
