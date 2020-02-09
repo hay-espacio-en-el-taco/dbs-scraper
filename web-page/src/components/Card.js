@@ -14,7 +14,7 @@ class Card extends Component {
         } = cardInfo
 
         return (
-            <div className="col s12 card teal lighten-3" key={cardNumber}>
+            <div className="col s12 card teal lighten-3">
                 <div className="row">
                     <div className="col m4 l3 card-image hide-on-small-only">
                         <img src={cardImageUrl} alt={cardName} />

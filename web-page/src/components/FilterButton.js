@@ -1,14 +1,20 @@
 import React from 'react'
-
 import './FilterButton.css'
 
+
 const FilterButton = (props) => {
-    const { id, fieldname, customClass, onClick } = props
-    return <label
-                id={id} 
-                className={`${customClass ? 'filter-on' : ''} btn btn-secondary`}
-                onClick={ () => onClick(id, fieldname) }
-            >{id}</label>
+    const { 
+        label = '', 
+        highlighted = false,
+        id, onClick
+    } = props
+    const customClass = highlighted ? ' filter-on' : ''
+
+    return (
+        <label id={id || label} className={'btn btn-secondary' + customClass} onClick={onClick}>
+            {label}
+        </label>
+    )
 }
 
 export default FilterButton
