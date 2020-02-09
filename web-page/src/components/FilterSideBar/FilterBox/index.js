@@ -4,11 +4,21 @@ import {
     createFilter
 } from '../filter.utils'
 
+const removedOptions = [
+    'availableDate', 'cardImageUrl', 'cardBack', 'era', 'type', 'color', 'energy', 'comboEnergy',
+    /*'rarity', 'character', 'skillKeywords', 'cardNumber', */
+]
+
 const FilterBox = (props) => {
     const {
         appliedFilters, fieldOptions, onFilterAdd,
     } = props
-    const [ filterValues, setFilter ] = useState({ filterText: '', fieldToSearch: '', isFilterNegation: false })
+
+    const finalFieldOptions = fieldOptions.filter(
+        option => !removedOptions.includes(option)
+    ).sort()
+
+    const [ filterValues, setFilter ] = useState({ filterText: '', fieldToSearch: finalFieldOptions[0], isFilterNegation: false })
     const { filterText, isFilterNegation } = filterValues
 
     const onAddFilterClickHandler = _ => {
@@ -37,7 +47,7 @@ const FilterBox = (props) => {
     }
 
     const onFieldSelectionChangeHandler = event => {
-        setFilter({ ...filterValues, fieldToSearch: fieldOptions[event.target.value] })
+        setFilter({ ...filterValues, fieldToSearch: finalFieldOptions[event.target.value] })
     }
 
     const onFilterTextChangeHandler = (event) => {
@@ -55,17 +65,12 @@ const FilterBox = (props) => {
         }
     }
 
-    const removedOptions = [
-        'availableDate', 'cardImageUrl', 'cardBack', 'era', 'type', 'color', 'energy', 'comboEnergy',
-        /*'rarity', 'character', 'skillKeywords', 'cardNumber', */
-    ]
-    const optionsToSelect = fieldOptions.map(
-        (option, index) =>
-            !removedOptions.includes(option.fieldName)
-                ? <option key={option.fieldName} value={index}>
-                    {option.label}
-                </option>
-                : null
+    const optionsToSelect = finalFieldOptions.map(
+        (option, index) => (
+            <option key={option.fieldName} value={index}>
+                {option.label}
+            </option>
+        )
     )
 
     return (
