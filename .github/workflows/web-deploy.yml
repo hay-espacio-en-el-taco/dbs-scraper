@@ -2,6 +2,8 @@ name: 'DBS Scraper | Web deploy'
 
 on:
   push:
+    branches:
+      - master
     tags:
       - 'cards_**'
     paths:
