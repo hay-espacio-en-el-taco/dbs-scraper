@@ -20,7 +20,7 @@ const FilterButtonsRow = (props) => {
 
 
     useEffect(() => {
-        const valuesList = Object.keys(selectedItemValues).filter(i => selectedItemValues[i])
+        const valuesList = Object.values(selectedItemValues)
 
         if (valuesList.length > 0) {
             dispatch( updateFilter({
@@ -34,25 +34,36 @@ const FilterButtonsRow = (props) => {
 
 
     const onClickHandler = useCallback(
-        (event) => {
-            const { target } = event;
+        (event, value) => {
+            const { target: { id } } = event;
             const newState = { ...selectedItemValues }
-            newState[target.id] = !selectedItemValues[target.id]
+            const isSelected = undefined !== selectedItemValues[id]
+            
+            if (isSelected) {
+                delete newState[id]
+            }
+            else {// Not selected
+                newState[id] = value
+            }
+
             setSelectedItemValues(newState)
         },
         [selectedItemValues, setSelectedItemValues]
     )
 
     const buttonComponents = items.map(
-        item => (
-            <FilterButton
-                id={item.value}
-                key={item.value + item.label}
-                label={item.label}
-                highlighted={selectedItemValues[item.value] === true}
-                onClick={onClickHandler}
-            />
-        )
+        (item, index) => {
+            const id = `filter-button-${title}-${item.label}-${index}`
+            return (
+                <FilterButton
+                    id={id}
+                    key={item.value + item.label}
+                    label={item.label}
+                    highlighted={selectedItemValues[id] !== undefined}
+                    onClick={e => onClickHandler(e, item.value)}
+                />
+            )
+        }
     )
 
     return (

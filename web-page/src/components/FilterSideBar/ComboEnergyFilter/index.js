@@ -6,19 +6,15 @@ const CARD_TYPES = [
     { value: 0, label: '0' },
     { value: 1, label: '1' },
     { value: 2, label: '2' },
-    { value: 3, label: '3' },
-    { value: 4, label: '4' },
-    { value: 5, label: '5' },
-    { value: 6, label: '6+' },
 ]
 
 const createFilter = (selectedValues = []) => {
     return card => {
-        if (typeof card.energy !== 'string') {
+        if (typeof card.comboEnergy !== 'string') {
             return false
         }
         
-        const { groups: { number } } = card.energy.match(/^(?<number>\d*)/)
+        const { groups: { number } } = card.comboEnergy.match(/^(?<number>\d*)/)
         if (number.length === 0) {
             return false
         }
@@ -30,10 +26,6 @@ const createFilter = (selectedValues = []) => {
         
         return selectedValues.find(
             item => {
-                if (item === 6) {
-                    return energyCost >= item 
-                }
-
                 return item === energyCost
             }
         )
@@ -43,7 +35,7 @@ const createFilter = (selectedValues = []) => {
 const CardTypeFilter = () => {
     return (
         <FilterButtonsRow
-            title={'Energy Cost'}
+            title={'Combo Energy'}
             filterGenerator={createFilter}
             items={CARD_TYPES}
         />

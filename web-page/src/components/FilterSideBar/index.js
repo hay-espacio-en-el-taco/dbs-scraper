@@ -7,6 +7,7 @@ import Filter from '../Filter'
 import CardTypeFilter from './CardTypeFilter'
 import ColorFilter from './ColorFilter'
 import EnergyFilter from './EnergyFilter'
+import ComboEnergyFilter from './ComboEnergyFilter'
 import { 
     parseFilterText, 
     getFieldsToSearch, 
@@ -110,14 +111,8 @@ const FilterBox = ({ totalCards, appliedFilters, fieldOptions, searchCards, onFi
                 <CardTypeFilter />
                 <ColorFilter />
                 <EnergyFilter />
+                <ComboEnergyFilter />
                 
-
-                <div className="input-field col s12">
-                    <div htmlFor="cboenergy">Combo Energy</div>
-                    <div id="cboenergy" className="mx-auto btn-group-toggle btn-group">
-                        {allButtons.comboEnergy}
-                    </div>
-                </div>
                 <div className="input-field col s12">
                     <select id="rarity" className="mx-auto btn-group-toggle btn-group">
                         <option value="">Rarity</option>
