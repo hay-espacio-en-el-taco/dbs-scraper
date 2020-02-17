@@ -28,7 +28,7 @@ const createFilter = (selectedValues = []) => {
             return false
         }
         
-        return selectedValues.find(
+        return undefined !== selectedValues.find(
             item => {
                 if (item === 6) {
                     return energyCost >= item 

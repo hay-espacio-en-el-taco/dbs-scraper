@@ -24,7 +24,7 @@ const createFilter = (selectedValues = []) => {
             return false
         }
         
-        return selectedValues.find(
+        return undefined !== selectedValues.find(
             item => {
                 return item === energyCost
             }
