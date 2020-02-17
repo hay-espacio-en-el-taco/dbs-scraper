@@ -34,12 +34,10 @@ class Card extends Component {
                             </div>
 
                             { ! (type === 'LEADER') ? (
-                                <React.Fragment>
                                 <div className="col s6">
                                     <span className="fieldname white-text">Energy:</span>
                                     <span className="field-data"><EnergyColor energy={energy} /></span>
                                 </div>
-                                </React.Fragment>
                                 ) : null
                             }
                         </div>
@@ -78,27 +76,21 @@ class Card extends Component {
                             ) : null
                         }
                         { relatedCharacters.length > 0 ? (
-                            <React.Fragment>
                             <div className="col s12 m6">
                                 <span className="fieldname white-text">Related Characters:</span><span className="field-data">{relatedCharacters.join(', ')}</span>
                             </div>
-                            </React.Fragment>
                             ) : null
                         }
                         { relatedSpecialTraits.length > 0 ? (
-                            <React.Fragment>
                             <div className="col s12 m6">
                                 <span className="fieldname white-text">Related Special Traits:</span><span className="field-data">{relatedSpecialTraits.join(', ')}</span>
                             </div>
-                            </React.Fragment>
                             ) : null
                         }
                         { relatedCardNames.length > 0 ? (
-                            <React.Fragment>
                             <div className="col s12 m6">
                                 <span className="fieldname white-text">Related Card Names:</span><span className="field-data">{relatedCardNames.join(', ')}</span>
                             </div>
-                            </React.Fragment>
                             ) : null
                         }
                         <div className="col s12">
@@ -113,7 +105,6 @@ class Card extends Component {
                     </div>
                 </div>
                 { cardBack ? (
-                    <React.Fragment>
                     <div className="row">
                         <div className="col m4 l3 card-image hide-on-small-only">
                             <img src={cardBack.cardImageUrl} alt={cardName} />
@@ -146,27 +137,21 @@ class Card extends Component {
                                 </div>
 
                                 { cardBack.relatedCharacters.length > 0 ? (
-                                    <React.Fragment>
                                     <div className="col s12 m6">
                                         <span className="fieldname white-text">Related Characters:</span><span className="field-data">{cardBack.relatedCharacters.join(', ')}</span>
                                     </div>
-                                    </React.Fragment>
                                     ) : null
                                 }
                                 { cardBack.relatedSpecialTraits.length > 0 ? (
-                                    <React.Fragment>
                                     <div className="col s12 m6">
                                         <span className="fieldname white-text">Related Special Traits:</span><span className="field-data">{cardBack.relatedSpecialTraits.join(', ')}</span>
                                     </div>
-                                    </React.Fragment>
                                     ) : null
                                 }
                                 { cardBack.relatedCardNames.length > 0 ? (
-                                    <React.Fragment>
                                     <div className="col s12 m6">
                                         <span className="fieldname white-text">Related Card Names:</span><span className="field-data">{cardBack.relatedCardNames.join(', ')}</span>
                                     </div>
-                                    </React.Fragment>
                                     ) : null
                                 }
                                 <div className="col s12">
@@ -178,7 +163,6 @@ class Card extends Component {
                             </div>
                         </div>
                     </div>
-                    </React.Fragment>
                     ) : null
                 }
 

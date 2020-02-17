@@ -1,7 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { searchCards } from '../../redux/modules/search'
-import { addFilter, updateFilter, removeFilter } from '../../redux/modules/search/filters'
+import { useSelector } from 'react-redux'
 import './index.css'
 
 import CardTypeFilter from './CardTypeFilter'
@@ -11,15 +9,10 @@ import ComboEnergyFilter from './ComboEnergyFilter'
 import FiltersApplied from './FiltersApplied'
 import FilterBox from './FilterBox'
 
-import { 
-    getFieldsToSearch, 
-} from './filter.utils'
+const totalCardsSelector = ({ search }) => search.result.length
 
-const FilterSideBar = (props) => {
-    const {
-        totalCards, appliedFilters, fieldOptions, onFilterAdd,
-        onFilterRemoved
-    } = props
+const FilterSideBar = () => {
+    const totalCards = useSelector(totalCardsSelector)
 
     return (
         <div className="col s12 filter-box white-text">
@@ -64,14 +57,10 @@ const FilterSideBar = (props) => {
                 </div> */}
             </div>
 
-            <FilterBox 
-                appliedFilters={appliedFilters}
-                fieldOptions={fieldOptions}
-                onFilterAdd={onFilterAdd}
-            />
+            <FilterBox />
 
             <div className="row">
-                <FiltersApplied filters={appliedFilters} onFilterRemoved={onFilterRemoved}/>
+                <FiltersApplied />
             </div>
             <div className="row">
                 <span className="white-text">Total of cards: {totalCards}</span>
@@ -80,11 +69,4 @@ const FilterSideBar = (props) => {
     )
 }
 
-const
-    mapStateToProps = ({ search }) => ({
-        totalCards: search.result.length,
-        appliedFilters: search.filters,
-        fieldOptions: getFieldsToSearch( search.cardsDictionary[ Object.keys(search.cardsDictionary)[4] ] )
-    }),
-    mapDispatchToProps = { searchCards, onFilterAdd: addFilter, onUpdateFilter: updateFilter, onFilterRemoved: removeFilter }
-export default connect(mapStateToProps, mapDispatchToProps)(FilterSideBar)
+export default FilterSideBar

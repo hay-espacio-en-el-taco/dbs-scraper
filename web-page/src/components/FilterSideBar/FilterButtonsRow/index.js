@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import FilterButton from '../../FilterButton'
 import { useDispatch } from 'react-redux'
 import { updateFilter, removeFilter } from '../../../redux/modules/search/filters'
+import { IDENTIFIER_PREFIX } from '../FiltersApplied'
 
-
-export const IDENTIFIER_PREFIX = '_$hide:'
 
 const FilterButtonsRow = (props) => {
     const {
@@ -18,10 +17,8 @@ const FilterButtonsRow = (props) => {
     const [selectedItemValues, setSelectedItemValues] = useState({})
     const dispatch = useDispatch()
 
-
-    useEffect(() => {
-        const valuesList = Object.values(selectedItemValues)
-
+    const selectedItemsChanged = useCallback((items) => {
+        const valuesList = Object.values(items)
         if (valuesList.length > 0) {
             dispatch( updateFilter({
                 id: filterIdentifier, filter: filterGenerator(valuesList)
@@ -30,8 +27,7 @@ const FilterButtonsRow = (props) => {
         }
 
         dispatch( removeFilter({ id: filterIdentifier }) )
-    }, [selectedItemValues])
-
+    }, [dispatch, filterIdentifier, filterGenerator])
 
     const onClickHandler = useCallback(
         (event, value) => {
@@ -47,8 +43,9 @@ const FilterButtonsRow = (props) => {
             }
 
             setSelectedItemValues(newState)
+            selectedItemsChanged(newState)
         },
-        [selectedItemValues, setSelectedItemValues]
+        [selectedItemValues, setSelectedItemValues, selectedItemsChanged]
     )
 
     const buttonComponents = items.map(

@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
-class FilterChip extends Component {
+import React from 'react';
 
-    render() {
-        const { onRemove, text } = this.props;
-        return (
-            <div className="chip">
-                {text}
-                <i className="close material-icons" onClick={onRemove}>close</i>
-            </div>
-        )
-    }
+const FilterChip = (props) => {
+    const { onRemove, text } = props;
+    return (
+        <div className="chip">
+            <span>{text}</span>
+            <i className="material-icons filter-chip" onClick={onRemove}>close</i>
+        </div>
+    )
 }
 
-export default FilterChip;
+export default FilterChip

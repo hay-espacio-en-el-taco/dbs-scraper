@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
+import { useSelector, useDispatch  } from 'react-redux'
+import { addFilter } from '../../../redux/modules/search/filters'
+
 import { 
-    parseFilterText, 
-    createFilter
+    createFilter,
+    getFieldsToSearch,
+    parseFilterText
 } from '../filter.utils'
 
 const removedOptions = [
@@ -9,10 +13,17 @@ const removedOptions = [
     /*'rarity', 'character', 'skillKeywords', 'cardNumber', */
 ]
 
-const FilterBox = (props) => {
-    const {
-        appliedFilters, fieldOptions, onFilterAdd,
-    } = props
+const fieldOptsSelector = ({ search }) => getFieldsToSearch(
+    search.cardsDictionary[ Object.keys(search.cardsDictionary)[4] ]
+)
+
+const FilterBox = () => {
+    const fieldOptions = useSelector(fieldOptsSelector)
+    const dispatch = useDispatch()
+    const onFilterAdd = useCallback(
+        obj => dispatch( addFilter(obj) )
+    , [dispatch])
+
 
     const finalFieldOptions = fieldOptions.filter(
         option => !removedOptions.includes(option)
@@ -21,20 +32,7 @@ const FilterBox = (props) => {
     const [ filterValues, setFilter ] = useState({ filterText: '', fieldToSearch: finalFieldOptions[0], isFilterNegation: false })
     const { filterText, isFilterNegation } = filterValues
 
-    const onAddFilterClickHandler = _ => {
-        const { filterText: origText, fieldToSearch: { type, fieldName }, isFilterNegation } = filterValues
-        let filterText = origText.trim()
-        if (appliedFilters.find(a => a.id === `${fieldName}-${filterText}`)) {
-            return// Filter already added
-        }
-        onAddFilter(type, fieldName, filterText, isFilterNegation)
-    }
-
     const onAddFilter = (type, fieldName, filterText, isFilterNegation) => {
-        if (typeof onFilterAdd !== 'function') {
-            return// No handler, so do nothing
-        }
-
         if (typeof filterText !== 'string') {
             return// Empty string
         }
@@ -44,6 +42,12 @@ const FilterBox = (props) => {
         const filterConditions = parseFilterText(filterText)
         const filter = createFilter(fieldName, filterConditions, type)
         onFilterAdd({ id: `${fieldName}: ${filterText}`, filter })
+    }
+
+    const onAddFilterClickHandler = _ => {
+        const { filterText: origText, fieldToSearch: { type, fieldName }, isFilterNegation } = filterValues
+        let filterText = origText.trim()
+        onAddFilter(type, fieldName, filterText, isFilterNegation)
     }
 
     const onFieldSelectionChangeHandler = event => {
