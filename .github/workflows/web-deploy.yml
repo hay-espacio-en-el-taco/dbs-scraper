@@ -41,7 +41,6 @@ jobs:
           git clean -fxd
           docker cp dbs-container:/home/node/app/build/. ./
           docker rm dbs-container
-          touch .nojekyll
 
       - name: Push to gh-pages branch
         env:
