@@ -4,10 +4,12 @@ import { createSlice } from '@reduxjs/toolkit'
 import { ofType } from 'redux-observable'
 import { map, withLatestFrom } from 'rxjs/operators'
 
-import { cards as AllCards } from '../../../cards.json'
+import { cards as AllCards, attributes } from '../../../cards.json'
 import { filterCards } from './helpers' 
 import filtersReducer, { addFilter, updateFilter, removeFilter } from './filters' 
 
+
+console.log('Wow, such attributes', attributes)
 
 const resultSlice = createSlice({
     name: 'search/result',
@@ -16,7 +18,10 @@ const resultSlice = createSlice({
         searchCards(_, action) {
             const { filters } = action.payload
             // const t0 = performance.now()
-            return filterCards(AllCards, filters)
+
+            
+            const res = filterCards(AllCards, filters)
+            return res
             // const t1 = performance.now()
             // console.log(`Filtering cards took "${t1 - t0}" miliseconds.`, state.length)
         }
@@ -38,6 +43,7 @@ export const { searchCards } = resultSlice.actions
 export default combineReducers({
     filters: filtersReducer,
     result: resultSlice.reducer,
+    allCards: () => AllCards,
     cardsDictionary: () => CARDS_DICTIONARY,
     isSearching: () => false
 })
@@ -46,8 +52,9 @@ export default combineReducers({
 export const updateSearchEpic = (action$, state$)  => action$.pipe(
     ofType(addFilter, updateFilter, removeFilter),
     withLatestFrom(state$),
-    map(([, state]) => {
+    map(([action, state]) => {
         const { search: { filters } } = state
+        console.log('Wow, such action', action.type)
         return searchCards({ filters })
     })
 )
