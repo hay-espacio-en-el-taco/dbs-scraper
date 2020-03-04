@@ -1,12 +1,10 @@
 import React from 'react'
 import FilterButtonsRow from '../FilterButtonsRow'
+import { attributes as CardAttributes} from '../../../cards.json'
 
-
-const CARD_TYPES = [
-    { value: 'BATTLE', label: 'BATTLE' },
-    { value: 'EXTRA', label: 'EXTRA' },
-    { value: 'LEADER', label: 'LEADER' }
-]
+const CARD_TYPES = CardAttributes.type.sort().map(
+    item => ({ label: item, value: item})
+)
 
 const createFilter = (carTypesArray = []) => {
     return card => carTypesArray.includes(card.type)
