@@ -1,6 +1,6 @@
 'use strict'
 const FS = require('fs')
-const Path = require('path');
+const Path = require('path')
 
 const changelogOutput = process.env.CARDS_CHANGELOG_OUTPUT || 'changelog.cards.txt'
 let cardsPath = process.argv[2]

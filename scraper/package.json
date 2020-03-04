@@ -6,7 +6,20 @@
     "scripts": {
         "start": "node --unhandled-rejections=strict src/index.js",
         "debug": "node --inspect-brk=0.0.0.0:9229 --unhandled-rejections=strict src/index.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "jest --coverage"
+    },
+    "jest": {
+        "collectCoverageFrom": [
+            "**/*.js",
+            "!**/*.test.js",
+            "!**/*.test.constants.js",
+            "!**/node_modules/**"
+        ],
+        "coveragePathIgnorePatterns": [
+            "/node_modules/",
+            "/src/tools/",
+            "/src/index.js"
+        ]
     },
     "repository": {
         "type": "git",
@@ -21,5 +34,8 @@
     "dependencies": {
         "cheerio": "^1.0.0-rc.2",
         "node-fetch": "^1.7.3"
+    },
+    "devDependencies": {
+        "jest": "^25.1.0"
     }
 }

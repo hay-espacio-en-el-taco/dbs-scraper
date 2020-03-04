@@ -25,6 +25,25 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Run tests - Scraper",
+            "preLaunchTask": "Prepare before running scraper app",
+            "runtimeExecutable": "docker",
+            "runtimeArgs": [
+                "run", "--rm",
+                "--name", "dbs-scraper",
+                "-p", "9229:9229",
+                "-v", "${workspaceFolder}/scraper/src:/home/node/app/src",
+                "dbs-scraper",
+                "node", "--no-lazy", "--inspect-brk=0.0.0.0:9229",
+                "node_modules/.bin/jest", "--runInBand"
+            ],
+            "localRoot": "${workspaceFolder}/scraper",
+            "remoteRoot": "/home/node/app",
+            "port": 9229
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Run web page",
             "preLaunchTask": "Prepare before running React app",
             "runtimeExecutable": "docker",
