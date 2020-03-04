@@ -3,16 +3,18 @@ import FilterButtonsRow from '../FilterButtonsRow'
 import { attributes as CardAttributes} from '../../../cards.json'
 
 
-const CARD_TYPES = Array.from(
+const ENERGY_VALUES = Array.from(
     CardAttributes.energy.reduce(
         (resultSet, item) => {
-            const { groups: { number } } = item.match(/^(?<number>\d*)/)
-            if (number.length === 0) {
+            const match = item.match(/^(?<number>\d*)/)
+            if (!match) {
                 return resultSet
             }
-
+            
+            const { groups: { number } } = match
             const energyCost = Number.parseInt(number, 10)
             resultSet.add(energyCost)
+
             return resultSet
         },
         new Set()
@@ -29,11 +31,12 @@ const createFilter = (selectedValues = []) => {
             return false
         }
         
-        const { groups: { number } } = card.energy.match(/^(?<number>\d*)/)
-        if (number.length === 0) {
+        const match = card.energy.match(/^(?<number>\d*)/)
+        if (!match) {
             return false
         }
         
+        const { groups: { number } } = match
         const energyCost = Number.parseInt(number, 10)
         if (Number.isNaN(energyCost)) {
             return false
@@ -56,7 +59,7 @@ const CardTypeFilter = () => {
         <FilterButtonsRow
             title={'Energy Cost'}
             filterGenerator={createFilter}
-            items={CARD_TYPES}
+            items={ENERGY_VALUES}
         />
     )
 }
