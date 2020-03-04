@@ -9,7 +9,6 @@ import { filterCards } from './helpers'
 import filtersReducer, { addFilter, updateFilter, removeFilter } from './filters' 
 
 
-
 const resultSlice = createSlice({
     name: 'search/result',
     initialState: AllCards,
@@ -39,7 +38,6 @@ export const { searchCards } = resultSlice.actions
 export default combineReducers({
     filters: filtersReducer,
     result: resultSlice.reducer,
-    allCards: () => AllCards,
     cardsDictionary: () => CARDS_DICTIONARY,
     isSearching: () => false
 })
@@ -48,9 +46,8 @@ export default combineReducers({
 export const updateSearchEpic = (action$, state$)  => action$.pipe(
     ofType(addFilter, updateFilter, removeFilter),
     withLatestFrom(state$),
-    map(([action, state]) => {
+    map(([, state]) => {
         const { search: { filters } } = state
-        console.log('Wow, such action', action.type)
         return searchCards({ filters })
     })
 )
