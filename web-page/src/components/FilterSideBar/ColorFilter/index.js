@@ -1,20 +1,24 @@
 import React from 'react'
 import FilterButtonsRow from '../FilterButtonsRow'
+import { attributes as CardAttributes} from '../../../cards.json'
 
+const COLOR_ABRV_DICT = {
+    Black: 'B',
+    Blue: 'U',
+    Green: 'G',
+    Yellow: 'Y',
+    Red: 'R'
+}
 
-const CARD_COLORS = [
-    { value: 'black', label: 'B' },
-    { value: 'blue', label: 'U' },
-    { value: 'green', label: 'G' },
-    { value: 'yellow', label: 'Y' },
-    { value: 'red', label: 'R' },
-    { value: 'red/green', label: 'R/G' },
-    { value: 'blue/yellow', label: 'U/Y' },
-    { value: 'red/yellow', label: 'R/Y' },
-    { value: 'blue/green', label: 'U/G' },
-    { value: 'red/blue', label: 'R/U' },
-    { value: 'green/yellow', label: 'G/Y' },
-]
+const CARD_COLORS = CardAttributes.color.map(
+    colorString => ({
+        value: colorString,
+        label: Object.entries(COLOR_ABRV_DICT).reduce(
+            (result, [key, val]) => result.replace(key, val),
+            colorString
+        )
+    })
+)
 
 const createFilter = (selectedItems = []) => {
     return card => {

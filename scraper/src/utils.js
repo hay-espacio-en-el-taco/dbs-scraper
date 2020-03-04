@@ -7,7 +7,7 @@ const groupValuesInSets = (dict = {}, obj) => {
     for (let [key, value] of Object.entries(obj)) {
         
         const isAnidated = !(dict[key] instanceof Set) && typeof dict[key] === 'object'
-        if (isAnidated || (value && typeof value === 'object') ) {
+        if (isAnidated || (value && typeof value === 'object' && !Array.isArray(value)) ) {
             dict[key] = groupValuesInSets(dict[key], value)
             continue
         }
@@ -17,11 +17,17 @@ const groupValuesInSets = (dict = {}, obj) => {
             continue
         }
 
+        
         if (!dict[key]) {
             dict[key] = new Set()
         }
-
-        dict[key].add(value)
+        
+        if (Array.isArray(value)) {
+            value.forEach(dict[key].add.bind(dict[key]))
+        }
+        else {
+            dict[key].add(value)
+        }
     }
 
     return dict
