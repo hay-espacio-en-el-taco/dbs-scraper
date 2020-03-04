@@ -1,16 +1,27 @@
 import React from 'react'
 import FilterButtonsRow from '../FilterButtonsRow'
+import { attributes as CardAttributes} from '../../../cards.json'
 
 
-const CARD_TYPES = [
-    { value: 0, label: '0' },
-    { value: 1, label: '1' },
-    { value: 2, label: '2' },
-    { value: 3, label: '3' },
-    { value: 4, label: '4' },
-    { value: 5, label: '5' },
-    { value: 6, label: '6+' },
-]
+const CARD_TYPES = Array.from(
+    CardAttributes.energy.reduce(
+        (resultSet, item) => {
+            const { groups: { number } } = item.match(/^(?<number>\d*)/)
+            if (number.length === 0) {
+                return resultSet
+            }
+
+            const energyCost = Number.parseInt(number, 10)
+            resultSet.add(energyCost)
+            return resultSet
+        },
+        new Set()
+    ).values()
+).sort(
+    (a, b) => a -b
+).map(
+    i => ({ value: i, label: i })
+)
 
 const createFilter = (selectedValues = []) => {
     return card => {
