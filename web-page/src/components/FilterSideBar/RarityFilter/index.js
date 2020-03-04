@@ -10,7 +10,8 @@ const CARD_RARITY_TYPES = CardAttributes.rarity.map(
         }
         
         const { groups: { rarity } } = match
-        return { label: rarity, value: item}
+
+        return { label: rarity, value: item }
     } 
 )
 
