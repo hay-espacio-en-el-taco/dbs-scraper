@@ -7,6 +7,7 @@ import ColorFilter from './ColorFilter'
 import EnergyFilter from './EnergyFilter'
 import ComboEnergyFilter from './ComboEnergyFilter'
 import FiltersApplied from './FiltersApplied'
+import RarityFilter from './RarityFilter'
 import FilterBox from './FilterBox'
 
 const totalCardsSelector = ({ search }) => search.result.length
@@ -21,18 +22,8 @@ const FilterSideBar = () => {
                 <ColorFilter />
                 <EnergyFilter />
                 <ComboEnergyFilter />
+                <RarityFilter />
                 
-                {/* <div className="input-field col s12">
-                    <select id="rarity" className="mx-auto btn-group-toggle btn-group">
-                        <option value="">Rarity</option>
-                        <option value="Common[C]">Common[C]</option>
-                        <option value="Rare[R]">Rare[R]</option>
-                        <option value="Starter Rare[ST]">Starter Rare[ST]</option>
-                        <option value="Super Rare[SR]">Super Rare[SR]</option>
-                        <option value="Uncommon[UC]">Uncommon[UC]</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div> */}
                 {/* <div className="input-field col s12">
                     <select id="character" className="mx-auto btn-group-toggle btn-group">
                         <option value="">Character</option>

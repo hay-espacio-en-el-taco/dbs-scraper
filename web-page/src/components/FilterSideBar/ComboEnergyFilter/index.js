@@ -1,12 +1,13 @@
 import React from 'react'
 import FilterButtonsRow from '../FilterButtonsRow'
+import { attributes as CardAttributes} from '../../../cards.json'
 
-
-const CARD_TYPES = [
-    { value: 0, label: '0' },
-    { value: 1, label: '1' },
-    { value: 2, label: '2' },
-]
+const CARD_TYPES = CardAttributes.comboEnergy.sort().map(
+    item => ({
+        label: item,
+        value: Number.parseInt(item, 10)
+    })
+)
 
 const createFilter = (selectedValues = []) => {
     return card => {

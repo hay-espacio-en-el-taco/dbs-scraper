@@ -56,6 +56,7 @@ const FilterButtonsRow = (props) => {
                     id={id}
                     key={item.value + item.label}
                     label={item.label}
+                    title={item.title || item.value}
                     highlighted={selectedItemValues[id] !== undefined}
                     onClick={e => onClickHandler(e, item.value)}
                 />

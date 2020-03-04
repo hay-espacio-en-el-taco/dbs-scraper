@@ -4,14 +4,19 @@ import './FilterButton.css'
 
 const FilterButton = (props) => {
     const { 
-        label = '', 
+        label = '', title,
         highlighted = false,
         id, onClick
     } = props
+
     const customClass = highlighted ? ' filter-on' : ''
+    const className = 'btn btn-secondary' + customClass
+
+    const idString = id || label
+    const titleTxt = title || label
 
     return (
-        <label id={id || label} className={'btn btn-secondary' + customClass} onClick={onClick}>
+        <label id={idString} title={titleTxt} className={className} onClick={onClick}>
             {label}
         </label>
     )

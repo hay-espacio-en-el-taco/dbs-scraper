@@ -4,7 +4,8 @@
 const CardsScraper = require('./cards')
 const FS = require('fs')
 const GetCardListUrls = require('./navListScraper')
-const Path = require('path');
+const Path = require('path')
+const { getUniqueValuesByProperty } = require('./utils')
 
 // Module constants
 const CARD_LIST_URL = 'http://www.dbs-cardgame.com/us-en/cardlist/'
@@ -19,8 +20,11 @@ async function main() {
     const cards = await CardsScraper(urlsList)
     console.log(`Fetched and parsed a total of ${cards.length} cards!.`)
 
+    // Extract unique attributes from the cards
+    const attributes = getUniqueValuesByProperty(cards)
+
     const outputPath = process.env.CARDS_DATA_OUTPUT || DEFAULT_OUTPUT
-    FS.writeFileSync( outputPath, JSON.stringify({ urlsList, cards }) )
+    FS.writeFileSync( outputPath, JSON.stringify({ urlsList, cards, attributes }) )
     console.log(`Cards data saved at "${outputPath}".`)
 }
 
