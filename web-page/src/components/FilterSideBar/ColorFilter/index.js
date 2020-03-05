@@ -20,16 +20,7 @@ const CARD_COLORS = CardAttributes.color.map(
     })
 )
 
-const createFilter = (selectedItems = []) => {
-    return card => {
-        const value = card.color.toLowerCase()
-
-        return selectedItems.find(
-            item => value === item
-        )
-    }
-}
-
+const createFilter = (selectedItems = []) => c => selectedItems.find(i => c.color === i)
 
 const CardTypeFilter = () => {
     return (
