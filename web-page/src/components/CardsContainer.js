@@ -1,7 +1,11 @@
-import React, { useEffect, useRef, useReducer } from 'react';
+import React, {
+    useEffect,
+    useReducer,
+    useRef
+} from 'react';
 import { connect } from 'react-redux';
-import Card from './Card';
 import InfiniteScroll from 'react-infinite-scroller';
+import Card from './Card';
 
 const MAX_PAGE_ITEMS = 20
 
@@ -46,11 +50,13 @@ function CardsContainer(props) {
     }
 
     if (prevCards !== cards) {
-        // This is a hack due to the very poor implementation of the 
-        // infinite scroll plugin. Maybe i should make my own.
-        // 
-        // Let's unmount the InfiniteScroll and wait for the next 
-        // re-render in order to get the pagination reset.
+        /*
+         * This is a hack due to the very poor implementation of the
+         * infinite scroll plugin. Maybe i should make my own.
+         * 
+         * Let's unmount the InfiniteScroll and wait for the next 
+         * re-render in order to get the pagination reset.
+         */
         return 'if you see this for more than a second, report it. It\'s a bug'
     }
 
