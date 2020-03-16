@@ -15,12 +15,8 @@ class App extends Component {
         return (
             <div className="App">
                 <div className="row">
-                    <div className="App-header grey darken-3 col s12 m4 l3">
-                        <FilterSideBar />
-                    </div>
-                    <div className="col s12 m8 l9">
-                        <CardsContainer />
-                    </div>
+                    <FilterSideBar />
+                    <CardsContainer />
                 </div>
             </div>
         )

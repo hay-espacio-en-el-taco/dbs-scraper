@@ -1,81 +1,76 @@
-import React, {
-    useEffect,
-    useReducer,
-    useRef
-} from 'react';
+import React, { useEffect, useRef, useCallback, useState, useMemo } from 'react';
+import { VariableSizeList as List } from 'react-window';
 import { connect } from 'react-redux';
-import InfiniteScroll from 'react-infinite-scroller';
 import Card from './Card';
 
-const MAX_PAGE_ITEMS = 20
-
-function usePrevious(value) {
-    const ref = useRef(value);
-    useEffect(() => {
-        ref.current = value;
-    });
-
-    return ref.current;
-}
-
-const initialState = { pageNum: 1 }
-
-function reducer(state, action) {
-    switch (action.type) {
-        case 'reset':
-            return { pageNum: 0 };
-        case 'newPageLoad':
-            return { pageNum: state.pageNum + 1};
-        default:
-            throw new Error();
-    }
-}
 
 function CardsContainer(props) {
     const { cards, hasFilters } = props
-    const [{ pageNum }, dispatch] = useReducer(reducer, initialState)
+    const cardContainerRef = useRef(null)
+    const [, forceRender] = useState()
+    
+    console.log('Wow, such render')
+
+    const resizeHandler = useCallback(() => {
+        console.log('Wow, such resize')
+        forceRender({})
+    }, [])
 
     useEffect(() => {
-        dispatch({ type: 'reset' })
-    }, [cards])
+        window.addEventListener('resize', resizeHandler);
+        console.log('Wow, such mounting')
+        forceRender({})
 
-    const prevCards = usePrevious(cards)
+        return () => {
+            window.removeEventListener('resize', resizeHandler);
+        }
+    }, [])
 
-    if ( !hasFilters ) {
-        return 'Add some filters to search cards'
+    const width = useMemo(() => {
+        console.log('Wow, such node', cardContainerRef.current)
+
+        if (!cardContainerRef.current) {
+            return 400
+        }
+
+        return cardContainerRef.current.offsetWidth
+    }, [cardContainerRef.current])
+
+
+    let content = null
+    switch(true) {
+        case !hasFilters: {
+            content = 'Add some filters to search cards'
+            break
+        }
+
+        case !Array.isArray(cards) || cards.length === 0: {
+            content = 'Found 0 cards with that criteria'
+            break
+        }
+
+        default: {
+            const cardRow = ({ index, style }) => (
+                <Card style={style} cardInfo={cards[index]}/>
+            );
+            content = (
+                <List
+                    height={400}
+                    itemCount={cards.length}
+                    itemSize={() => 400}
+                    width={width}
+                >
+                    {cardRow}
+                </List>
+            )
+        }
     }
 
-    if (cards.length === 0) {
-        return 'Found 0 cards with that criteria'
-    }
-
-    if (prevCards !== cards) {
-        /*
-         * This is a hack due to the very poor implementation of the
-         * infinite scroll plugin. Maybe i should make my own.
-         * 
-         * Let's unmount the InfiniteScroll and wait for the next 
-         * re-render in order to get the pagination reset.
-         */
-        return 'if you see this for more than a second, report it. It\'s a bug'
-    }
-
-    const pageLoadActionCretor = () => dispatch({ type: 'newPageLoad' })
-    
-    const cardItems = cards.slice(0, pageNum * MAX_PAGE_ITEMS).map(
-        card => <Card key={card.cardNumber} cardInfo={card}/>
-    )
-
+    console.log('Wow, such width', width)
     return (
-        <InfiniteScroll
-            pageStart={pageNum}
-            loadMore={pageLoadActionCretor}
-            initialLoad={true}
-            hasMore={cardItems.length < cards.length}
-            loader={<div className="loader" key={0}>Rendering more cards...</div>}
-        >
-            {cardItems}
-        </InfiniteScroll>
+        <div ref={cardContainerRef} className="col s12 m8 l9">
+            {content}
+        </div>
     )
 }
 
