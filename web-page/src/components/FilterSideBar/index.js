@@ -16,45 +16,47 @@ const FilterSideBar = () => {
     const totalCards = useSelector(totalCardsSelector)
 
     return (
-        <div className="col s12 filter-box white-text">
-            <div className="row">
-                <CardTypeFilter />
-                <ColorFilter />
-                <EnergyFilter />
-                <ComboEnergyFilter />
-                <RarityFilter />
-                
-                {/* <div className="input-field col s12">
-                    <select id="character" className="mx-auto btn-group-toggle btn-group">
-                        <option value="">Character</option>
-                        <option value="Common[C]">Common[C]</option>
-                        <option value="Rare[R]">Rare[R]</option>
-                        <option value="Starter Rare[ST]">Starter Rare[ST]</option>
-                        <option value="Super Rare[SR]">Super Rare[SR]</option>
-                        <option value="Uncommon[UC]">Uncommon[UC]</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div> */}
-                {/* <div className="input-field col s12">
-                    <select id="skillKeywords" className="mx-auto btn-group-toggle btn-group">
-                        <option value="">Skill Keywords</option>
-                        <option value="Common[C]">Common[C]</option>
-                        <option value="Rare[R]">Rare[R]</option>
-                        <option value="Starter Rare[ST]">Starter Rare[ST]</option>
-                        <option value="Super Rare[SR]">Super Rare[SR]</option>
-                        <option value="Uncommon[UC]">Uncommon[UC]</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div> */}
-            </div>
+        <div className="App-header grey darken-3 col s12 m4 l3">
+            <div className="col s12 filter-box white-text">
+                <div className="row">
+                    <span className="white-text">Total of cards: {totalCards}</span>
+                </div>
+                <div className="row">
+                    <CardTypeFilter />
+                    <ColorFilter />
+                    <EnergyFilter />
+                    <ComboEnergyFilter />
+                    <RarityFilter />
+                    
+                    {/* <div className="input-field col s12">
+                        <select id="character" className="mx-auto btn-group-toggle btn-group">
+                            <option value="">Character</option>
+                            <option value="Common[C]">Common[C]</option>
+                            <option value="Rare[R]">Rare[R]</option>
+                            <option value="Starter Rare[ST]">Starter Rare[ST]</option>
+                            <option value="Super Rare[SR]">Super Rare[SR]</option>
+                            <option value="Uncommon[UC]">Uncommon[UC]</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div> */}
+                    {/* <div className="input-field col s12">
+                        <select id="skillKeywords" className="mx-auto btn-group-toggle btn-group">
+                            <option value="">Skill Keywords</option>
+                            <option value="Common[C]">Common[C]</option>
+                            <option value="Rare[R]">Rare[R]</option>
+                            <option value="Starter Rare[ST]">Starter Rare[ST]</option>
+                            <option value="Super Rare[SR]">Super Rare[SR]</option>
+                            <option value="Uncommon[UC]">Uncommon[UC]</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div> */}
+                </div>
 
-            <FilterBox />
+                <FilterBox />
 
-            <div className="row">
-                <FiltersApplied />
-            </div>
-            <div className="row">
-                <span className="white-text">Total of cards: {totalCards}</span>
+                <div className="row">
+                    <FiltersApplied />
+                </div>
             </div>
         </div>
     )
