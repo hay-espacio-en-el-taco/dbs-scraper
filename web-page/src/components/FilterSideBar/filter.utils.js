@@ -1,6 +1,10 @@
 const NUMERIC_REGEXP = '^(?<condition>[<>]=?)\\s*?(?<criteria>\\d+)'
 const NUMERIC_REGEXP_WITH_OPERATORS = '^(?<criteria>\\d+)\\s*?(?<condition>[+-])'
 
+const duplicateFilters = [
+    'color', 'comboEnergy', 'rarity', 'energy', 'type',
+]
+
 const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
     return !!filterConditions.find(values => {
         const { conditionType, condition, criteria, negate } = values
@@ -11,7 +15,7 @@ const findArrayItemsInArrayOrString = (filterConditions, valuesToSearchOn) => {
                     switch (condition) {
                         case '<': return nValue < Number(criteria)
                         case '>': return nValue > Number(criteria)
-                        case '<=': 
+                        case '<=':
                         case '-': return nValue <= Number(criteria)
                         case '>=':
                         case '+': return nValue >= Number(criteria)
@@ -30,11 +34,12 @@ export const getFieldsToSearch = (card) => {
     const struct = Object.keys(card).reduce(
         (result, fieldName) => {
             let type = typeof card[fieldName]
-            if (Array.isArray( card[fieldName] )) {
+            if (Array.isArray(card[fieldName])) {
                 type = 'array'
             }
-
-            result.push({ fieldName, type, label: fieldName })
+            if (!duplicateFilters.includes(fieldName)) {
+                result.push({ fieldName, type, label: fieldName })
+            }
             return result
         },
         []
@@ -50,7 +55,7 @@ export const getFieldsToSearch = (card) => {
 }
 
 export const isInFilters = (ar, field, current) => (
-    ar.find(({ id })=> id.toLocaleLowerCase().startsWith(field.toLocaleLowerCase()) && id.toLocaleLowerCase().includes(current.toLocaleLowerCase()))
+    ar.find(({ id }) => id.toLocaleLowerCase().startsWith(field.toLocaleLowerCase()) && id.toLocaleLowerCase().includes(current.toLocaleLowerCase()))
 )
 
 
@@ -59,7 +64,7 @@ export const parseFilterText = text => {
     return criteriaArray.map(
         txt => {
             const foundNumericCondition = (new RegExp(NUMERIC_REGEXP, 'g')).exec(txt)
-            const foundNumericConditionFinal = foundNumericCondition ? foundNumericCondition : (new RegExp(NUMERIC_REGEXP_WITH_OPERATORS, 'g')).exec(txt) 
+            const foundNumericConditionFinal = foundNumericCondition ? foundNumericCondition : (new RegExp(NUMERIC_REGEXP_WITH_OPERATORS, 'g')).exec(txt)
             if (foundNumericConditionFinal) {
                 const { groups: { condition, criteria } } = foundNumericConditionFinal
                 return { conditionType: 'numeric', criteria: criteria.includes('not') ? criteria.split(/\s/gm)[1] : criteria, condition, negate: criteria.includes('not') }
@@ -73,7 +78,7 @@ export const createFilter = (fieldName, filterConditions, type) => {
     let filter = card => {
         let criteriaToSearchOn
         if (type === 'object') {// no implementation yet, so we search in the whole object
-            criteriaToSearchOn = [JSON.stringify( card[fieldName] )]
+            criteriaToSearchOn = [JSON.stringify(card[fieldName])]
         }
         else {
             let val = card[fieldName]
@@ -88,7 +93,7 @@ export const createFilter = (fieldName, filterConditions, type) => {
                     criteriaToSearchOn = criteriaToSearchOn.concat(val)
                 }
                 else {
-                    criteriaToSearchOn.push( val )
+                    criteriaToSearchOn.push(val)
                 }
             }
         }
