@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/dbs-scraper/static/css/main.53c7e001.chunk.css",
+    "main.js": "/dbs-scraper/static/js/main.a87e23f2.chunk.js",
+    "main.js.map": "/dbs-scraper/static/js/main.a87e23f2.chunk.js.map",
+    "runtime-main.js": "/dbs-scraper/static/js/runtime-main.e7a775a6.js",
+    "runtime-main.js.map": "/dbs-scraper/static/js/runtime-main.e7a775a6.js.map",
+    "static/css/2.36020323.chunk.css": "/dbs-scraper/static/css/2.36020323.chunk.css",
+    "static/js/2.547fb377.chunk.js": "/dbs-scraper/static/js/2.547fb377.chunk.js",
+    "static/js/2.547fb377.chunk.js.map": "/dbs-scraper/static/js/2.547fb377.chunk.js.map",
+    "index.html": "/dbs-scraper/index.html",
+    "precache-manifest.a0e15f2e25affd65fdbfa4802fd33b60.js": "/dbs-scraper/precache-manifest.a0e15f2e25affd65fdbfa4802fd33b60.js",
+    "service-worker.js": "/dbs-scraper/service-worker.js",
+    "static/css/2.36020323.chunk.css.map": "/dbs-scraper/static/css/2.36020323.chunk.css.map",
+    "static/css/main.53c7e001.chunk.css.map": "/dbs-scraper/static/css/main.53c7e001.chunk.css.map",
+    "static/js/2.547fb377.chunk.js.LICENSE.txt": "/dbs-scraper/static/js/2.547fb377.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e7a775a6.js",
+    "static/css/2.36020323.chunk.css",
+    "static/js/2.547fb377.chunk.js",
+    "static/css/main.53c7e001.chunk.css",
+    "static/js/main.a87e23f2.chunk.js"
+  ]
+}
