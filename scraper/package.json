@@ -33,7 +33,7 @@
     "homepage": "https://github.com/Xotl/dbs-scraper#readme",
     "dependencies": {
         "cheerio": "^1.0.0-rc.2",
-        "node-fetch": "^1.7.3"
+        "node-fetch": "^2.6.1"
     },
     "devDependencies": {
         "jest": "^25.1.0"
