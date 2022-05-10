@@ -15,7 +15,9 @@
     "@types/cheerio": "^0.22.31",
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.10",
-    "nodemon": "^2.0.16"
+    "fs": "^0.0.1-security",
+    "nodemon": "^2.0.16",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "ts-node": "^10.7.0"
