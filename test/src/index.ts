@@ -3,6 +3,7 @@ import cheerio from "cheerio";
 import { writeFileSync } from "fs";
 
 import path from 'path';
+import { GetCardListUrls } from "./navListScraper/navListScaper";
 
 /**
  * constants
@@ -10,9 +11,7 @@ import path from 'path';
 const DEFAULT_OUTPUT = path.join(__dirname, '..', 'cards.json')
 const CARD_LIST_URL = "http://www.dbs-cardgame.com/us-en/cardlist/?search=true";
 const AxiosInstance = axios.create();
-const DBS_DATA_BASE_URL =
-    "http://www.dbs-cardgame.com/us-en/cardlist/?search=true&category=";
-const HREF_REGEXP = /.*?\?.*?category=(?<category>.+)$/;
+
 
 /**
  * Main function of the code.
@@ -35,42 +34,6 @@ async function main() {
     console.log(`Cards data saved at "${outputPath}"`);
 }
 main();
-
-/**
- * Navigation List Scraper
- * These will be broken out later.
- */
-async function GetCardListUrls(cardListUrl: string) {
-    const response = await AxiosInstance.get(cardListUrl);
-    const body = await response.data;
-    const $ = cheerio.load(body);
-
-    const navListItems = $("div#snaviList li a");
-    console.log(navListItems);
-    const urlsInfo = navListItems.toArray().map(extractInfoFromItemNode($));
-
-    return urlsInfo;
-}
-
-function extractInfoFromItemNode($) {
-    return (itemNode) => {
-        const cheerioElement = $(itemNode);
-        const href = cheerioElement.attr("href");
-        const category = extractCategoryFromhref(href);
-
-        return {
-            name: cheerioElement.text(),
-            href,
-            category,
-            url: `${DBS_DATA_BASE_URL}${category}`,
-        };
-    };
-}
-
-function extractCategoryFromhref(hrefString: string) {
-    const match = hrefString.match(HREF_REGEXP);
-    return match.groups.category;
-}
 
 /**
  * Card Scraper
