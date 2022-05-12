@@ -1,6 +1,6 @@
 import axios from "axios";
 import cheerio from "cheerio";
-import { ICardListUrl } from "../shared/interfaces/ICardListUrl";
+import { ICardListUrl } from "../../shared/interfaces/ICardListUrl";
 
 /**
  * This file looks for the navigation section
@@ -19,9 +19,9 @@ const HREF_REGEXP = /.*?\?.*?category=(?<category>.+)$/;
 /**
  * Exported function that will obtain the nav list and returns an array
  * @param cardListUrl - Url that points to the card list page of dbs-cardgame.com
- * @returns @type ICardListUrl[] 
+ * @returns {Promise<ICardListUrl[]>}
  */
-export async function GetCardListUrls(cardListUrl: string) {
+export async function GetCardListUrls(cardListUrl: string): Promise<ICardListUrl[]> {
     const response = await AxiosInstance.get(cardListUrl);
     const body = await response.data;
     const $ = cheerio.load(body);
@@ -35,10 +35,10 @@ export async function GetCardListUrls(cardListUrl: string) {
 
 /**
  * Extracts information from a Node on the DOM
- * @param $ - Dom that we are extracting information from
- * @returns a ICardListUrl from each Item Node
+ * @param {cheerio.Root} $ - Dom that we are extracting information from
+ * @returns {ICardListUrl} ICardListUrl from each Item Node
  */
-function extractInfoFromItemNode($){
+function extractInfoFromItemNode($: cheerio.Root){
     return (itemNode) => {
         const cheerioElement = $(itemNode);
         const href = cheerioElement.attr("href");
@@ -53,7 +53,15 @@ function extractInfoFromItemNode($){
     };
 }
 
-function extractCategoryFromHref(hrefString: string) {
+/**
+ * It takes a string that looks like a URL, and returns the category part of the URL
+ * For example, DBS-cardgame.com has a url like:
+ * http://dbs-cardgame.com/us-en/cardlist/?search=true&category=428301
+ * It searches for the `category=` portion, and takes what it equals.
+ * @param {string} hrefString - The string to extract the category from.
+ * @returns {string} The category name.
+ */
+function extractCategoryFromHref(hrefString: string): string {
     const match = hrefString.match(HREF_REGEXP);
     return match.groups.category;
 }
