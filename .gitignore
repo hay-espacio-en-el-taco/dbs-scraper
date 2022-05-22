@@ -109,3 +109,8 @@ node_modules
 # DBS Scraper Project specific
 cards.json
 cards.json_*
+cardPrices.json
+cardPrices.json_*
+*.xlsx
+reworkedCards.json
+reworkedCards.json_*

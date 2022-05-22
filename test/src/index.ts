@@ -1,7 +1,6 @@
-import axios from "axios";
 import { writeFileSync } from "fs";
 import path from 'path';
-import { CardsScraper } from "./scrapers/navListScraper/cardScraper/cardScraper";
+import { CardsScraper } from "./scrapers/cardScraper/cardScraper";
 import { GetCardListUrls } from "./scrapers/navListScraper/navListScraper";
 
 /**

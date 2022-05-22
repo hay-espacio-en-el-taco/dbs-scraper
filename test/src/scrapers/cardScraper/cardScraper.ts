@@ -1,7 +1,7 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
-import { ICard } from '../../../shared/interfaces/ICard';
-import { ICardListUrl } from '../../../shared/interfaces/ICardListUrl';
+import { ICard } from '../../shared/interfaces/ICard';
+import { ICardListUrl } from '../../shared/interfaces/ICardListUrl';
 
 /**
  * Constants
@@ -161,7 +161,7 @@ function replaceSpecialChars(rawHtml: string): string {
  * @param {string} rawHtml - The raw HTML of the card page.
  * @returns A string with all the verbose text removed.
  */
-function removeVerboseText(rawHtml:string ):string {
+function removeVerboseText(rawHtml: string): string {
     return rawHtml
         .replace(/\(If this card is placed in an Energy Area from any area, it must be placed there in Rest Mode.?\)/g, '') //[Energy-Exhaust]
         .replace(/\((?:Once|Twice) per turn, when this card attacks,\s*(?:\\n)?switch this card to Active Mode after the battle.?\)/g, '') //[Dual|Triple Attack]
@@ -191,20 +191,31 @@ function removeVerboseText(rawHtml:string ):string {
         .replace(/\(If you have at least \d+ cards in your Drop Area, you can play this card (?:from your hand )?by sending all cards in your Drop Area to your Warp.\s+At the end of that turn, send this card from the Battle Area to your Warp.\s+\[Over Realm\] can (?:only )?be activated once per turn.?\)/g, '') //[Over Realm X]
 }
 
-function getMatches(regexp, skillDescription) {
+/**
+ * Obtain matches of the regular expression for the skillDescription that is passed in
+ * @param {RegExp} regexp - Regular expression of what we are trying to seek
+ * @param {string} skillDescription - string in which we are seeking the regular expression
+ * @returns {string[]} - an array of all matches.
+ */
+function getMatches(regexp: RegExp, skillDescription: string): string[] {
     let currentSet = new Set();
     let match: any = [];
-    while ((match = regexp.exec(skillDescription)) !== null) {
+    while (match = regexp.exec(skillDescription) !== null) {
         // This is necessary to avoid infinite loops with zero-width matches
         if (match.index === regexp.lastIndex) {
             regexp.lastIndex++;
         }
         currentSet.add(match[1]);
     }
-    return [...currentSet];
+    return [...currentSet] as string[];
 }
 
-function parseEnergy(rawHtml: string) {
+/**
+ * 
+ * @param {string} rawHtml 
+ * @returns {string} 
+ */
+function parseEnergy(rawHtml: string): string {
     if (!rawHtml) {
         return null;
     }
