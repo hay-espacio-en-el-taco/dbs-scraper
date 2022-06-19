@@ -1,0 +1,26 @@
+{
+  "name": "test",
+  "version": "0.0.1",
+  "description": "test web scraper",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run clean && tsc && node dist/test/testCardScraper.js",
+    "start": "tsc && node dist/index.js",
+    "dev": "nodemon --watch 'src/*.ts' --exec ts-node src/index.ts",
+    "clean": "rimraf dist/*"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/cheerio": "^0.22.31",
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.10",
+    "fs": "^0.0.1-security",
+    "nodemon": "^2.0.16",
+    "path": "^0.12.7",
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.8.1"
+  }
+}
