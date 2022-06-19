@@ -48,35 +48,43 @@ async function scrapeUrl(url: string): Promise<ICard[]> {
             const find = cardFront.find.bind(cardFront);
 
             const { seriesName, seriesFullName } = parseSeries(
-                find("dl.seriesCol dd").html()
+                find("dl.seriesCol dd").html() || ''
             );
-            const { skillDescription, skillKeywords, relatedCharacters, relatedSpecialTraits, relatedCardNames } = parseSkill(find('dl.skillCol dd').html());
+            const { skillDescription, skillKeywords, relatedCharacters, relatedSpecialTraits, relatedCardNames } = parseSkill(find('dl.skillCol dd').html() || '');
 
-            const energy = parseEnergy(find('dl.energyCol dd').html());
+            const energy = parseEnergy(find('dl.energyCol dd').html() || '');
             const type = find('dl.typeCol dd').text();
+
+            const power = Number(find('dl.powerCol dd').text().trim());
+            const comboPower = Number(find('dl.comboPowerCol dd').text().trim());
+            const comboEnergy = Number(find('dl.comboEnergyCol dd').text().trim());
+            const rarity = find('dl.rarityCol dd').text().trim()
 
             return {
                 type,
-                cardName: find('dd.cardName').text(),
-                energy,
-                color: find('dl.colorCol dd').text(),
+                cardName: find('dd.cardName').text().trim(),
+                energy: energy.energy,
+                cmc: energy.cmc,
+                specifiedCost: energy.specifiedCost,
+                color: find('dl.colorCol dd').text().trim().toLowerCase(),
                 skillDescription,
-                power: find('dl.powerCol dd').text(),
-                comboPower: find('dl.comboPowerCol dd').text(),
-                comboEnergy: find('dl.comboEnergyCol dd').text(),
-                character: find('dl.characterCol dd').text(),
-                specialTrait: find('dl.specialTraitCol dd').text(),
-                rarity: find('dl.rarityCol dd').text(),
-                cardNumber: find('dt.cardNumber').text(),
+                power: isNaN(power) ? null : power,
+                comboPower: isNaN(comboPower) ? null : comboPower,
+                comboEnergy: isNaN(comboEnergy) ? null : comboEnergy,
+                character: find('dl.characterCol dd').text().trim(),
+                specialTrait: find('dl.specialTraitCol dd').text().trim(),
+                rarity: rarity.split('[')[0],
+                rarityShorthand: rarity.split('[')[1].replace(']',''),
+                cardNumber: find('dt.cardNumber').text().trim(),
                 skillKeywords,
                 relatedCharacters,
                 relatedSpecialTraits,
                 relatedCardNames,
-                era: find('dl.eraCol dd').text(),
+                era: find('dl.eraCol dd').text().trim(),
                 seriesName,
                 seriesFullName,
-                availableDate: find('dl.availableDateCol dd').text(),
-                cardImageUrl: getImageUrl(find('.cardimg > img')),
+                availableDate: find('dl.availableDateCol dd').text().trim(),
+                cardImageUrl: getImageUrl(find('.cardimg > img')).trim(),
                 cardBack: type === 'LEADER' ? getBackCard(elem.find('.cardBack')) : null,
             } as ICard;
         });
@@ -114,7 +122,9 @@ function parseSeries(rawHtml: string): { seriesName: string, seriesFullName: str
  * - relatedCardNames: string[]
  */
 function parseSkill(rawHtml: string): { skillDescription: string, skillKeywords: string[], relatedCharacters: string[], relatedSpecialTraits: string[], relatedCardNames: string[] } {
-    const newHtml = rawHtml.replace(LINE_BREAK_REGEXP, '\n').replace(SKILL_CLEANUP_REGEXP, '[$1]').replace(COST_CLEANUP_REGEXP, '$1');
+    // console.log(rawHtml, '\n');
+    let newHtml = rawHtml.replace(LINE_BREAK_REGEXP, '\n').replace(SKILL_CLEANUP_REGEXP, '[$1]').replace(COST_CLEANUP_REGEXP, '{$1}');
+    newHtml = newHtml.replace('[one]','{1}').replace('[two]','{2}').replace('[three]','{3}').replace('[four]','{4}').replace('[five]','{5}');
     let skillDescription = replaceSpecialChars(newHtml);
     skillDescription = removeVerboseText(skillDescription);
 
@@ -133,8 +143,8 @@ function parseSkill(rawHtml: string): { skillDescription: string, skillKeywords:
  */
 function replaceSpecialChars(rawHtml: string): string {
     return rawHtml
-        .replace(/&#xFF1C;/g, '<').replace(/&#xFF1E;/g, '>')
-        .replace(/&#x300A;/g, '≪').replace(/&#x300B;/g, '≫')
+        .replace(/[\uFF1C]/g, '<').replace(/[\uFF1E]/g, '>')
+        .replace(/[\u300A]/g, '≪').replace(/[\u300B]/g, '≫')
         .replace(/&#x226A;/g, '≪').replace(/&#x226B;/g, '≫')
         .replace(/&lt;</g, '≪').replace(/[=\"].+?>&gt;/g, '≫')
         .replace(/&apos;/g, "'").replace(/&#x2019;/g, "'")
@@ -189,6 +199,7 @@ function removeVerboseText(rawHtml: string): string {
         .replace(/\(You can activate \[Over Realm\] and \[Dark Over Realm\] up to a total 2 times a turn.?\)/g, '') //[Wormhole]
         .replace(/\(If you have at least \d+ black cards in your Drop Area, you can play this card by sending all cards in your Drop Area to your Warp. \[Over Realm\] and \[Dark Over Realm\] can only be activated once per turn.?\)/g, '') //[DARK Over Realm X]
         .replace(/\(If you have at least \d+ cards in your Drop Area, you can play this card (?:from your hand )?by sending all cards in your Drop Area to your Warp.\s+At the end of that turn, send this card from the Battle Area to your Warp.\s+\[Over Realm\] can (?:only )?be activated once per turn.?\)/g, '') //[Over Realm X]
+        .replace(/\(Only 1 copy of this card can be played in your Battle Area.?\)/g, '') //[Unique]
 }
 
 /**
@@ -200,7 +211,7 @@ function removeVerboseText(rawHtml: string): string {
 function getMatches(regexp: RegExp, skillDescription: string): string[] {
     let currentSet = new Set();
     let match: any = [];
-    while (match = regexp.exec(skillDescription) !== null) {
+    while ((match = regexp.exec(skillDescription)) !== null) {
         // This is necessary to avoid infinite loops with zero-width matches
         if (match.index === regexp.lastIndex) {
             regexp.lastIndex++;
@@ -211,47 +222,58 @@ function getMatches(regexp: RegExp, skillDescription: string): string[] {
 }
 
 /**
- * 
- * @param {string} rawHtml 
- * @returns {string} 
+ *
+ * @param {string} rawHtml
+ * @returns {string}
  */
-function parseEnergy(rawHtml: string): string {
+function parseEnergy(rawHtml: string): { energy: string | null, cmc: number | null, specifiedCost: number | null } {
     if (!rawHtml) {
-        return null;
+        return { energy: null, cmc: null, specifiedCost: null };
     }
-
+    // console.log(rawHtml, '\n')
     const regexp = /<img src=.+?\/cardlist\/common\/(.)(?:[^_]+)_ball.png.*?>/g;
-    let match: any;
-    while ((match = regexp.exec(rawHtml)) !== null) {
-        // This is necessary to avoid infinite loops with zero-width matches
-        if (match.index === regexp.lastIndex) {
-            regexp.lastIndex++;
+    let energyDescription = rawHtml.replace(regexp, '{$1}').replace(/&#x2010;/g, '-').replace('(', '').replace(')', '');
+    energyDescription = '{' + energyDescription.slice(0, 1) + '}' + energyDescription.slice(1);
+    const energyMatch = energyDescription.match(/{.}/g) || [];
+    let cmc = 0;
+    let specifiedCost = 0;
+    for (let energyStr of energyMatch) {
+        if (energyStr.length === 4) {
+            cmc += isNaN(Number(energyStr.slice(1, 3))) ? 0 : Number(energyStr.slice(1, 3));
+
+        } else {
+            cmc += isNaN(Number(energyStr[1])) ? 0 : Number(energyStr[1]);
+        }
+        if (isNaN(Number(energyStr[1])) && energyStr[1] !== 'X') {
+            specifiedCost++;
         }
     }
-    const energyDescription = rawHtml.replace(regexp, '($1)').replace(/&#x2010;/g, '-');
-    return energyDescription;
+    cmc = cmc < specifiedCost ? specifiedCost : cmc;
+    return { energy: energyDescription, cmc, specifiedCost };
 }
 
-function getImageUrl(elem) {
+function getImageUrl(elem: any) {
     return elem.attr('src').replace('../..', 'http://www.dbs-cardgame.com');
 }
 
-function getBackCard(elem) {
+function getBackCard(elem: any) {
     const find = elem.find.bind(elem);
     const { skillDescription, skillKeywords, relatedCharacters, relatedSpecialTraits, relatedCardNames } = parseSkill(find('dl.skillCol > dd').html());
 
+    const power = Number(find('dl.powerCol dd').text().trim());
+           
     return {
-        cardName: find('dd.cardName').text(),
-        color: find('dl.colorCol dd').text(),
+        cardName: find('dd.cardName').text().trim(),
+        color: find('dl.colorCol dd').text().trim().toLowerCase(),
         skillDescription,
-        power: find('dl.powerCol dd').text(),
-        character: find('dl.characterCol dd').text(),
-        specialTrait: find('dl.specialTraitCol dd').text(),
+        power: isNaN(power) ? null : power,
+        character: find('dl.characterCol dd').text().trim(),
+        specialTrait: find('dl.specialTraitCol dd').text().trim(),
         skillKeywords,
         relatedCharacters,
         relatedSpecialTraits,
         relatedCardNames,
-        era: find('dl.eraCol dd').text(),
-        cardImageUrl: getImageUrl(find('.cardimg > img')),
+        era: find('dl.eraCol dd').text().trim(),
+        cardImageUrl: getImageUrl(find('.cardimg > img')).trim(),
     };
 }

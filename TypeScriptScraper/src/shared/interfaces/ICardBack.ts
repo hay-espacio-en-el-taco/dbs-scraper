@@ -2,7 +2,7 @@ export interface ICardBack {
     cardName: string;
     color: string;
     skillDescription: string;
-    power: string;
+    power: number;
     character: string;
     specialTrait: string;
     skillKeywords: string[];

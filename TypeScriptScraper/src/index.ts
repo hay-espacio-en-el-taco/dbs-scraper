@@ -2,6 +2,7 @@ import { writeFileSync } from "fs";
 import path from 'path';
 import { CardsScraper } from "./scrapers/cardScraper/cardScraper";
 import { GetCardListUrls } from "./scrapers/navListScraper/navListScraper";
+import { ICard } from "./shared/interfaces/ICard";
 
 /**
  * Constants
@@ -28,7 +29,7 @@ async function main() {
     const attributes = getUniqueValuesByProperty(cards);
 
     const outputPath = process.env.CARDS_DATA_OUTPUT || DEFAULT_OUTPUT;
-    writeFileSync(outputPath, JSON.stringify({urlsList, cards, attributes}));
+    writeFileSync(outputPath, JSON.stringify({ urlsList, cards, attributes }));
     console.log(`Cards data saved at "${outputPath}"`);
 }
 main();
@@ -38,11 +39,11 @@ main();
 /**
  * Utility Functions
  */
-function getUniqueValuesByProperty(allCards) {
+function getUniqueValuesByProperty(allCards: ICard[]) {
     return unfoldSetsIntoArrays(allCards.reduce(groupValuesInSets, {}));
 }
 
-function groupValuesInSets(dict = {}, obj) {
+function groupValuesInSets(dict: { [key: string]: any } = {}, obj: any) {
     if (!obj) {
         return dict;
     }
@@ -69,11 +70,11 @@ function groupValuesInSets(dict = {}, obj) {
     return dict;
 }
 
-function unfoldSetsIntoArrays(obj) {
+function unfoldSetsIntoArrays(obj: { [key: string]: any }) {
     if (obj instanceof Set) {
         return Array.from(obj.values());
     }
-    const result = {};
+    const result: { [key: string]: any } = {};
     for (let [key, value] of Object.entries(obj)) {
         result[key] = unfoldSetsIntoArrays(value);
     }

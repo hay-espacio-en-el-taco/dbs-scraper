@@ -39,9 +39,9 @@ export async function GetCardListUrls(cardListUrl: string): Promise<ICardListUrl
  * @returns {ICardListUrl} ICardListUrl from each Item Node
  */
 function extractInfoFromItemNode($: cheerio.Root){
-    return (itemNode) => {
+    return (itemNode: any) => {
         const cheerioElement = $(itemNode);
-        const href = cheerioElement.attr("href");
+        const href = cheerioElement.attr("href") || '';
         const category = extractCategoryFromHref(href);
 
         return {
@@ -61,7 +61,7 @@ function extractInfoFromItemNode($: cheerio.Root){
  * @param {string} hrefString - The string to extract the category from.
  * @returns {string} The category name.
  */
-function extractCategoryFromHref(hrefString: string): string {
+function extractCategoryFromHref(hrefString: string): string | undefined {
     const match = hrefString.match(HREF_REGEXP);
-    return match.groups.category;
+    return match?.groups?.category;
 }
